@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<meta name="generator" content="AsciiDoc 10.0.2" />
 <title>git-ls-files(1)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -750,9 +750,9 @@ git-ls-files(1) Manual Page
 <div class="sectionbody">
 <div class="verseblock">
 <pre class="content"><em>git ls-files</em> [-z] [-t] [-v] [-f]
-                (--[cached|deleted|others|ignored|stage|unmerged|killed|modified])*
-                (-[c|d|o|i|s|u|k|m])*
-                [--eol]
+                [-c|--cached] [-d|--deleted] [-o|--others] [-i|--|ignored]
+                [-s|--stage] [-u|--unmerged] [-k|--|killed] [-m|--modified]
+                [--directory [--no-empty-directory]] [--eol]
                 [--deduplicate]
                 [-x &lt;pattern&gt;|--exclude=&lt;pattern&gt;]
                 [-X &lt;file&gt;|--exclude-from=&lt;file&gt;]
@@ -1231,7 +1231,7 @@ pattern file appears in.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-02-05 22:36:43 PST
+ 2021-12-10 14:52:02 PST
 </div>
 </div>
 </body>

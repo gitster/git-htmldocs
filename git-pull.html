@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<meta name="generator" content="AsciiDoc 10.0.2" />
 <title>git-pull(1)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -1816,13 +1816,13 @@ config file would appear like this:</p></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>        [remote "&lt;name&gt;"]
-                url = &lt;url&gt;
+                url = &lt;URL&gt;
                 pushurl = &lt;pushurl&gt;
                 push = &lt;refspec&gt;
                 fetch = &lt;refspec&gt;</code></pre>
 </div></div>
 <div class="paragraph"><p>The <code>&lt;pushurl&gt;</code> is used for pushes only. It is optional and defaults
-to <code>&lt;url&gt;</code>.</p></div>
+to <code>&lt;URL&gt;</code>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_named_file_in_code_git_dir_remotes_code">Named file in <code>$GIT_DIR/remotes</code></h3>
@@ -1851,9 +1851,9 @@ The URL in this file will be used to access the repository.
 This file should have the following format:</p></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>        &lt;url&gt;#&lt;head&gt;</code></pre>
+<pre><code>        &lt;URL&gt;#&lt;head&gt;</code></pre>
 </div></div>
-<div class="paragraph"><p><code>&lt;url&gt;</code> is required; <code>#&lt;head&gt;</code> is optional.</p></div>
+<div class="paragraph"><p><code>&lt;URL&gt;</code> is required; <code>#&lt;head&gt;</code> is optional.</p></div>
 <div class="paragraph"><p>Depending on the operation, git will use one of the following
 refspecs, if you don&#8217;t provide one on the command line.
 <code>&lt;branch&gt;</code> is the name of this file in <code>$GIT_DIR/branches</code> and

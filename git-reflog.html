@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<meta name="generator" content="AsciiDoc 10.0.2" />
 <title>git-reflog(1)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -760,12 +760,12 @@ git-reflog(1) Manual Page
 <div class="paragraph"><p>The command takes various subcommands, and different options
 depending on the subcommand:</p></div>
 <div class="verseblock">
-<pre class="content"><em>git reflog</em> [<em>show</em>] [log-options] [&lt;ref&gt;]
+<pre class="content"><em>git reflog</em> [<em>show</em>] [&lt;log-options&gt;] [&lt;ref&gt;]
 <em>git reflog expire</em> [--expire=&lt;time&gt;] [--expire-unreachable=&lt;time&gt;]
         [--rewrite] [--updateref] [--stale-fix]
         [--dry-run | -n] [--verbose] [--all [--single-worktree] | &lt;refs&gt;&#8230;]
 <em>git reflog delete</em> [--rewrite] [--updateref]
-        [--dry-run | -n] [--verbose] ref@{specifier}&#8230;
+        [--dry-run | -n] [--verbose] &lt;ref&gt;@\{&lt;specifier&gt;}&#8230;
 <em>git reflog exists</em> &lt;ref&gt;</pre>
 <div class="attribution">
 </div></div>
@@ -929,7 +929,7 @@ used with <code>expire</code>.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-03-10 15:02:33 PDT
+ 2021-12-10 14:52:02 PST
 </div>
 </div>
 </body>

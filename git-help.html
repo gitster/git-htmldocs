@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<meta name="generator" content="AsciiDoc 10.0.2" />
 <title>git-help(1)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -750,7 +750,7 @@ git-help(1) Manual Page
 <div class="sectionbody">
 <div class="verseblock">
 <pre class="content"><em>git help</em> [-a|--all [--[no-]verbose]]
-           [[-i|--info] [-m|--man] [-w|--web]] [COMMAND|GUIDE]
+           [[-i|--info] [-m|--man] [-w|--web]] [&lt;command&gt;|&lt;guide&gt;]
 <em>git help</em> [-g|--guides]
 <em>git help</em> [-c|--config]</pre>
 <div class="attribution">
@@ -760,7 +760,7 @@ git-help(1) Manual Page
 <div class="sect1">
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>With no options and no COMMAND or GUIDE given, the synopsis of the <em>git</em>
+<div class="paragraph"><p>With no options and no <em>&lt;command&gt;</em> or <em>&lt;guide&gt;</em> given, the synopsis of the <em>git</em>
 command and a list of the most commonly used Git commands are printed
 on the standard output.</p></div>
 <div class="paragraph"><p>If the option <code>--all</code> or <code>-a</code> is given, all available commands are
@@ -773,7 +773,7 @@ purpose, but this can be overridden by other options or configuration
 variables.</p></div>
 <div class="paragraph"><p>If an alias is given, git shows the definition of the alias on
 standard output. To get the manual page for the aliased command, use
-<code>git COMMAND --help</code>.</p></div>
+<code>git &lt;command&gt; --help</code>.</p></div>
 <div class="paragraph"><p>Note that <code>git --help ...</code> is identical to <code>git help ...</code> because the
 former is internally converted into the latter.</p></div>
 <div class="paragraph"><p>To display the <a href="git.html">git(1)</a> man page, use <code>git help git</code>.</p></div>
@@ -1012,7 +1012,7 @@ See <a href="git-config.html">git-config(1)</a> for more information about this.
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-10-14 10:10:01 PDT
+ 2021-12-10 14:52:02 PST
 </div>
 </div>
 </body>

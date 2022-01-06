@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<meta name="generator" content="AsciiDoc 10.0.2" />
 <title>git-cvsexportcommit(1)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -749,8 +749,8 @@ git-cvsexportcommit(1) Manual Page
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><em>git cvsexportcommit</em> [-h] [-u] [-v] [-c] [-P] [-p] [-a] [-d cvsroot]
-        [-w cvsworkdir] [-W] [-f] [-m msgprefix] [PARENTCOMMIT] COMMITID</pre>
+<pre class="content"><em>git cvsexportcommit</em> [-h] [-u] [-v] [-c] [-P] [-p] [-a] [-d &lt;cvsroot&gt;]
+        [-w &lt;cvs-workdir&gt;] [-W] [-f] [-m &lt;msgprefix&gt;] [&lt;parent-commit&gt;] &lt;commit-id&gt;</pre>
 <div class="attribution">
 </div></div>
 </div>
@@ -951,7 +951,7 @@ $ git cherry cvshead myhead | sed -n 's/^+ //p' | xargs -l1 git cvsexportcommit 
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-03-10 15:02:33 PDT
+ 2021-12-10 14:52:02 PST
 </div>
 </div>
 </body>

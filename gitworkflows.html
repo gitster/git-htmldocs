@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 9.0.0rc2" />
+<meta name="generator" content="AsciiDoc 10.0.2" />
 <title>gitworkflows(7)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -1134,14 +1134,14 @@ request to do so by mail.  Such a request looks like</p></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>Please pull from
-    &lt;url&gt; &lt;branch&gt;</code></pre>
+    &lt;URL&gt; &lt;branch&gt;</code></pre>
 </div></div>
 <div class="paragraph"><p>In that case, <em>git pull</em> can do the fetch and merge in one go, as
 follows.</p></div>
 <div class="exampleblock">
 <div class="title">Recipe: Push/pull: Merging remote topics</div>
 <div class="content">
-<div class="paragraph"><p><code>git pull &lt;url&gt; &lt;branch&gt;</code></p></div>
+<div class="paragraph"><p><code>git pull &lt;URL&gt; &lt;branch&gt;</code></p></div>
 </div></div>
 <div class="paragraph"><p>Occasionally, the maintainer may get merge conflicts when they try to
 pull changes from downstream.  In this case, they can ask downstream to
@@ -1181,7 +1181,7 @@ merge because you cannot format-patch merges):</p></div>
 <div class="exampleblock">
 <div class="title">Recipe: format-patch/am: Keeping topics up to date</div>
 <div class="content">
-<div class="paragraph"><p><code>git pull --rebase &lt;url&gt; &lt;branch&gt;</code></p></div>
+<div class="paragraph"><p><code>git pull --rebase &lt;URL&gt; &lt;branch&gt;</code></p></div>
 </div></div>
 <div class="paragraph"><p>You can then fix the conflicts during the rebase.  Presumably you have
 not published your topic other than by mail, so rebasing it is not a
@@ -1225,7 +1225,7 @@ other options.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-07-22 21:40:55 PDT
+ 2021-12-10 14:52:02 PST
 </div>
 </div>
 </body>
