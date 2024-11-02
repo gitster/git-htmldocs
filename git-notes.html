@@ -452,9 +452,9 @@ pre>code {
 <div class="sectionbody">
 <div class="verseblock">
 <pre class="content"><em>git notes</em> [list [&lt;object&gt;]]
-<em>git notes</em> add [-f] [--allow-empty] [--[no-]separator | --separator=&lt;paragraph-break&gt;] [--[no-]stripspace] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
+<em>git notes</em> add [-f] [--allow-empty] [--[no-]separator | --separator=&lt;paragraph-break&gt;] [--[no-]stripspace] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [-e] [&lt;object&gt;]
 <em>git notes</em> copy [-f] ( --stdin | &lt;from-object&gt; [&lt;to-object&gt;] )
-<em>git notes</em> append [--allow-empty] [--[no-]separator | --separator=&lt;paragraph-break&gt;] [--[no-]stripspace] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
+<em>git notes</em> append [--allow-empty] [--[no-]separator | --separator=&lt;paragraph-break&gt;] [--[no-]stripspace] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [-e] [&lt;object&gt;]
 <em>git notes</em> edit [--allow-empty] [&lt;object&gt;] [--[no-]stripspace]
 <em>git notes</em> show [&lt;object&gt;]
 <em>git notes</em> merge [-v | -q] [-s &lt;strategy&gt; ] &lt;notes-ref&gt;
@@ -523,7 +523,9 @@ to supply the notes contents), then - instead of aborting -
 the existing notes will be opened in the editor (like the <code>edit</code>
 subcommand). If you specify multiple <code>-m</code> and <code>-F</code>, a blank
 line will be inserted between the messages. Use the <code>--separator</code>
-option to insert other delimiters.</p>
+option to insert other delimiters. You can use <code>-e</code> to edit and
+fine-tune the message(s) supplied from <code>-m</code> and <code>-F</code> options
+interactively (using an editor) before adding the note.</p>
 </dd>
 <dt class="hdlist1">copy</dt>
 <dd>
@@ -553,7 +555,9 @@ existing note, or add them as a new note if one does not
 exist, for the object (defaults to HEAD).  When appending to
 an existing note, a blank line is added before each new
 message as an inter-paragraph separator.  The separator can
-be customized with the <code>--separator</code> option.</p>
+be customized with the <code>--separator</code> option.
+Edit the notes to be appended given by <code>-m</code> and <code>-F</code> options with
+<code>-e</code> interactively (using an editor) before appending the note.</p>
 </dd>
 <dt class="hdlist1">edit</dt>
 <dd>
@@ -1009,7 +1013,7 @@ on the <code>notes.rewrite.</code><em>&lt;command&gt;</em> and <code>notes.rewri
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-08 15:45:59 -0800
+Last updated 2024-11-01 22:46:55 -0700
 </div>
 </div>
 </body>

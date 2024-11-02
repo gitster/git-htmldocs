@@ -4,6 +4,18 @@ Git v2.48 Release Notes
 UI, Workflows & Features
 ------------------------
 
+ * A new configuration variable remote.<name>.serverOption makes the
+   transport layer act as if the --serverOption=<value> option is
+   given from the command line.
+
+ * "git rebase --rebase-merges" now uses branch names as labels when
+   able.
+
+ * Describe the policy to introduce breaking changes.
+
+ * Teach 'git notes add' and 'git notes append' a new '-e' flag,
+   instructing them to open the note in $GIT_EDITOR before saving.
+
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
 
@@ -18,6 +30,43 @@ Performance, Internal Implementation, Development Support etc.
    allocation function given to it may fail to allocate and to deal
    with such an error.
 
+ * An extra worktree attached to a repository points at each other to
+   allow finding the repository from the worktree and vice versa
+   possible.  Turn this linkage to relative paths.
+
+ * Enable Windows-based CI in GitLab.
+
+ * Commands that can also work outside Git have learned to take the
+   repository instance "repo" when we know we are in a repository, and
+   NULL when we are not, in a parameter.  The uses of the_repository
+   variable in a few of them have been removed using the new calling
+   convention.
+
+ * The reftable sub-system grew a new reftable-specific strbuf
+   replacement to reduce its dependency on Git-specific data
+   structures.
+
+ * The ref-filter machinery learns to recognize and avoid cases where
+   sorting would be redundant.
+
+ * Various platform compatibility fixes split out of the larger effort
+   to use Meson as the primary build tool.
+
+ * Treat ECONNABORTED the same as ECONNRESET in 'git credential-cache'
+   to work around a possible Cygwin regression. This resolves a race
+   condition caused by changes in Cygwin's handling of socket
+   closures, allowing the client to exit cleanly when encountering
+   ECONNABORTED.
+
+ * Demonstrate an assertion failure in 'git mv'.
+
+ * Documentation update to clarify that 'uploadpack.allowAnySHA1InWant'
+   implies both 'allowTipSHA1InWant' and 'allowReachableSHA1InWant'.
+
+ * Replace various calls to atoi() with strtol_i() and strtoul_ui(),
+   and add improved error handling.
+
+ * Documentation updates to 'git-update-ref(1)'.
 
 Fixes since v2.47
 -----------------
@@ -30,6 +79,62 @@ Fixes since v2.47
    had been identified and fixed.
    (merge fc5589d6c1 ds/line-log-asan-fix later to maint).
 
+ * On macOS, fsmonitor can fall into a race condition that results in
+   a client waiting forever to be notified for an event that have
+   already happened.  This problem has been corrected.
+   (merge 51907f8fee jk/fsmonitor-event-listener-race-fix later to maint).
+
+ * "git maintenance start" crashed due to an uninitialized variable
+   reference, which has been corrected.
+   (merge c95547a394 ps/maintenance-start-crash-fix later to maint).
+
+ * Fail gracefully instead of crashing when attempting to write the
+   contents of a corrupt in-core index as a tree object.
+   (merge ecb5c4318c ps/cache-tree-w-broken-index-entry later to maint).
+
+ * A "git fetch" from the superproject going down to a submodule used
+   a wrong remote when the default remote names are set differently
+   between them.
+   (merge 0c1a9987da db/submodule-fetch-with-remote-name-fix later to maint).
+
+ * Fixes compile time warnings with 64-bit MSVC.
+   (merge 386d372031 sk/msvc-warnings later to maint).
+
+ * Teaches 'shortlog' to explicitly use SHA-1 when operating outside
+   of a repository.
+   (merge b33001645e wm/shortlog-hash later to maint).
+
+ * Fix 'git grep' regression on macOS by disabling lookahead when
+   encountering invalid UTF-8 byte sequences.
+   (merge ce025ae4f6 rs/grep-lookahead later to maint).
+
+ * The dumb-http code regressed when the result of re-indexing a pack
+   yielded an *.idx file that differs in content from the *.idx file
+   it downloaded from the remote. This has been corrected by no longer
+   relying on: the *.idx file we got from the remote.
+   (merge 863f2459a2 jk/dumb-http-finalize later to maint).
+
  * Other code cleanup, docfix, build fix, etc.
    (merge 66893a14d0 ps/leakfixes-part-8 later to maint).
    (merge 1164e270b5 jk/output-prefix-cleanup later to maint).
+   (merge f36b8cbaef jh/config-unset-doc-fix later to maint).
+   (merge 4154ed4108 js/doc-platform-support-link-fix later to maint).
+   (merge 77af53f56f aa/t7300-modernize later to maint).
+   (merge 8ead1bba3e jc/doc-refspec-syntax later to maint).
+   (merge 432f666aa6 kn/loose-object-layer-wo-global-hash later to maint).
+   (merge c4b8fb6ef2 kh/merge-tree-doc later to maint).
+   (merge b8139c8f4e kh/checkout-ignore-other-docfix later to maint).
+   (merge 6dab49b9fb tc/bundle-uri-leakfix later to maint).
+   (merge f1ed39987b xx/protocol-v2-doc-markup-fix later to maint).
+   (merge 41869f7447 ak/typofixes later to maint).
+   (merge f1eea0b620 ak/typofix later to maint).
+   (merge dcd590a39d bf/t-readme-mention-reftable later to maint).
+   (merge 52acf6771b kh/submitting-patches later to maint).
+   (merge a73070fbd4 ks/t4205-fixup later to maint).
+   (merge 9e362dd060 co/t6050-pipefix later to maint).
+   (merge 91687cd13f sk/t7011-cleanup later to maint).
+   (merge 19c291e5b2 ua/t3404-cleanup later to maint).
+   (merge c32d4a8cfe ss/duplicate-typos later to maint).
+   (merge 09bf122507 sk/t9101-cleanup later to maint).
+   (merge c348191afe ak/t1016-cleanup later to maint).
+   (merge f56f9d6c0b ak/more-typofixes later to maint).

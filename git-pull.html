@@ -1036,7 +1036,10 @@ protocol version 2.  The given string must not contain a NUL or LF
 character.  The server&#8217;s handling of server options, including
 unknown ones, is server-specific.
 When multiple <code>--server-option=</code><em>&lt;option&gt;</em> are given, they are all
-sent to the other side in the order listed on the command line.</p>
+sent to the other side in the order listed on the command line.
+When no <code>--server-option=</code><em>&lt;option&gt;</em> is given from the command line,
+the values of configuration variable <code>remote.</code><em>&lt;name&gt;</em><code>.serverOption</code>
+are used instead.</p>
 </dd>
 <dt class="hdlist1">--show-forced-updates</dt>
 <dd>
@@ -1080,15 +1083,16 @@ in <a href="git-fetch.html">git-fetch(1)</a>).</p>
 <div class="paragraph">
 <p>The format of a &lt;refspec&gt; parameter is an optional plus
 <code>+</code>, followed by the source &lt;src&gt;, followed
-by a colon <code>:</code>, followed by the destination ref &lt;dst&gt;.
+by a colon <code>:</code>, followed by the destination &lt;dst&gt;.
 The colon can be omitted when &lt;dst&gt; is empty.  &lt;src&gt; is
-typically a ref, but it can also be a fully spelled hex object
+typically a ref, or a glob pattern with a single * that is used
+to match a set of refs, but it can also be a fully spelled hex object
 name.</p>
 </div>
 <div class="paragraph">
 <p>A &lt;refspec&gt; may contain a * in its &lt;src&gt; to indicate a simple pattern
 match. Such a refspec functions like a glob that matches any ref with the
-same prefix. A pattern &lt;refspec&gt; must have a * in both the &lt;src&gt; and
+pattern. A pattern &lt;refspec&gt; must have one and only one * in both the &lt;src&gt; and
 &lt;dst&gt;. It will map refs to the destination by replacing the * with the
 contents matched from the source.</p>
 </div>

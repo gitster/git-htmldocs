@@ -454,7 +454,7 @@ pre>code {
 <pre class="content"><em>git config list</em> [&lt;file-option&gt;] [&lt;display-option&gt;] [--includes]
 <em>git config get</em> [&lt;file-option&gt;] [&lt;display-option&gt;] [--includes] [--all] [--regexp] [--value=&lt;value&gt;] [--fixed-value] [--default=&lt;default&gt;] &lt;name&gt;
 <em>git config set</em> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--all] [--value=&lt;value&gt;] [--fixed-value] &lt;name&gt; &lt;value&gt;
-<em>git config unset</em> [&lt;file-option&gt;] [--all] [--value=&lt;value&gt;] [--fixed-value] &lt;name&gt; &lt;value&gt;
+<em>git config unset</em> [&lt;file-option&gt;] [--all] [--value=&lt;value&gt;] [--fixed-value] &lt;name&gt;
 <em>git config rename-section</em> [&lt;file-option&gt;] &lt;old-name&gt; &lt;new-name&gt;
 <em>git config remove-section</em> [&lt;file-option&gt;] &lt;name&gt;
 <em>git config edit</em> [&lt;file-option&gt;]
@@ -8039,6 +8039,18 @@ Changing or clearing this value will only affect fetches for new commits.
 To fetch associated objects for commits already present in the local object
 database, use the <code>--refetch</code> option of <a href="git-fetch.html">git-fetch(1)</a>.</p>
 </dd>
+<dt class="hdlist1">remote.&lt;name&gt;.serverOption</dt>
+<dd>
+<p>The default set of server options used when fetching from this remote.
+These server options can be overridden by the <code>--server-option=</code> command
+line arguments.</p>
+<div class="paragraph">
+<p>This is a multi-valued variable, and an empty value can be used in a higher
+priority configuration file (e.g. .<code>git/config</code> in a repository) to clear
+the values inherited from a lower priority configuration files (e.g.
+<code>$HOME/.gitconfig</code>).</p>
+</div>
+</dd>
 <dt class="hdlist1">remotes.&lt;group&gt;</dt>
 <dd>
 <p>The list of remotes which are fetched by "git remote update
@@ -9058,7 +9070,11 @@ keep private data in a separate repository.</p>
 <dd>
 <p>Allow <code>upload-pack</code> to accept a fetch request that asks for any
 object at all.
-Defaults to <code>false</code>.</p>
+It implies <code>uploadpack.allowTipSHA1InWant</code> and
+<code>uploadpack.allowReachableSHA1InWant</code>. If set to <code>true</code> it will
+enable both of them, it set to <code>false</code> it will disable both of
+them.
+By default not set.</p>
 </dd>
 <dt class="hdlist1">uploadpack.keepAlive</dt>
 <dd>
@@ -9309,7 +9325,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-09-03 13:52:44 -0700
+Last updated 2024-11-01 22:46:55 -0700
 </div>
 </div>
 </body>
