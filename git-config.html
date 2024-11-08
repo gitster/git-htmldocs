@@ -3352,7 +3352,7 @@ default in a bare repository.</p>
 <dt class="hdlist1">core.repositoryFormatVersion</dt>
 <dd>
 <p>Internal variable identifying the repository format and layout
-version.</p>
+version. See <a href="gitrepository-layout.html">gitrepository-layout(5)</a>.</p>
 </dd>
 <dt class="hdlist1">core.sharedRepository</dt>
 <dd>
@@ -4399,22 +4399,20 @@ depending on the presence of a <code>DISPLAY</code> environment variable value. 
 default is <code>false</code>, where the <code>--gui</code> argument must be provided
 explicitly for the <code>diff.guitool</code> to be used.</p>
 </dd>
-<dt class="hdlist1">extensions.objectFormat</dt>
+<dt class="hdlist1">extensions.*</dt>
 <dd>
-<p>Specify the hash algorithm to use.  The acceptable values are <code>sha1</code> and
-<code>sha256</code>.  If not specified, <code>sha1</code> is assumed.  It is an error to specify
-this key unless <code>core.repositoryFormatVersion</code> is 1.</p>
-<div class="paragraph">
-<p>Note that this setting should only be set by <a href="git-init.html">git-init(1)</a> or
-<a href="git-clone.html">git-clone(1)</a>.  Trying to change it after initialization will not
-work and will produce hard-to-diagnose issues.</p>
-</div>
-</dd>
-<dt class="hdlist1">extensions.compatObjectFormat</dt>
+<p>Unless otherwise stated, is an error to specify an extension if
+<code>core.repositoryFormatVersion</code> is not <code>1</code>. See
+<a href="gitrepository-layout.html">gitrepository-layout(5)</a>.</p>
+<div class="openblock">
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">compatObjectFormat</dt>
 <dd>
 <p>Specify a compatibility hash algorithm to use.  The acceptable values
 are <code>sha1</code> and <code>sha256</code>.  The value specified must be different from the
-value of extensions.objectFormat.  This allows client level
+value of <code>extensions.objectFormat</code>.  This allows client level
 interoperability between git repositories whose objectFormat matches
 this compatObjectFormat.  In particular when fully implemented the
 pushes and pulls from a repository in whose objectFormat matches
@@ -4422,7 +4420,55 @@ compatObjectFormat.  As well as being able to use oids encoded in
 compatObjectFormat in addition to oids encoded with objectFormat to
 locally specify objects.</p>
 </dd>
-<dt class="hdlist1">extensions.refStorage</dt>
+<dt class="hdlist1">noop</dt>
+<dd>
+<p>This extension does not change git&#8217;s behavior at all. It is useful only
+for testing format-1 compatibility.</p>
+<div class="paragraph">
+<p>For historical reasons, this extension is respected regardless of the
+<code>core.repositoryFormatVersion</code> setting.</p>
+</div>
+</dd>
+<dt class="hdlist1">noop-v1</dt>
+<dd>
+<p>This extension does not change git&#8217;s behavior at all. It is useful only
+for testing format-1 compatibility.</p>
+</dd>
+<dt class="hdlist1">objectFormat</dt>
+<dd>
+<p>Specify the hash algorithm to use.  The acceptable values are <code>sha1</code> and
+<code>sha256</code>.  If not specified, <code>sha1</code> is assumed.</p>
+<div class="paragraph">
+<p>Note that this setting should only be set by <a href="git-init.html">git-init(1)</a> or
+<a href="git-clone.html">git-clone(1)</a>.  Trying to change it after initialization will not
+work and will produce hard-to-diagnose issues.</p>
+</div>
+</dd>
+<dt class="hdlist1">partialClone</dt>
+<dd>
+<p>When enabled, indicates that the repo was created with a partial clone
+(or later performed a partial fetch) and that the remote may have
+omitted sending certain unwanted objects.  Such a remote is called a
+"promisor remote" and it promises that all such omitted objects can
+be fetched from it in the future.</p>
+<div class="paragraph">
+<p>The value of this key is the name of the promisor remote.</p>
+</div>
+<div class="paragraph">
+<p>For historical reasons, this extension is respected regardless of the
+<code>core.repositoryFormatVersion</code> setting.</p>
+</div>
+</dd>
+<dt class="hdlist1">preciousObjects</dt>
+<dd>
+<p>If enabled, indicates that objects in the repository MUST NOT be deleted
+(e.g., by <code>git-prune</code> or <code>git</code> <code>repack</code> <code>-d</code>).</p>
+<div class="paragraph">
+<p>For historical reasons, this extension is respected regardless of the
+<code>core.repositoryFormatVersion</code> setting.</p>
+</div>
+</dd>
+<dt class="hdlist1">refStorage</dt>
 <dd>
 <p>Specify the ref storage format to use. The acceptable values are:</p>
 <div class="ulist">
@@ -4433,19 +4479,16 @@ locally specify objects.</p>
 <li>
 <p><code>reftable</code> for the reftable format. This format is experimental and its
 internals are subject to change.</p>
-<div class="paragraph">
-<p>It is an error to specify this key unless <code>core.repositoryFormatVersion</code> is 1.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Note that this setting should only be set by <a href="git-init.html">git-init(1)</a> or
 <a href="git-clone.html">git-clone(1)</a>. Trying to change it after initialization will not
 work and will produce hard-to-diagnose issues.</p>
 </div>
-</li>
-</ul>
-</div>
 </dd>
-<dt class="hdlist1">extensions.worktreeConfig</dt>
+<dt class="hdlist1">worktreeConfig</dt>
 <dd>
 <p>If enabled, then worktrees will load config settings from the
 <code>$GIT_DIR/config.worktree</code> file in addition to the
@@ -4456,7 +4499,7 @@ working trees have <code>$GIT_DIR</code> equal to
 <code>config.worktree</code> file will override settings from any other
 config files.</p>
 <div class="paragraph">
-<p>When enabling <code>extensions.worktreeConfig</code>, you must be careful to move
+<p>When enabling this extension, you must be careful to move
 certain values from the common config file to the main working tree&#8217;s
 <code>config.worktree</code> file, if present:</p>
 </div>
@@ -4469,22 +4512,28 @@ certain values from the common config file to the main working tree&#8217;s
 <li>
 <p>If <code>core.bare</code> is true, then it must be moved from <code>$GIT_COMMON_DIR/config</code>
 to <code>$GIT_COMMON_DIR/config.worktree</code>.</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p>It may also be beneficial to adjust the locations of <code>core.sparseCheckout</code>
 and <code>core.sparseCheckoutCone</code> depending on your desire for customizable
 sparse-checkout settings for each worktree. By default, the <code>git</code>
-<code>sparse-checkout</code> builtin enables <code>extensions.worktreeConfig</code>, assigns
+<code>sparse-checkout</code> builtin enables this extension, assigns
 these config values on a per-worktree basis, and uses the
 <code>$GIT_DIR/info/sparse-checkout</code> file to specify the sparsity for each
 worktree independently. See <a href="git-sparse-checkout.html">git-sparse-checkout(1)</a> for more
 details.</p>
 </div>
 <div class="paragraph">
-<p>For historical reasons, <code>extensions.worktreeConfig</code> is respected
-regardless of the <code>core.repositoryFormatVersion</code> setting.</p>
+<p>+
+For historical reasons, this extension is respected regardless of the
+<code>core.repositoryFormatVersion</code> setting.</p>
 </div>
-</li>
-</ul>
+</dd>
+</dl>
+</div>
+</div>
 </div>
 </dd>
 <dt class="hdlist1">fastimport.unpackLimit</dt>
@@ -9325,7 +9374,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-11-01 22:46:55 -0700
+Last updated 2024-11-02 14:46:55 +0900
 </div>
 </div>
 </body>
