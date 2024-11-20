@@ -621,6 +621,12 @@ since the name of the pack is not final until the pack has been fully
 written. If a <em>&lt;message&gt;</em> is provided, then that content will be
 written to the .promisor file for future reference. See
 <a href="technical/partial-clone.html">partial clone</a> for more information.</p>
+<div class="paragraph">
+<p>Also, if there are objects in the given pack that references non-promisor
+objects (in the repo), repacks those non-promisor objects into a promisor
+pack. This avoids a situation in which a repo has non-promisor objects that are
+accessible through promisor objects.</p>
+</div>
 </dd>
 </dl>
 </div>
@@ -650,7 +656,7 @@ mentioned above.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-08 15:45:59 -0800
+Last updated 2024-11-20 15:41:07 +0900
 </div>
 </div>
 </body>
