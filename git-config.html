@@ -3918,23 +3918,24 @@ when trying to lock the credentials file. A value of 0 means not to retry at
 all; -1 means to try indefinitely. Default is 1000 (i.e., retry for
 1s).</p>
 </dd>
-<dt class="hdlist1">diff.autoRefreshIndex</dt>
+<dt class="hdlist1"><code>diff.autoRefreshIndex</code></dt>
 <dd>
-<p>When using <em>git diff</em> to compare with work tree
+<p>When using <code>git</code> <code>diff</code> to compare with work tree
 files, do not consider stat-only changes as changed.
 Instead, silently run <code>git</code> <code>update-index</code> <code>--refresh</code> to
 update the cached stat information for paths whose
 contents in the work tree match the contents in the
-index.  This option defaults to true.  Note that this
-affects only <em>git diff</em> Porcelain, and not lower level
-<em>diff</em> commands such as <em>git diff-files</em>.</p>
+index.  This option defaults to <code>true</code>.  Note that this
+affects only <code>git</code> <code>diff</code> Porcelain, and not lower level
+<code>diff</code> commands such as <code>git</code> <code>diff-files</code>.</p>
 </dd>
-<dt class="hdlist1">diff.dirstat</dt>
+<dt class="hdlist1"><code>diff.dirstat</code></dt>
 <dd>
 <p>A comma separated list of <code>--dirstat</code> parameters specifying the
 default behavior of the <code>--dirstat</code> option to <a href="git-diff.html">git-diff(1)</a>
-and friends. The defaults can be overridden on the command line
-(using <code>--dirstat=</code>&lt;param1,param2,<code>...</code>&gt;). The fallback defaults
+and friends.
+The defaults can be overridden on the command line
+(using <code>--dirstat=</code><em>&lt;param&gt;</em><code>,..</code>.). The fallback defaults
 (when not changed by <code>diff.dirstat</code>) are <code>changes,noncumulative,3</code>.
 The following parameters are available:</p>
 <div class="openblock">
@@ -3973,7 +3974,7 @@ Note that when using <code>cumulative</code>, the sum of the percentages
 reported may exceed 100%. The default (non-cumulative) behavior can
 be specified with the <code>noncumulative</code> parameter.</p>
 </dd>
-<dt class="hdlist1">&lt;limit&gt;</dt>
+<dt class="hdlist1"><em>&lt;limit&gt;</em></dt>
 <dd>
 <p>An integer parameter specifies a cut-off percent (3% by default).
 Directories contributing less than this percentage of the changes
@@ -3990,66 +3991,66 @@ and accumulating child directory counts in the parent directories:
 <code>files,10,cumulative</code>.</p>
 </div>
 </dd>
-<dt class="hdlist1">diff.statNameWidth</dt>
+<dt class="hdlist1"><code>diff.statNameWidth</code></dt>
 <dd>
-<p>Limit the width of the filename part in --stat output. If set, applies
-to all commands generating --stat output except format-patch.</p>
+<p>Limit the width of the filename part in <code>--stat</code> output. If set, applies
+to all commands generating <code>--stat</code> output except <code>format-patch</code>.</p>
 </dd>
-<dt class="hdlist1">diff.statGraphWidth</dt>
+<dt class="hdlist1"><code>diff.statGraphWidth</code></dt>
 <dd>
-<p>Limit the width of the graph part in --stat output. If set, applies
-to all commands generating --stat output except format-patch.</p>
+<p>Limit the width of the graph part in <code>--stat</code> output. If set, applies
+to all commands generating <code>--stat</code> output except <code>format-patch</code>.</p>
 </dd>
-<dt class="hdlist1">diff.context</dt>
+<dt class="hdlist1"><code>diff.context</code></dt>
 <dd>
-<p>Generate diffs with &lt;n&gt; lines of context instead of the default
-of 3. This value is overridden by the -U option.</p>
+<p>Generate diffs with <em>&lt;n&gt;</em> lines of context instead of the default
+of 3. This value is overridden by the <code>-U</code> option.</p>
 </dd>
-<dt class="hdlist1">diff.interHunkContext</dt>
+<dt class="hdlist1"><code>diff.interHunkContext</code></dt>
 <dd>
 <p>Show the context between diff hunks, up to the specified number
 of lines, thereby fusing the hunks that are close to each other.
 This value serves as the default for the <code>--inter-hunk-context</code>
 command line option.</p>
 </dd>
-<dt class="hdlist1">diff.external</dt>
+<dt class="hdlist1"><code>diff.external</code></dt>
 <dd>
 <p>If this config variable is set, diff generation is not
 performed using the internal diff machinery, but using the
-given command.  Can be overridden with the &#8216;GIT_EXTERNAL_DIFF&#8217;
+given command.  Can be overridden with the <code>GIT_EXTERNAL_DIFF</code>
 environment variable.  The command is called with parameters
 as described under "git Diffs" in <a href="git.html">git(1)</a>.  Note: if
 you want to use an external diff program only on a subset of
 your files, you might want to use <a href="gitattributes.html">gitattributes(5)</a> instead.</p>
 </dd>
-<dt class="hdlist1">diff.trustExitCode</dt>
+<dt class="hdlist1"><code>diff.trustExitCode</code></dt>
 <dd>
-<p>If this boolean value is set to true then the
+<p>If this boolean value is set to <code>true</code> then the
 <code>diff.external</code> command is expected to return exit code
 0 if it considers the input files to be equal or 1 if it
-considers them to be different, like <code>diff</code>(<code>1</code>).
-If it is set to false, which is the default, then the command
-is expected to return exit code 0 regardless of equality.
+considers them to be different, like <code>diff</code>(1).
+If it is set to <code>false</code>, which is the default, then the command
+is expected to return exit code <code>0</code> regardless of equality.
 Any other exit code causes Git to report a fatal error.</p>
 </dd>
-<dt class="hdlist1">diff.ignoreSubmodules</dt>
+<dt class="hdlist1"><code>diff.ignoreSubmodules</code></dt>
 <dd>
-<p>Sets the default value of --ignore-submodules. Note that this
-affects only <em>git diff</em> Porcelain, and not lower level <em>diff</em>
-commands such as <em>git diff-files</em>. <em>git checkout</em>
-and <em>git switch</em> also honor
+<p>Sets the default value of <code>--ignore-submodules</code>. Note that this
+affects only <code>git</code> <code>diff</code> Porcelain, and not lower level <code>diff</code>
+commands such as <code>git</code> <code>diff-files</code>. <code>git</code> <code>checkout</code>
+and <code>git</code> <code>switch</code> also honor
 this setting when reporting uncommitted changes. Setting it to
-<em>all</em> disables the submodule summary normally shown by <em>git commit</em>
-and <em>git status</em> when <code>status.submoduleSummary</code> is set unless it is
-overridden by using the --ignore-submodules command-line option.
-The <em>git submodule</em> commands are not affected by this setting.
+<code>all</code> disables the submodule summary normally shown by <code>git</code> <code>commit</code>
+and <code>git</code> <code>status</code> when <code>status.submoduleSummary</code> is set unless it is
+overridden by using the <code>--ignore-submodules</code> command-line option.
+The <code>git</code> <code>submodule</code> commands are not affected by this setting.
 By default this is set to untracked so that any untracked
 submodules are ignored.</p>
 </dd>
-<dt class="hdlist1">diff.mnemonicPrefix</dt>
+<dt class="hdlist1"><code>diff.mnemonicPrefix</code></dt>
 <dd>
-<p>If set, <em>git diff</em> uses a prefix pair that is different from the
-standard "a/" and "b/" depending on what is being compared.  When
+<p>If set, <code>git</code> <code>diff</code> uses a prefix pair that is different from the
+standard <code>a/</code> and <code>b/</code> depending on what is being compared.  When
 this configuration is in effect, reverse diff output also swaps
 the order of the prefixes:</p>
 <div class="dlist">
@@ -4066,121 +4067,121 @@ the order of the prefixes:</p>
 <dd>
 <p>compares a (c)ommit and the (i)ndex;</p>
 </dd>
-<dt class="hdlist1"><code>git</code> <code>diff</code> <code>HEAD:file1</code> <code>file2</code></dt>
+<dt class="hdlist1"><code>git</code> <code>diff</code> <code>HEAD:</code><em>&lt;file1&gt;</em> <em>&lt;file2&gt;</em></dt>
 <dd>
 <p>compares an (o)bject and a (w)ork tree entity;</p>
 </dd>
-<dt class="hdlist1"><code>git</code> <code>diff</code> <code>--no-index</code> <code>a</code> <code>b</code></dt>
+<dt class="hdlist1"><code>git</code> <code>diff</code> <code>--no-index</code> <em>&lt;a&gt;</em> <em>&lt;b&gt;</em></dt>
 <dd>
-<p>compares two non-git things (1) and (2).</p>
+<p>compares two non-git things <em>&lt;a&gt;</em> and <em>&lt;b&gt;</em>.</p>
 </dd>
 </dl>
 </div>
 </dd>
-<dt class="hdlist1">diff.noPrefix</dt>
+<dt class="hdlist1"><code>diff.noPrefix</code></dt>
 <dd>
-<p>If set, <em>git diff</em> does not show any source or destination prefix.</p>
+<p>If set, <code>git</code> <code>diff</code> does not show any source or destination prefix.</p>
 </dd>
-<dt class="hdlist1">diff.srcPrefix</dt>
+<dt class="hdlist1"><code>diff.srcPrefix</code></dt>
 <dd>
-<p>If set, <em>git diff</em> uses this source prefix. Defaults to "a/".</p>
+<p>If set, <code>git</code> <code>diff</code> uses this source prefix. Defaults to <code>a/</code>.</p>
 </dd>
-<dt class="hdlist1">diff.dstPrefix</dt>
+<dt class="hdlist1"><code>diff.dstPrefix</code></dt>
 <dd>
-<p>If set, <em>git diff</em> uses this destination prefix. Defaults to "b/".</p>
+<p>If set, <code>git</code> <code>diff</code> uses this destination prefix. Defaults to <code>b/</code>.</p>
 </dd>
-<dt class="hdlist1">diff.relative</dt>
+<dt class="hdlist1"><code>diff.relative</code></dt>
 <dd>
-<p>If set to <em>true</em>, <em>git diff</em> does not show changes outside of the directory
+<p>If set to <code>true</code>, <code>git</code> <code>diff</code> does not show changes outside of the directory
 and show pathnames relative to the current directory.</p>
 </dd>
-<dt class="hdlist1">diff.orderFile</dt>
+<dt class="hdlist1"><code>diff.orderFile</code></dt>
 <dd>
 <p>File indicating how to order files within a diff.
-See the <em>-O</em> option to <a href="git-diff.html">git-diff(1)</a> for details.
+See the <code>-O</code> option to <a href="git-diff.html">git-diff(1)</a> for details.
 If <code>diff.orderFile</code> is a relative pathname, it is treated as
 relative to the top of the working tree.</p>
 </dd>
-<dt class="hdlist1">diff.renameLimit</dt>
+<dt class="hdlist1"><code>diff.renameLimit</code></dt>
 <dd>
 <p>The number of files to consider in the exhaustive portion of
-copy/rename detection; equivalent to the <em>git diff</em> option
+copy/rename detection; equivalent to the <code>git</code> <code>diff</code> option
 <code>-l</code>.  If not set, the default value is currently 1000.  This
 setting has no effect if rename detection is turned off.</p>
 </dd>
-<dt class="hdlist1">diff.renames</dt>
+<dt class="hdlist1"><code>diff.renames</code></dt>
 <dd>
-<p>Whether and how Git detects renames.  If set to "false",
-rename detection is disabled. If set to "true", basic rename
-detection is enabled.  If set to "copies" or "copy", Git will
-detect copies, as well.  Defaults to true.  Note that this
-affects only <em>git diff</em> Porcelain like <a href="git-diff.html">git-diff(1)</a> and
+<p>Whether and how Git detects renames.  If set to <code>false</code>,
+rename detection is disabled. If set to <code>true</code>, basic rename
+detection is enabled.  If set to <code>copies</code> or <code>copy</code>, Git will
+detect copies, as well.  Defaults to <code>true</code>.  Note that this
+affects only <code>git</code> <code>diff</code> Porcelain like <a href="git-diff.html">git-diff(1)</a> and
 <a href="git-log.html">git-log(1)</a>, and not lower level commands such as
 <a href="git-diff-files.html">git-diff-files(1)</a>.</p>
 </dd>
-<dt class="hdlist1">diff.suppressBlankEmpty</dt>
+<dt class="hdlist1"><code>diff.suppressBlankEmpty</code></dt>
 <dd>
 <p>A boolean to inhibit the standard behavior of printing a space
-before each empty output line. Defaults to false.</p>
+before each empty output line. Defaults to <code>false</code>.</p>
 </dd>
-<dt class="hdlist1">diff.submodule</dt>
+<dt class="hdlist1"><code>diff.submodule</code></dt>
 <dd>
 <p>Specify the format in which differences in submodules are
-shown.  The "short" format just shows the names of the commits
-at the beginning and end of the range. The "log" format lists
+shown.  The <code>short</code> format just shows the names of the commits
+at the beginning and end of the range. The <code>log</code> format lists
 the commits in the range like <a href="git-submodule.html">git-submodule(1)</a> <code>summary</code>
-does. The "diff" format shows an inline diff of the changed
-contents of the submodule. Defaults to "short".</p>
+does. The <code>diff</code> format shows an inline diff of the changed
+contents of the submodule. Defaults to <code>short</code>.</p>
 </dd>
-<dt class="hdlist1">diff.wordRegex</dt>
+<dt class="hdlist1"><code>diff.wordRegex</code></dt>
 <dd>
 <p>A POSIX Extended Regular Expression used to determine what is a "word"
 when performing word-by-word difference calculations.  Character
 sequences that match the regular expression are "words", all other
 characters are <strong>ignorable</strong> whitespace.</p>
 </dd>
-<dt class="hdlist1">diff.&lt;driver&gt;.command</dt>
+<dt class="hdlist1"><code>diff.</code><em>&lt;driver&gt;</em><code>.command</code></dt>
 <dd>
 <p>The custom diff driver command.  See <a href="gitattributes.html">gitattributes(5)</a>
 for details.</p>
 </dd>
-<dt class="hdlist1">diff.&lt;driver&gt;.trustExitCode</dt>
+<dt class="hdlist1"><code>diff.</code><em>&lt;driver&gt;</em><code>.trustExitCode</code></dt>
 <dd>
-<p>If this boolean value is set to true then the
+<p>If this boolean value is set to <code>true</code> then the
 <code>diff.</code><em>&lt;driver&gt;</em><code>.command</code> command is expected to return exit code
 0 if it considers the input files to be equal or 1 if it
-considers them to be different, like <code>diff</code>(<code>1</code>).
-If it is set to false, which is the default, then the command
+considers them to be different, like <code>diff</code>(1).
+If it is set to <code>false</code>, which is the default, then the command
 is expected to return exit code 0 regardless of equality.
 Any other exit code causes Git to report a fatal error.</p>
 </dd>
-<dt class="hdlist1">diff.&lt;driver&gt;.xfuncname</dt>
+<dt class="hdlist1"><code>diff.</code><em>&lt;driver&gt;</em><code>.xfuncname</code></dt>
 <dd>
 <p>The regular expression that the diff driver should use to
 recognize the hunk header.  A built-in pattern may also be used.
 See <a href="gitattributes.html">gitattributes(5)</a> for details.</p>
 </dd>
-<dt class="hdlist1">diff.&lt;driver&gt;.binary</dt>
+<dt class="hdlist1"><code>diff.</code><em>&lt;driver&gt;</em><code>.binary</code></dt>
 <dd>
-<p>Set this option to true to make the diff driver treat files as
+<p>Set this option to <code>true</code> to make the diff driver treat files as
 binary.  See <a href="gitattributes.html">gitattributes(5)</a> for details.</p>
 </dd>
-<dt class="hdlist1">diff.&lt;driver&gt;.textconv</dt>
+<dt class="hdlist1"><code>diff.</code><em>&lt;driver&gt;</em><code>.textconv</code></dt>
 <dd>
 <p>The command that the diff driver should call to generate the
 text-converted version of a file.  The result of the
 conversion is used to generate a human-readable diff.  See
 <a href="gitattributes.html">gitattributes(5)</a> for details.</p>
 </dd>
-<dt class="hdlist1">diff.&lt;driver&gt;.wordRegex</dt>
+<dt class="hdlist1"><code>diff.</code><em>&lt;driver&gt;</em><code>.wordRegex</code></dt>
 <dd>
 <p>The regular expression that the diff driver should use to
 split words in a line.  See <a href="gitattributes.html">gitattributes(5)</a> for
 details.</p>
 </dd>
-<dt class="hdlist1">diff.&lt;driver&gt;.cachetextconv</dt>
+<dt class="hdlist1"><code>diff.</code><em>&lt;driver&gt;</em><code>.cachetextconv</code></dt>
 <dd>
-<p>Set this option to true to make the diff driver cache the text
+<p>Set this option to <code>true</code> to make the diff driver cache the text
 conversion outputs.  See <a href="gitattributes.html">gitattributes(5)</a> for details.</p>
 <div class="dlist">
 <dl>
@@ -4287,19 +4288,20 @@ conversion outputs.  See <a href="gitattributes.html">gitattributes(5)</a> for d
 </dl>
 </div>
 </dd>
-<dt class="hdlist1">diff.indentHeuristic</dt>
+<dt class="hdlist1"><code>diff.indentHeuristic</code></dt>
 <dd>
 <p>Set this option to <code>false</code> to disable the default heuristics
 that shift diff hunk boundaries to make patches easier to read.</p>
 </dd>
-<dt class="hdlist1">diff.algorithm</dt>
+<dt class="hdlist1"><code>diff.algorithm</code></dt>
 <dd>
 <p>Choose a diff algorithm.  The variants are as follows:</p>
 <div class="openblock">
 <div class="content">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>default</code>, <code>myers</code></dt>
+<dt class="hdlist1"><code>default</code></dt>
+<dt class="hdlist1"><code>myers</code></dt>
 <dd>
 <p>The basic greedy diff algorithm. Currently, this is the default.</p>
 </dd>
@@ -4322,7 +4324,7 @@ low-occurrence common elements".</p>
 </div>
 </div>
 </dd>
-<dt class="hdlist1">diff.wsErrorHighlight</dt>
+<dt class="hdlist1"><code>diff.wsErrorHighlight</code></dt>
 <dd>
 <p>Highlight whitespace errors in the <code>context</code>, <code>old</code> or <code>new</code>
 lines of the diff.  Multiple values are separated by comma,
@@ -4332,19 +4334,19 @@ whitespace errors are colored with <code>color.diff.whitespace</code>.
 The command line option <code>--ws-error-highlight=</code><em>&lt;kind&gt;</em>
 overrides this setting.</p>
 </dd>
-<dt class="hdlist1">diff.colorMoved</dt>
+<dt class="hdlist1"><code>diff.colorMoved</code></dt>
 <dd>
-<p>If set to either a valid <em>&lt;mode&gt;</em> or a true value, moved lines
-in a diff are colored differently, for details of valid modes
-see <em>--color-moved</em> in <a href="git-diff.html">git-diff(1)</a>. If simply set to
-true the default color mode will be used. When set to false,
-moved lines are not colored.</p>
+<p>If set to either a valid <em>&lt;mode&gt;</em> or a <code>true</code> value, moved lines
+in a diff are colored differently.
+For details of valid modes see <code>--color-moved</code> in <a href="git-diff.html">git-diff(1)</a>.
+If simply set to <code>true</code> the default color mode will be used. When
+set to <code>false</code>, moved lines are not colored.</p>
 </dd>
-<dt class="hdlist1">diff.colorMovedWS</dt>
+<dt class="hdlist1"><code>diff.colorMovedWS</code></dt>
 <dd>
 <p>When moved lines are colored using e.g. the <code>diff.colorMoved</code> setting,
-this option controls the <em>&lt;mode&gt;</em> how spaces are treated.
-For details of valid modes see <em>--color-moved-ws</em> in <a href="git-diff.html">git-diff(1)</a>.</p>
+this option controls the mode how spaces are treated.
+For details of valid modes see <code>--color-moved-ws</code> in <a href="git-diff.html">git-diff(1)</a>.</p>
 </dd>
 <dt class="hdlist1">diff.tool</dt>
 <dd>

@@ -581,47 +581,47 @@ reference.</p>
 <dd>
 <p>Generate plain patches without any diffstats.</p>
 </dd>
-<dt class="hdlist1">-U&lt;n&gt;</dt>
-<dt class="hdlist1">--unified=&lt;n&gt;</dt>
+<dt class="hdlist1"><code>-U</code><em>&lt;n&gt;</em></dt>
+<dt class="hdlist1"><code>--unified=</code><em>&lt;n&gt;</em></dt>
 <dd>
-<p>Generate diffs with &lt;n&gt; lines of context instead of
+<p>Generate diffs with <em>&lt;n&gt;</em> lines of context instead of
 the usual three.</p>
 </dd>
-<dt class="hdlist1">--output=&lt;file&gt;</dt>
+<dt class="hdlist1"><code>--output=</code><em>&lt;file&gt;</em></dt>
 <dd>
 <p>Output to a specific file instead of stdout.</p>
 </dd>
-<dt class="hdlist1">--output-indicator-new=&lt;char&gt;</dt>
-<dt class="hdlist1">--output-indicator-old=&lt;char&gt;</dt>
-<dt class="hdlist1">--output-indicator-context=&lt;char&gt;</dt>
+<dt class="hdlist1"><code>--output-indicator-new=</code><em>&lt;char&gt;</em></dt>
+<dt class="hdlist1"><code>--output-indicator-old=</code><em>&lt;char&gt;</em></dt>
+<dt class="hdlist1"><code>--output-indicator-context=</code><em>&lt;char&gt;</em></dt>
 <dd>
 <p>Specify the character used to indicate new, old or context
-lines in the generated patch. Normally they are <em>+</em>, <em>-</em> and
+lines in the generated patch. Normally they are <code>+</code>, <code>-</code> and
 ' ' respectively.</p>
 </dd>
-<dt class="hdlist1">--indent-heuristic</dt>
+<dt class="hdlist1"><code>--indent-heuristic</code></dt>
 <dd>
 <p>Enable the heuristic that shifts diff hunk boundaries to make patches
 easier to read. This is the default.</p>
 </dd>
-<dt class="hdlist1">--no-indent-heuristic</dt>
+<dt class="hdlist1"><code>--no-indent-heuristic</code></dt>
 <dd>
 <p>Disable the indent heuristic.</p>
 </dd>
-<dt class="hdlist1">--minimal</dt>
+<dt class="hdlist1"><code>--minimal</code></dt>
 <dd>
 <p>Spend extra time to make sure the smallest possible
 diff is produced.</p>
 </dd>
-<dt class="hdlist1">--patience</dt>
+<dt class="hdlist1"><code>--patience</code></dt>
 <dd>
 <p>Generate a diff using the "patience diff" algorithm.</p>
 </dd>
-<dt class="hdlist1">--histogram</dt>
+<dt class="hdlist1"><code>--histogram</code></dt>
 <dd>
 <p>Generate a diff using the "histogram diff" algorithm.</p>
 </dd>
-<dt class="hdlist1">--anchored=&lt;text&gt;</dt>
+<dt class="hdlist1"><code>--anchored=</code><em>&lt;text&gt;</em></dt>
 <dd>
 <p>Generate a diff using the "anchored diff" algorithm.</p>
 <div class="paragraph">
@@ -629,19 +629,20 @@ diff is produced.</p>
 </div>
 <div class="paragraph">
 <p>If a line exists in both the source and destination, exists only once,
-and starts with this text, this algorithm attempts to prevent it from
+and starts with <em>&lt;text&gt;</em>, this algorithm attempts to prevent it from
 appearing as a deletion or addition in the output. It uses the "patience
 diff" algorithm internally.</p>
 </div>
 </dd>
-<dt class="hdlist1">--diff-algorithm={patience|minimal|histogram|myers}</dt>
+<dt class="hdlist1"><code>--diff-algorithm=</code>(<code>patience</code>|<code>minimal</code>|<code>histogram</code>|<code>myers</code>)</dt>
 <dd>
 <p>Choose a diff algorithm. The variants are as follows:</p>
 <div class="openblock">
 <div class="content">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>default</code>, <code>myers</code></dt>
+<dt class="hdlist1"><code>default</code></dt>
+<dt class="hdlist1"><code>myers</code></dt>
 <dd>
 <p>The basic greedy diff algorithm. Currently, this is the default.</p>
 </dd>
@@ -669,7 +670,7 @@ non-default value and want to use the default one, then you
 have to use <code>--diff-algorithm=default</code> option.</p>
 </div>
 </dd>
-<dt class="hdlist1">--stat[=&lt;width&gt;[,&lt;name-width&gt;[,&lt;count&gt;]]]</dt>
+<dt class="hdlist1"><code>--stat</code>[<code>=</code><em>&lt;width&gt;</em>[<code>,</code><em>&lt;name-width&gt;</em>[<code>,</code><em>&lt;count&gt;</em>]]]</dt>
 <dd>
 <p>Generate a diffstat. By default, as much space as necessary
 will be used for the filename part, and the rest for the graph
@@ -677,9 +678,9 @@ part. Maximum width defaults to terminal width, or 80 columns
 if not connected to a terminal, and can be overridden by
 <em>&lt;width&gt;</em>. The width of the filename part can be limited by
 giving another width <em>&lt;name-width&gt;</em> after a comma or by setting
-<code>diff.statNameWidth=</code><em>&lt;width&gt;</em>. The width of the graph part can be
-limited by using <code>--stat-graph-width=</code><em>&lt;width&gt;</em> or by setting
-<code>diff.statGraphWidth=</code><em>&lt;width&gt;</em>. Using <code>--stat</code> or
+<code>diff.statNameWidth=</code><em>&lt;name-width&gt;</em>. The width of the graph part can be
+limited by using <code>--stat-graph-width=</code><em>&lt;graph-width&gt;</em> or by setting
+<code>diff.statGraphWidth=</code><em>&lt;graph-width&gt;</em>. Using <code>--stat</code> or
 <code>--stat-graph-width</code> affects all commands generating a stat graph,
 while setting <code>diff.statNameWidth</code> or <code>diff.statGraphWidth</code>
 does not affect <code>git</code> <code>format-patch</code>.
@@ -690,16 +691,16 @@ the first <em>&lt;count&gt;</em> lines, followed by ... if there are more.</p>
 <code>--stat-name-width=</code><em>&lt;name-width&gt;</em> and <code>--stat-count=</code><em>&lt;count&gt;</em>.</p>
 </div>
 </dd>
-<dt class="hdlist1">--compact-summary</dt>
+<dt class="hdlist1"><code>--compact-summary</code></dt>
 <dd>
 <p>Output a condensed summary of extended header information such
-as file creations or deletions ("new" or "gone", optionally "+l"
-if it&#8217;s a symlink) and mode changes ("+x" or "-x" for adding
+as file creations or deletions ("new" or "gone", optionally <code>+l</code>
+if it&#8217;s a symlink) and mode changes (<code>+x</code> or <code>-x</code> for adding
 or removing executable bit respectively) in diffstat. The
 information is put between the filename part and the graph
 part. Implies <code>--stat</code>.</p>
 </dd>
-<dt class="hdlist1">--numstat</dt>
+<dt class="hdlist1"><code>--numstat</code></dt>
 <dd>
 <p>Similar to <code>--stat</code>, but shows number of added and
 deleted lines in decimal notation and pathname without
@@ -707,14 +708,14 @@ abbreviation, to make it more machine friendly.  For
 binary files, outputs two <code>-</code> instead of saying
 <code>0</code> <code>0</code>.</p>
 </dd>
-<dt class="hdlist1">--shortstat</dt>
+<dt class="hdlist1"><code>--shortstat</code></dt>
 <dd>
 <p>Output only the last line of the <code>--stat</code> format containing total
 number of modified files, as well as number of added and deleted
 lines.</p>
 </dd>
-<dt class="hdlist1">-X[&lt;param1,param2,&#8230;&#8203;&gt;]</dt>
-<dt class="hdlist1">--dirstat[=&lt;param1,param2,&#8230;&#8203;&gt;]</dt>
+<dt class="hdlist1"><code>-X</code> [<em>&lt;param&gt;</em><code>,..</code>.]</dt>
+<dt class="hdlist1"><code>--dirstat</code>[<code>=</code><em>&lt;param&gt;</em><code>,..</code>.]</dt>
 <dd>
 <p>Output the distribution of relative amount of changes for each
 sub-directory. The behavior of <code>--dirstat</code> can be customized by
@@ -758,7 +759,7 @@ Note that when using <code>cumulative</code>, the sum of the percentages
 reported may exceed 100%. The default (non-cumulative) behavior can
 be specified with the <code>noncumulative</code> parameter.</p>
 </dd>
-<dt class="hdlist1">&lt;limit&gt;</dt>
+<dt class="hdlist1"><em>&lt;limit&gt;</em></dt>
 <dd>
 <p>An integer parameter specifies a cut-off percent (3% by default).
 Directories contributing less than this percentage of the changes
@@ -775,40 +776,40 @@ and accumulating child directory counts in the parent directories:
 <code>--dirstat=files,10,cumulative</code>.</p>
 </div>
 </dd>
-<dt class="hdlist1">--cumulative</dt>
+<dt class="hdlist1"><code>--cumulative</code></dt>
 <dd>
-<p>Synonym for --dirstat=cumulative</p>
+<p>Synonym for <code>--dirstat=cumulative</code>.</p>
 </dd>
-<dt class="hdlist1">--dirstat-by-file[=&lt;param1,param2&gt;&#8230;&#8203;]</dt>
+<dt class="hdlist1"><code>--dirstat-by-file</code>[<code>=</code><em>&lt;param&gt;</em><code>,..</code>.]</dt>
 <dd>
-<p>Synonym for --dirstat=files,&lt;param1&gt;,&lt;param2&gt;&#8230;&#8203;</p>
+<p>Synonym for <code>--dirstat=files,</code><em>&lt;param&gt;</em><code>,..</code>..</p>
 </dd>
-<dt class="hdlist1">--summary</dt>
+<dt class="hdlist1"><code>--summary</code></dt>
 <dd>
 <p>Output a condensed summary of extended header information
 such as creations, renames and mode changes.</p>
 </dd>
-<dt class="hdlist1">--no-renames</dt>
+<dt class="hdlist1"><code>--no-renames</code></dt>
 <dd>
 <p>Turn off rename detection, even when the configuration
 file gives the default to do so.</p>
 </dd>
-<dt class="hdlist1">--[no-]rename-empty</dt>
+<dt class="hdlist1"><code>--</code>[<code>no-</code>]<code>rename-empty</code></dt>
 <dd>
 <p>Whether to use empty blobs as rename source.</p>
 </dd>
-<dt class="hdlist1">--full-index</dt>
+<dt class="hdlist1"><code>--full-index</code></dt>
 <dd>
 <p>Instead of the first handful of characters, show the full
 pre- and post-image blob object names on the "index"
 line when generating patch format output.</p>
 </dd>
-<dt class="hdlist1">--binary</dt>
+<dt class="hdlist1"><code>--binary</code></dt>
 <dd>
 <p>In addition to <code>--full-index</code>, output a binary diff that
 can be applied with <code>git-apply</code>.</p>
 </dd>
-<dt class="hdlist1">--abbrev[=&lt;n&gt;]</dt>
+<dt class="hdlist1"><code>--abbrev</code>[<code>=</code><em>&lt;n&gt;</em>]</dt>
 <dd>
 <p>Instead of showing the full 40-byte hexadecimal object
 name in diff-raw format output and diff-tree header
@@ -819,8 +820,8 @@ precedence, i.e. if <code>--full-index</code> is specified, full blob
 names will be shown regardless of <code>--abbrev</code>.
 Non default number of digits can be specified with <code>--abbrev=</code><em>&lt;n&gt;</em>.</p>
 </dd>
-<dt class="hdlist1">-B[&lt;n&gt;][/&lt;m&gt;]</dt>
-<dt class="hdlist1">--break-rewrites[=[&lt;n&gt;][/&lt;m&gt;]]</dt>
+<dt class="hdlist1"><code>-B</code>[<em>&lt;n&gt;</em>][<code>/</code><em>&lt;m&gt;</em>]</dt>
+<dt class="hdlist1"><code>--break-rewrites</code>[<code>=</code>[<em>&lt;n&gt;</em>][<code>/</code><em>&lt;m&gt;</em>]]</dt>
 <dd>
 <p>Break complete rewrite changes into pairs of delete and
 create. This serves two purposes:</p>
@@ -829,27 +830,27 @@ create. This serves two purposes:</p>
 not as a series of deletion and insertion mixed together with a very
 few lines that happen to match textually as the context, but as a
 single deletion of everything old followed by a single insertion of
-everything new, and the number <code>m</code> controls this aspect of the -B
+everything new, and the number <em>&lt;m&gt;</em> controls this aspect of the <code>-B</code>
 option (defaults to 60%). <code>-B/70</code>% specifies that less than 30% of the
 original should remain in the result for Git to consider it a total
 rewrite (i.e. otherwise the resulting patch will be a series of
 deletion and insertion mixed together with context lines).</p>
 </div>
 <div class="paragraph">
-<p>When used with -M, a totally-rewritten file is also considered as the
-source of a rename (usually -M only considers a file that disappeared
-as the source of a rename), and the number <code>n</code> controls this aspect of
-the -B option (defaults to 50%). <code>-B20</code>% specifies that a change with
+<p>When used with <code>-M</code>, a totally-rewritten file is also considered as the
+source of a rename (usually <code>-M</code> only considers a file that disappeared
+as the source of a rename), and the number <em>&lt;n&gt;</em> controls this aspect of
+the <code>-B</code> option (defaults to 50%). <code>-B20</code>% specifies that a change with
 addition and deletion compared to 20% or more of the file&#8217;s size are
 eligible for being picked up as a possible source of a rename to
 another file.</p>
 </div>
 </dd>
-<dt class="hdlist1">-M[&lt;n&gt;]</dt>
-<dt class="hdlist1">--find-renames[=&lt;n&gt;]</dt>
+<dt class="hdlist1"><code>-M</code>[<em>&lt;n&gt;</em>]</dt>
+<dt class="hdlist1"><code>--find-renames</code>[<code>=</code><em>&lt;n&gt;</em>]</dt>
 <dd>
 <p>Detect renames.
-If <code>n</code> is specified, it is a threshold on the similarity
+If <em>&lt;n&gt;</em> is specified, it is a threshold on the similarity
 index (i.e. amount of addition/deletions compared to the
 file&#8217;s size). For example, <code>-M90</code>% means Git should consider a
 delete/add pair to be a rename if more than 90% of the file
@@ -859,13 +860,13 @@ a fraction, with a decimal point before it.  I.e., <code>-M5</code> becomes
 the same as <code>-M5</code>%.  To limit detection to exact renames, use
 <code>-M100</code>%.  The default similarity index is 50%.</p>
 </dd>
-<dt class="hdlist1">-C[&lt;n&gt;]</dt>
-<dt class="hdlist1">--find-copies[=&lt;n&gt;]</dt>
+<dt class="hdlist1"><code>-C</code>[<em>&lt;n&gt;</em>]</dt>
+<dt class="hdlist1"><code>--find-copies</code>[<code>=</code><em>&lt;n&gt;</em>]</dt>
 <dd>
 <p>Detect copies as well as renames.  See also <code>--find-copies-harder</code>.
-If <code>n</code> is specified, it has the same meaning as for <code>-M</code><em>&lt;n&gt;</em>.</p>
+If <em>&lt;n&gt;</em> is specified, it has the same meaning as for <code>-M</code><em>&lt;n&gt;</em>.</p>
 </dd>
-<dt class="hdlist1">--find-copies-harder</dt>
+<dt class="hdlist1"><code>--find-copies-harder</code></dt>
 <dd>
 <p>For performance reasons, by default, <code>-C</code> option finds copies only
 if the original file of the copy was modified in the same
@@ -875,8 +876,8 @@ copy.  This is a very expensive operation for large
 projects, so use it with caution.  Giving more than one
 <code>-C</code> option has the same effect.</p>
 </dd>
-<dt class="hdlist1">-D</dt>
-<dt class="hdlist1">--irreversible-delete</dt>
+<dt class="hdlist1"><code>-D</code></dt>
+<dt class="hdlist1"><code>--irreversible-delete</code></dt>
 <dd>
 <p>Omit the preimage for deletes, i.e. print only the header but not
 the diff between the preimage and <code>/dev/null</code>. The resulting patch
@@ -890,7 +891,7 @@ hence the name of the option.</p>
 of a delete/create pair.</p>
 </div>
 </dd>
-<dt class="hdlist1">-l&lt;num&gt;</dt>
+<dt class="hdlist1"><code>-l</code><em>&lt;num&gt;</em></dt>
 <dd>
 <p>The <code>-M</code> and <code>-C</code> options involve some preliminary steps that
 can detect subsets of renames/copies cheaply, followed by an
@@ -901,10 +902,10 @@ original sources are relevant.)  For N sources and
 destinations, this exhaustive check is O(N^2).  This option
 prevents the exhaustive portion of rename/copy detection from
 running if the number of source/destination files involved
-exceeds the specified number.  Defaults to diff.renameLimit.
+exceeds the specified number.  Defaults to <code>diff.renameLimit</code>.
 Note that a value of 0 is treated as unlimited.</p>
 </dd>
-<dt class="hdlist1">-O&lt;orderfile&gt;</dt>
+<dt class="hdlist1"><code>-O</code><em>&lt;orderfile&gt;</em></dt>
 <dd>
 <p>Control the order in which files appear in the output.
 This overrides the <code>diff.orderFile</code> configuration variable
@@ -912,7 +913,7 @@ This overrides the <code>diff.orderFile</code> configuration variable
 use <code>-O/dev/null</code>.</p>
 <div class="paragraph">
 <p>The output order is determined by the order of glob patterns in
-&lt;orderfile&gt;.
+<em>&lt;orderfile&gt;</em>.
 All files with pathnames that match the first pattern are output
 first, all files with pathnames that match the second pattern (but not
 the first) are output next, and so on.
@@ -924,7 +925,7 @@ but no earlier patterns), their output order relative to each other is
 the normal order.</p>
 </div>
 <div class="paragraph">
-<p>&lt;orderfile&gt; is parsed as follows:</p>
+<p><em>&lt;orderfile&gt;</em> is parsed as follows:</p>
 </div>
 <div class="openblock">
 <div class="content">
@@ -948,97 +949,97 @@ pattern if it starts with a hash.</p>
 </div>
 <div class="paragraph">
 <p>Patterns have the same syntax and semantics as patterns used for
-fnmatch(3) without the FNM_PATHNAME flag, except a pathname also
+<code>fnmatch</code>(3) without the <code>FNM_PATHNAME</code> flag, except a pathname also
 matches a pattern if removing any number of the final pathname
 components matches the pattern.  For example, the pattern "<code>foo</code>*bar"
 matches "<code>fooasdfbar</code>" and "<code>foo/bar/baz/asdf</code>" but not "<code>foobarx</code>".</p>
 </div>
 </dd>
-<dt class="hdlist1">--skip-to=&lt;file&gt;</dt>
-<dt class="hdlist1">--rotate-to=&lt;file&gt;</dt>
+<dt class="hdlist1"><code>--skip-to=</code><em>&lt;file&gt;</em></dt>
+<dt class="hdlist1"><code>--rotate-to=</code><em>&lt;file&gt;</em></dt>
 <dd>
-<p>Discard the files before the named &lt;file&gt; from the output
+<p>Discard the files before the named <em>&lt;file&gt;</em> from the output
 (i.e. <em>skip to</em>), or move them to the end of the output
 (i.e. <em>rotate to</em>).  These options were invented primarily for the use
 of the <code>git</code> <code>difftool</code> command, and may not be very useful
 otherwise.</p>
 </dd>
-<dt class="hdlist1">--relative[=&lt;path&gt;]</dt>
-<dt class="hdlist1">--no-relative</dt>
+<dt class="hdlist1"><code>--relative</code>[<code>=</code><em>&lt;path&gt;</em>]</dt>
+<dt class="hdlist1"><code>--no-relative</code></dt>
 <dd>
 <p>When run from a subdirectory of the project, it can be
 told to exclude changes outside the directory and show
 pathnames relative to it with this option.  When you are
 not in a subdirectory (e.g. in a bare repository), you
 can name which subdirectory to make the output relative
-to by giving a &lt;path&gt; as an argument.
+to by giving a <em>&lt;path&gt;</em> as an argument.
 <code>--no-relative</code> can be used to countermand both <code>diff.relative</code> config
 option and previous <code>--relative</code>.</p>
 </dd>
-<dt class="hdlist1">-a</dt>
-<dt class="hdlist1">--text</dt>
+<dt class="hdlist1"><code>-a</code></dt>
+<dt class="hdlist1"><code>--text</code></dt>
 <dd>
 <p>Treat all files as text.</p>
 </dd>
-<dt class="hdlist1">--ignore-cr-at-eol</dt>
+<dt class="hdlist1"><code>--ignore-cr-at-eol</code></dt>
 <dd>
 <p>Ignore carriage-return at the end of line when doing a comparison.</p>
 </dd>
-<dt class="hdlist1">--ignore-space-at-eol</dt>
+<dt class="hdlist1"><code>--ignore-space-at-eol</code></dt>
 <dd>
 <p>Ignore changes in whitespace at EOL.</p>
 </dd>
-<dt class="hdlist1">-b</dt>
-<dt class="hdlist1">--ignore-space-change</dt>
+<dt class="hdlist1"><code>-b</code></dt>
+<dt class="hdlist1"><code>--ignore-space-change</code></dt>
 <dd>
 <p>Ignore changes in amount of whitespace.  This ignores whitespace
 at line end, and considers all other sequences of one or
 more whitespace characters to be equivalent.</p>
 </dd>
-<dt class="hdlist1">-w</dt>
-<dt class="hdlist1">--ignore-all-space</dt>
+<dt class="hdlist1"><code>-w</code></dt>
+<dt class="hdlist1"><code>--ignore-all-space</code></dt>
 <dd>
 <p>Ignore whitespace when comparing lines.  This ignores
 differences even if one line has whitespace where the other
 line has none.</p>
 </dd>
-<dt class="hdlist1">--ignore-blank-lines</dt>
+<dt class="hdlist1"><code>--ignore-blank-lines</code></dt>
 <dd>
 <p>Ignore changes whose lines are all blank.</p>
 </dd>
-<dt class="hdlist1">-I&lt;regex&gt;</dt>
-<dt class="hdlist1">--ignore-matching-lines=&lt;regex&gt;</dt>
+<dt class="hdlist1"><code>-I</code><em>&lt;regex&gt;</em></dt>
+<dt class="hdlist1"><code>--ignore-matching-lines=</code><em>&lt;regex&gt;</em></dt>
 <dd>
-<p>Ignore changes whose all lines match &lt;regex&gt;.  This option may
+<p>Ignore changes whose all lines match <em>&lt;regex&gt;</em>.  This option may
 be specified more than once.</p>
 </dd>
-<dt class="hdlist1">--inter-hunk-context=&lt;lines&gt;</dt>
+<dt class="hdlist1"><code>--inter-hunk-context=</code><em>&lt;number&gt;</em></dt>
 <dd>
-<p>Show the context between diff hunks, up to the specified number
+<p>Show the context between diff hunks, up to the specified <em>&lt;number&gt;</em>
 of lines, thereby fusing hunks that are close to each other.
 Defaults to <code>diff.interHunkContext</code> or 0 if the config option
 is unset.</p>
 </dd>
-<dt class="hdlist1">-W</dt>
-<dt class="hdlist1">--function-context</dt>
+<dt class="hdlist1"><code>-W</code></dt>
+<dt class="hdlist1"><code>--function-context</code></dt>
 <dd>
 <p>Show whole function as context lines for each change.
 The function names are determined in the same way as
-<code>git</code> <code>diff</code> works out patch hunk headers (see <em>Defining a
-custom hunk-header</em> in <a href="gitattributes.html">gitattributes(5)</a>).</p>
+<code>git</code> <code>diff</code> works out patch hunk headers (see "Defining a
+custom hunk-header" in <a href="gitattributes.html">gitattributes(5)</a>).</p>
 </dd>
-<dt class="hdlist1">--ext-diff</dt>
+<dt class="hdlist1"><code>--ext-diff</code></dt>
 <dd>
 <p>Allow an external diff helper to be executed. If you set an
 external diff driver with <a href="gitattributes.html">gitattributes(5)</a>, you need
 to use this option with <a href="git-log.html">git-log(1)</a> and friends.</p>
 </dd>
-<dt class="hdlist1">--no-ext-diff</dt>
+<dt class="hdlist1"><code>--no-ext-diff</code></dt>
 <dd>
 <p>Disallow external diff drivers.</p>
 </dd>
-<dt class="hdlist1">--textconv</dt>
-<dt class="hdlist1">--no-textconv</dt>
+<dt class="hdlist1"><code>--textconv</code></dt>
+<dt class="hdlist1"><code>--no-textconv</code></dt>
 <dd>
 <p>Allow (or disallow) external text conversion filters to be run
 when comparing binary files. See <a href="gitattributes.html">gitattributes(5)</a> for
@@ -1049,49 +1050,48 @@ filters are enabled by default only for <a href="git-diff.html">git-diff(1)</a> 
 <a href="git-log.html">git-log(1)</a>, but not for <a href="git-format-patch.html">git-format-patch(1)</a> or
 diff plumbing commands.</p>
 </dd>
-<dt class="hdlist1">--ignore-submodules[=&lt;when&gt;]</dt>
+<dt class="hdlist1"><code>--ignore-submodules</code>[<code>=</code>(<code>none</code>|<code>untracked</code>|<code>dirty</code>|<code>all</code>)]</dt>
 <dd>
-<p>Ignore changes to submodules in the diff generation. &lt;when&gt; can be
-either "none", "untracked", "dirty" or "all", which is the default.
-Using "none" will consider the submodule modified when it either contains
-untracked or modified files or its HEAD differs from the commit recorded
+<p>Ignore changes to submodules in the diff generation. <code>all</code> is the default.
+Using <code>none</code> will consider the submodule modified when it either contains
+untracked or modified files or its <code>HEAD</code> differs from the commit recorded
 in the superproject and can be used to override any settings of the
-<em>ignore</em> option in <a href="git-config.html">git-config(1)</a> or <a href="gitmodules.html">gitmodules(5)</a>. When
-"untracked" is used submodules are not considered dirty when they only
+<code>ignore</code> option in <a href="git-config.html">git-config(1)</a> or <a href="gitmodules.html">gitmodules(5)</a>. When
+<code>untracked</code> is used submodules are not considered dirty when they only
 contain untracked content (but they are still scanned for modified
-content). Using "dirty" ignores all changes to the work tree of submodules,
+content). Using <code>dirty</code> ignores all changes to the work tree of submodules,
 only changes to the commits stored in the superproject are shown (this was
-the behavior until 1.7.0). Using "all" hides all changes to submodules.</p>
+the behavior until 1.7.0). Using <code>all</code> hides all changes to submodules.</p>
 </dd>
-<dt class="hdlist1">--src-prefix=&lt;prefix&gt;</dt>
+<dt class="hdlist1"><code>--src-prefix=</code><em>&lt;prefix&gt;</em></dt>
 <dd>
-<p>Show the given source prefix instead of "a/".</p>
+<p>Show the given source <em>&lt;prefix&gt;</em> instead of "a/".</p>
 </dd>
-<dt class="hdlist1">--dst-prefix=&lt;prefix&gt;</dt>
+<dt class="hdlist1"><code>--dst-prefix=</code><em>&lt;prefix&gt;</em></dt>
 <dd>
-<p>Show the given destination prefix instead of "b/".</p>
+<p>Show the given destination <em>&lt;prefix&gt;</em> instead of "b/".</p>
 </dd>
-<dt class="hdlist1">--no-prefix</dt>
+<dt class="hdlist1"><code>--no-prefix</code></dt>
 <dd>
 <p>Do not show any source or destination prefix.</p>
 </dd>
-<dt class="hdlist1">--default-prefix</dt>
+<dt class="hdlist1"><code>--default-prefix</code></dt>
 <dd>
 <p>Use the default source and destination prefixes ("a/" and "b/").
 This overrides configuration variables such as <code>diff.noprefix</code>,
 <code>diff.srcPrefix</code>, <code>diff.dstPrefix</code>, and <code>diff.mnemonicPrefix</code>
-(see <code>git-config</code>(1)).</p>
+(see <a href="git-config.html">git-config(1)</a>).</p>
 </dd>
-<dt class="hdlist1">--line-prefix=&lt;prefix&gt;</dt>
+<dt class="hdlist1"><code>--line-prefix=</code><em>&lt;prefix&gt;</em></dt>
 <dd>
-<p>Prepend an additional prefix to every line of output.</p>
+<p>Prepend an additional <em>&lt;prefix&gt;</em> to every line of output.</p>
 </dd>
-<dt class="hdlist1">--ita-invisible-in-index</dt>
+<dt class="hdlist1"><code>--ita-invisible-in-index</code></dt>
 <dd>
-<p>By default entries added by "git add -N" appear as an existing
-empty file in "git diff" and a new file in "git diff --cached".
-This option makes the entry appear as a new file in "git diff"
-and non-existent in "git diff --cached". This option could be
+<p>By default entries added by <code>git</code> <code>add</code> <code>-N</code> appear as an existing
+empty file in <code>git</code> <code>diff</code> and a new file in <code>git</code> <code>diff</code> <code>--cached</code>.
+This option makes the entry appear as a new file in <code>git</code> <code>diff</code>
+and non-existent in <code>git</code> <code>diff</code> <code>--cached</code>. This option could be
 reverted with <code>--ita-visible-in-index</code>. Both options are
 experimental and could be removed in future.</p>
 </dd>
@@ -1986,7 +1986,7 @@ merge commit.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-11-01 22:46:55 -0700
+Last updated 2024-11-02 14:46:55 +0900
 </div>
 </div>
 </body>
