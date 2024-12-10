@@ -557,6 +557,16 @@ for long options.  An option that takes optional option-argument must be
 written in the <em>stuck</em> form.</p>
 </li>
 <li>
+<p>Despite the above suggestion, when Arg is a path relative to the
+home directory of a user, e.g. ~/directory/file or ~u/d/f, you
+may want to use the separate form, e.g. <code>git</code> <code>foo</code> <code>--file</code> <code>~/mine</code>,
+not <code>git</code> <code>foo</code> <code>--file=~/mine</code>.  The shell will expand <code>~/</code> in the
+former to your home directory, but most shells keep the tilde in
+the latter.  Some of our commands know how to tilde-expand the
+option value even when given in the stuck form, but not all of
+them do.</p>
+</li>
+<li>
 <p>When you give a revision parameter to a command, make sure the parameter is
 not ambiguous with a name of a file in the work tree.  E.g. do not write
 <code>git</code> <code>log</code> <code>-1</code> <code>HEAD</code> but write <code>git</code> <code>log</code> <code>-1</code> <code>HEAD</code> <code>--</code>; the former will not work
@@ -760,7 +770,7 @@ on both the index and the working tree.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-11 15:39:49 -0700
+Last updated 2024-12-10 21:07:44 +0900
 </div>
 </div>
 </body>
