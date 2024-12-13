@@ -4490,6 +4490,13 @@ internals are subject to change.</p>
 work and will produce hard-to-diagnose issues.</p>
 </div>
 </dd>
+<dt class="hdlist1">relativeWorktrees</dt>
+<dd>
+<p>If enabled, indicates at least one worktree has been linked with
+relative paths. Automatically set if a worktree has been created or
+repaired with either the <code>--relative-paths</code> option or with the
+<code>worktree.useRelativePaths</code> config set to <code>true</code>.</p>
+</dd>
 <dt class="hdlist1">worktreeConfig</dt>
 <dd>
 <p>If enabled, then worktrees will load config settings from the
@@ -9333,6 +9340,18 @@ such a branch exists, it is checked out and set as "upstream"
 for the new branch.  If no such match can be found, it falls
 back to creating a new branch from the current HEAD.</p>
 </dd>
+<dt class="hdlist1">worktree.useRelativePaths</dt>
+<dd>
+<p>Link worktrees using relative paths (when "true") or absolute
+paths (when "false"). This is particularly useful for setups
+where the repository and worktrees may be moved between
+different locations or environments. Defaults to "false".</p>
+<div class="paragraph">
+<p>Note that setting <code>worktree.useRelativePaths</code> to "true" implies enabling the
+<code>extension.relativeWorktrees</code> config (see <a href="git-config.html">git-config(1)</a>),
+thus making it incompatible with older versions of Git.</p>
+</div>
+</dd>
 </dl>
 </div>
 </div>
@@ -9376,7 +9395,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-11-02 14:46:55 +0900
+Last updated 2024-11-01 22:46:55 -0700
 </div>
 </div>
 </body>

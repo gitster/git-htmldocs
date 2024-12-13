@@ -693,6 +693,16 @@ the remote-tracking branch as "upstream" from the new branch.</p>
 <code>worktree.guessRemote</code> config option.</p>
 </div>
 </dd>
+<dt class="hdlist1">--[no-]relative-paths</dt>
+<dd>
+<p>Link worktrees using relative paths or absolute paths (default).
+Overrides the <code>worktree.useRelativePaths</code> config option, see
+<a href="git-config.html">git-config(1)</a>.</p>
+<div class="paragraph">
+<p>With <code>repair</code>, the linking files will be updated if there&#8217;s an absolute/relative
+mismatch, even if the links are correct.</p>
+</div>
+</dd>
 <dt class="hdlist1">--[no-]track</dt>
 <dd>
 <p>When creating a new branch, if <em>&lt;commit-ish&gt;</em> is a branch,
@@ -1086,7 +1096,7 @@ checkouts of a superproject.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-11-01 22:46:55 -0700
+Last updated 2024-12-13 08:40:02 -0800
 </div>
 </div>
 </body>
