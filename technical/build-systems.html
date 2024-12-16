@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="generator" content="Asciidoctor 2.0.20"/>
-<title>How to recover a corrupted blob object</title>
+<title>Build Systems</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"/>
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -432,213 +432,511 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
-<style>
-pre>code {
-   display: inline;
-}
-</style>
 </head>
 <body class="article">
 <div id="header">
-<h1>How to recover a corrupted blob object</h1>
+<h1>Build Systems</h1>
 </div>
 <div id="content">
-<div class="listingblock">
-<div class="content">
-<pre>On Fri, 9 Nov 2007, Yossi Leybovich wrote:
-&gt;
-&gt; Did not help still the repository look for this object?
-&gt; Any one know how can I track this object and understand which file is it</pre>
-</div>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The build system is the primary way for both developers and system integrators
+to interact with the Git project. As such, being easy to use and extend for
+those who are not directly developing Git itself is just as important as other
+requirements we have on any potential build system.</p>
 </div>
 <div class="paragraph">
-<p>So exactly <strong>because</strong> the SHA-1 hash is cryptographically secure, the hash
-itself doesn&#8217;t actually tell you anything, in order to fix a corrupt
-object you basically have to find the "original source" for it.</p>
+<p>This document outlines the different requirements that we have for the build
+system and then compares available build systems using these criteria.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements">Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following subsections present a list of requirements that we have for any
+potential build system. Sections are sorted by decreasing priority.</p>
+</div>
+<div class="sect2">
+<h3 id="_platform_support">Platform support</h3>
+<div class="paragraph">
+<p>The build system must have support for all of our platforms that we continually
+test against as outlined by our platform support policy. These platforms are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Linux</p>
+</li>
+<li>
+<p>Windows</p>
+</li>
+<li>
+<p>macOS</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>The easiest way to do that is almost always to have backups, and find the
-same object somewhere else. Backups really are a good idea, and Git makes
-it pretty easy (if nothing else, just clone the repository somewhere else,
-and make sure that you do <strong>not</strong> use a hard-linked clone, and preferably
-not the same disk/machine).</p>
+<p>Furthermore, the build system should have support for the following platforms
+that generally have somebody running test pipelines against regularly:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>AIX</p>
+</li>
+<li>
+<p>FreeBSD</p>
+</li>
+<li>
+<p>NetBSD</p>
+</li>
+<li>
+<p>NonStop</p>
+</li>
+<li>
+<p>OpenBSD</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>But since you don&#8217;t seem to have backups right now, the good news is that
-especially with a single blob being corrupt, these things <strong>are</strong> somewhat
-debuggable.</p>
+<p>The platforms which must be supported by the tool should be aligned with our
+[platform support policy](platform-support.txt).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_auto_detection_of_supported_features">Auto-detection of supported features</h3>
+<div class="paragraph">
+<p>The build system must support auto-detection of features which are or aren&#8217;t
+available on the current platform. Platform maintainers should not be required
+to manually configure the complete build.</p>
 </div>
 <div class="paragraph">
-<p>First off, move the corrupt object away, and <strong>save</strong> it. The most common
-cause of corruption so far has been memory corruption, but even so, there
-are people who would be interested in seeing the corruption - but it&#8217;s
-basically impossible to judge the corruption until we can also see the
-original object, so right now the corrupt object is useless, but it&#8217;s very
-interesting for the future, in the hope that you can re-create a
-non-corrupt version.</p>
+<p>Auto-detection of the following items is considered to be important:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>So:
-
-&gt; ib]$ mv .git/objects/4b/9458b3786228369c63936db65827de3cc06200 ../</pre>
+<div class="ulist">
+<ul>
+<li>
+<p>Check for the existence of headers.</p>
+</li>
+<li>
+<p>Check for the existence of libraries.</p>
+</li>
+<li>
+<p>Check for the existence of exectuables.</p>
+</li>
+<li>
+<p>Check for the runtime behavior of specific functions.</p>
+</li>
+<li>
+<p>Check for specific link order requirements when multiple libraries are
+involved.</p>
+</li>
+</ul>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_ease_of_use">Ease of use</h3>
+<div class="paragraph">
+<p>The build system should be both easy to use and easy to extend. While this is
+naturally a subjective metric it is likely not controversial to say that some
+build systems are considerably harder to use than others.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ide_support">IDE support</h3>
+<div class="paragraph">
+<p>The build system should integrate with well-known IDEs. Well-known IDEs include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Microsoft Visual Studio</p>
+</li>
+<li>
+<p>Visual Studio Code</p>
+</li>
+<li>
+<p>Xcode</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>This is the right thing to do, although it&#8217;s usually best to save it under
-it&#8217;s full SHA-1 name (you just dropped the "4b" from the result ;).</p>
+<p>There are four levels of support:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Native integration into the IDE.</p>
+</li>
+<li>
+<p>Integration into the IDE via a plugin.</p>
+</li>
+<li>
+<p>Integration into the IDE via generating a project description with the build
+system.</p>
+</li>
+<li>
+<p>No integration.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s see what that tells us:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>&gt; ib]$ git-fsck --full
-&gt; broken link from    tree 2d9263c6d23595e7cb2a21e5ebbb53655278dff8
-&gt;              to    blob 4b9458b3786228369c63936db65827de3cc06200
-&gt; missing blob 4b9458b3786228369c63936db65827de3cc06200</pre>
-</div>
+<p>Native integration is preferable, but integration via either a plugin or by
+generating a project description via the build system are considered feasible
+alternatives.</p>
 </div>
 <div class="paragraph">
-<p>Ok, I removed the "dangling commit" messages, because they are just
-messages about the fact that you probably have rebased etc, so they&#8217;re not
-at all interesting. But what remains is still very useful. In particular,
-we now know which tree points to it!</p>
+<p>Another important distinction is the level of integration. There are two
+features that one generally wants to have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Integration of build targets.</p>
+</li>
+<li>
+<p>Automatic setup of features like code completion with detected build
+dependencies.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Now you can do</p>
+<p>The first bullet point is the bare minimum, but is not sufficient to be
+considered proper integration.</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>git ls-tree 2d9263c6d23595e7cb2a21e5ebbb53655278dff8</pre>
 </div>
+<div class="sect2">
+<h3 id="_out_of_tree_builds">Out-of-tree builds</h3>
+<div class="paragraph">
+<p>The build system should support out-of-tree builds. Out-of-tree builds allow a
+developer to configure multiple different build directories with different
+configuration, e.g. one "debug" build and one "release" build.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cross_platform_builds">Cross-platform builds</h3>
+<div class="paragraph">
+<p>The build system should support cross-platform builds, e.g. building for arm on
+an x86-64 host.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_language_support">Language support</h3>
+<div class="paragraph">
+<p>The following languages and toolchains are of relevance and should be supported
+by the build system:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>C: the primary compiled language used by Git, must be supported. Relevant
+toolchains are GCC, Clang and MSVC.</p>
+</li>
+<li>
+<p>Rust: candidate as a second compiled lanugage, should be supported. Relevant
+toolchains is the LLVM-based rustc.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>which will show something like</p>
+<p>Built-in support for the respective languages is preferred over support that
+needs to be wired up manually to avoid unnecessary complexity. Native support
+includes the following features:</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>100644 blob 8d14531846b95bfa3564b58ccfb7913a034323b8    .gitignore
-100644 blob ebf9bf84da0aab5ed944264a5db2a65fe3a3e883    .mailmap
-100644 blob ca442d313d86dc67e0a2e5d584b465bd382cbf5c    COPYING
-100644 blob ee909f2cc49e54f0799a4739d24c4cb9151ae453    CREDITS
-040000 tree 0f5f709c17ad89e72bdbbef6ea221c69807009f6    Documentation
-100644 blob 1570d248ad9237e4fa6e4d079336b9da62d9ba32    Kbuild
-100644 blob 1c7c229a092665b11cd46a25dbd40feeb31661d9    MAINTAINERS
-...</pre>
+<div class="ulist">
+<ul>
+<li>
+<p>Compiling objects.</p>
+</li>
+<li>
+<p>Dependency tracking.</p>
+</li>
+<li>
+<p>Detection of available features.</p>
+</li>
+<li>
+<p>Discovery of relevant toolchains.</p>
+</li>
+<li>
+<p>Linking libraries and executables.</p>
+</li>
+<li>
+<p>Templating placeholders in scripts.</p>
+</li>
+</ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_test_integration">Test integration</h3>
 <div class="paragraph">
-<p>and you should now have a line that looks like</p>
+<p>It should be possible to integrate tests into the build system such that it is
+possible to build and test Git within the build system. Features which are nice
+to have:</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>10064 blob 4b9458b3786228369c63936db65827de3cc06200	my-magic-file</pre>
+<div class="ulist">
+<ul>
+<li>
+<p>Track build-time dependencies for respective tests. Unit tests have
+different requirements than integration tests.</p>
+</li>
+<li>
+<p>Allow filtering of which tests to run.</p>
+</li>
+<li>
+<p>Allow running tests such that utilities like <code>test_pause</code> or <code>debug</code> work.</p>
+</li>
+</ul>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comparison">Comparison</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>in the output. This already tells you a <strong>lot</strong> it tells you what file the
-corrupt blob came from!</p>
+<p>The following list of build systems are considered:</p>
 </div>
-<div class="paragraph">
-<p>Now, it doesn&#8217;t tell you quite enough, though: it doesn&#8217;t tell what
-<strong>version</strong> of the file didn&#8217;t get correctly written! You might be really
-lucky, and it may be the version that you already have checked out in your
-working tree, in which case fixing this problem is really simple, just do</p>
+<div class="ulist">
+<ul>
+<li>
+<p>GNU Make</p>
+</li>
+<li>
+<p>autoconf</p>
+</li>
+<li>
+<p>CMake</p>
+</li>
+<li>
+<p>Meson</p>
+</li>
+</ul>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>git hash-object -w my-magic-file</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>again, and if it outputs the missing SHA-1 (4b945..) you&#8217;re now all done!</p>
-</div>
-<div class="paragraph">
-<p>But that&#8217;s the really lucky case, so let&#8217;s assume that it was some older
-version that was broken. How do you tell which version it was?</p>
-</div>
-<div class="paragraph">
-<p>The easiest way to do it is to do</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>git log --raw --all --full-history -- subdirectory/my-magic-file</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>and that will show you the whole log for that file (please realize that
-the tree you had may not be the top-level tree, so you need to figure out
-which subdirectory it was in on your own), and because you&#8217;re asking for
-raw output, you&#8217;ll now get something like</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>commit abc
-Author:
-Date:
-  ..
-:100644 100644 4b9458b... newsha... M  somedirectory/my-magic-file</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>commit xyz
-Author:
-Date:</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>  ..
-:100644 100644 oldsha... 4b9458b... M	somedirectory/my-magic-file</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>and this actually tells you what the <strong>previous</strong> and <strong>subsequent</strong> versions
-of that file were! So now you can look at those ("oldsha" and "newsha"
-respectively), and hopefully you have done commits often, and can
-re-create the missing my-magic-file version by looking at those older and
-newer versions!</p>
-</div>
-<div class="paragraph">
-<p>If you can do that, you can now recreate the missing object with</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>git hash-object -w &lt;recreated-file&gt;</pre>
+<div class="sect2">
+<h3 id="_gnu_make">GNU Make</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Platform support: ubitquitous on all platforms, but not well-integrated into Windows.</p>
+</li>
+<li>
+<p>Auto-detection: no built-in support for auto-detection of features.</p>
+</li>
+<li>
+<p>Ease of use: easy to use, but discovering available options is hard. Makefile
+rules can quickly get out of hand once reaching a certain scope.</p>
+</li>
+<li>
+<p>IDE support: execution of Makefile targets is supported by many IDEs</p>
+</li>
+<li>
+<p>Out-of-tree builds: supported in theory, not wired up in practice.</p>
+</li>
+<li>
+<p>Cross-platform builds: supported in theory, not wired up in practice.</p>
+</li>
+<li>
+<p>Language support:</p>
+</li>
+<li>
+<p>C: Limited built-in support, many parts need to be wired up manually.</p>
+</li>
+<li>
+<p>Rust: No built-in support, needs to be wired up manually.</p>
+</li>
+<li>
+<p>Test integration: partially supported, many parts need to be wired up
+manually.</p>
+</li>
+</ul>
 </div>
 </div>
-<div class="paragraph">
-<p>and your repository is good again!</p>
+<div class="sect2">
+<h3 id="_autoconf">autoconf</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Platform support: ubiquitous on all platforms, but not well-integrated into Windows.</p>
+</li>
+<li>
+<p>Auto-detection: supported.</p>
+</li>
+<li>
+<p>Ease of use: easy to use, discovering available options is comparatively
+easy. The autoconf syntax is prohibitively hard to extend though due to its
+complex set of interacting files and the hard-to-understand M4 language.</p>
+</li>
+<li>
+<p>IDE support: no integration into IDEs at generation time. The generated
+Makefiles have the same level of support as GNU Make.</p>
+</li>
+<li>
+<p>Out-of-tree builds: supported in theory, not wired up in practice.</p>
+</li>
+<li>
+<p>Cross-platform builds: supported.</p>
+</li>
+<li>
+<p>Language support:</p>
+</li>
+<li>
+<p>C: Limited built-in support, many parts need to be wired up manually.</p>
+</li>
+<li>
+<p>Rust: No built-in support, needs to be wired up manually.</p>
+</li>
+<li>
+<p>Test integration: partially supported, many parts need to be wired up
+manually.</p>
+</li>
+</ul>
 </div>
-<div class="paragraph">
-<p>(Btw, you could have ignored the fsck, and started with doing a</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>git log --raw --all</pre>
+<div class="sect2">
+<h3 id="_cmake">CMake</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Platform support: not as extensive as GNU Make or autoconf, but all major
+platforms are supported.</p>
+</li>
+<li>
+<p>AIX</p>
+</li>
+<li>
+<p>Cygwin</p>
+</li>
+<li>
+<p>FreeBSD</p>
+</li>
+<li>
+<p>Linux</p>
+</li>
+<li>
+<p>OpenBSD</p>
+</li>
+<li>
+<p>Solaris</p>
+</li>
+<li>
+<p>Windows</p>
+</li>
+<li>
+<p>macOS</p>
+</li>
+<li>
+<p>Ease of use: easy to use, discovering available options is not always
+trivial. The scripting language used by CMake is somewhat cumbersome to use,
+but extending CMake build instructions is doable.</p>
+</li>
+<li>
+<p>IDE support: natively integrated into Microsoft Visual Studio. Can generate
+project descriptions for Xcode. An extension is available for Visual Studio
+Code. Many other IDEs have plugins for CMake.</p>
+</li>
+<li>
+<p>Out-of-tree builds: supported.</p>
+</li>
+<li>
+<p>Cross-platform builds: supported.</p>
+</li>
+<li>
+<p>Language support:</p>
+</li>
+<li>
+<p>C: Supported for GCC, Clang, MSVC and other toolchains.</p>
+</li>
+<li>
+<p>Rust: No built-in support, needs to be wired up manually.</p>
+</li>
+<li>
+<p>Test integration: supported, even though test dependencies are a bit
+cumbersome to use via "test fixtures". Interactive test runs are not
+supported.</p>
+</li>
+</ul>
 </div>
 </div>
-<div class="paragraph">
-<p>and just looked for the sha of the missing object (4b9458b..) in that
-whole thing. It&#8217;s up to you - Git does <strong>have</strong> a lot of information, it is
-just missing one particular blob version.</p>
+<div class="sect2">
+<h3 id="_meson">Meson</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Platform: not as extensive as GNU Make or autoconf, but all major platforms
+and some smaller ones are supported.</p>
+</li>
+<li>
+<p>AIX</p>
+</li>
+<li>
+<p>Cygwin</p>
+</li>
+<li>
+<p>DragonflyBSD</p>
+</li>
+<li>
+<p>FreeBSD</p>
+</li>
+<li>
+<p>Haiku</p>
+</li>
+<li>
+<p>Linux</p>
+</li>
+<li>
+<p>NetBSD</p>
+</li>
+<li>
+<p>OpenBSD</p>
+</li>
+<li>
+<p>Solaris</p>
+</li>
+<li>
+<p>Windows</p>
+</li>
+<li>
+<p>macOS</p>
+</li>
+<li>
+<p>Ease of use: easy to use, discovering available options is easy. The
+scripting language is straight-forward to use.</p>
+</li>
+<li>
+<p>IDE support: Supports generating build instructions for Xcode and Microsoft
+Visual Studio, a plugin exists for Visual Studio Code.</p>
+</li>
+<li>
+<p>Out-of-tree builds: supported.</p>
+</li>
+<li>
+<p>Cross-platform builds: supported.</p>
+</li>
+<li>
+<p>Language support:</p>
+</li>
+<li>
+<p>C: Supported for GCC, Clang, MSVC and other toolchains.</p>
+</li>
+<li>
+<p>Rust: Supported for rustc.</p>
+</li>
+<li>
+<p>Test integration: supported. Interactive tests are supported starting with
+Meson 1.5.0 via the <code>--interactive</code> flag.</p>
+</li>
+</ul>
 </div>
-<div class="paragraph">
-<p>Trying to recreate trees and especially commits is <strong>much</strong> harder. So you
-were lucky that it&#8217;s a blob. It&#8217;s quite possible that you can recreate the
-thing.</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>Linus</pre>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-12-16 09:38:07 -0800
+Last updated 2024-12-16 09:37:15 -0800
 </div>
 </div>
 </body>
