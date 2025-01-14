@@ -3893,6 +3893,19 @@ respect this option as well.</p>
 or https URL to be important. Defaults to false. See
 <a href="gitcredentials.html">gitcredentials(7)</a> for more information.</p>
 </dd>
+<dt class="hdlist1">credential.sanitizePrompt</dt>
+<dd>
+<p>By default, user names and hosts that are shown as part of the
+password prompt are not allowed to contain control characters (they
+will be URL-encoded by default). Configure this setting to <code>false</code> to
+override that behavior.</p>
+</dd>
+<dt class="hdlist1">credential.protectProtocol</dt>
+<dd>
+<p>By default, Carriage Return characters are not allowed in the protocol
+that is used when Git talks to a credential helper. This setting allows
+users to override this default.</p>
+</dd>
 <dt class="hdlist1">credential.username</dt>
 <dd>
 <p>If no username is set for a network authentication, use this username
