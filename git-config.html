@@ -4196,6 +4196,83 @@ details.</p>
 <dd>
 <p>Set this option to <code>true</code> to make the diff driver cache the text
 conversion outputs.  See <a href="gitattributes.html">gitattributes(5)</a> for details.</p>
+</dd>
+<dt class="hdlist1"><code>diff.indentHeuristic</code></dt>
+<dd>
+<p>Set this option to <code>false</code> to disable the default heuristics
+that shift diff hunk boundaries to make patches easier to read.</p>
+</dd>
+<dt class="hdlist1"><code>diff.algorithm</code></dt>
+<dd>
+<p>Choose a diff algorithm.  The variants are as follows:</p>
+<div class="openblock">
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>default</code></dt>
+<dt class="hdlist1"><code>myers</code></dt>
+<dd>
+<p>The basic greedy diff algorithm. Currently, this is the default.</p>
+</dd>
+<dt class="hdlist1"><code>minimal</code></dt>
+<dd>
+<p>Spend extra time to make sure the smallest possible diff is
+produced.</p>
+</dd>
+<dt class="hdlist1"><code>patience</code></dt>
+<dd>
+<p>Use "patience diff" algorithm when generating patches.</p>
+</dd>
+<dt class="hdlist1"><code>histogram</code></dt>
+<dd>
+<p>This algorithm extends the patience algorithm to "support
+low-occurrence common elements".</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><code>diff.wsErrorHighlight</code></dt>
+<dd>
+<p>Highlight whitespace errors in the <code>context</code>, <code>old</code> or <code>new</code>
+lines of the diff.  Multiple values are separated by comma,
+<code>none</code> resets previous values, <code>default</code> reset the list to
+<code>new</code> and <code>all</code> is a shorthand for <code>old,new,context</code>.  The
+whitespace errors are colored with <code>color.diff.whitespace</code>.
+The command line option <code>--ws-error-highlight=</code><em>&lt;kind&gt;</em>
+overrides this setting.</p>
+</dd>
+<dt class="hdlist1"><code>diff.colorMoved</code></dt>
+<dd>
+<p>If set to either a valid <em>&lt;mode&gt;</em> or a <code>true</code> value, moved lines
+in a diff are colored differently.
+For details of valid modes see <code>--color-moved</code> in <a href="git-diff.html">git-diff(1)</a>.
+If simply set to <code>true</code> the default color mode will be used. When
+set to <code>false</code>, moved lines are not colored.</p>
+</dd>
+<dt class="hdlist1"><code>diff.colorMovedWS</code></dt>
+<dd>
+<p>When moved lines are colored using e.g. the <code>diff.colorMoved</code> setting,
+this option controls the mode how spaces are treated.
+For details of valid modes see <code>--color-moved-ws</code> in <a href="git-diff.html">git-diff(1)</a>.</p>
+</dd>
+<dt class="hdlist1">diff.tool</dt>
+<dd>
+<p>Controls which diff tool is used by <a href="git-difftool.html">git-difftool(1)</a>.
+This variable overrides the value configured in <code>merge.tool</code>.
+The list below shows the valid built-in values.
+Any other value is treated as a custom diff tool and requires
+that a corresponding difftool.&lt;tool&gt;.cmd variable is defined.</p>
+</dd>
+<dt class="hdlist1">diff.guitool</dt>
+<dd>
+<p>Controls which diff tool is used by <a href="git-difftool.html">git-difftool(1)</a> when
+the -g/--gui flag is specified. This variable overrides the value
+configured in <code>merge.guitool</code>. The list below shows the valid
+built-in values. Any other value is treated as a custom diff tool
+and requires that a corresponding difftool.&lt;guitool&gt;.cmd variable
+is defined.</p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>araxis</code></dt>
@@ -4300,83 +4377,6 @@ conversion outputs.  See <a href="gitattributes.html">gitattributes(5)</a> for d
 </dd>
 </dl>
 </div>
-</dd>
-<dt class="hdlist1"><code>diff.indentHeuristic</code></dt>
-<dd>
-<p>Set this option to <code>false</code> to disable the default heuristics
-that shift diff hunk boundaries to make patches easier to read.</p>
-</dd>
-<dt class="hdlist1"><code>diff.algorithm</code></dt>
-<dd>
-<p>Choose a diff algorithm.  The variants are as follows:</p>
-<div class="openblock">
-<div class="content">
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>default</code></dt>
-<dt class="hdlist1"><code>myers</code></dt>
-<dd>
-<p>The basic greedy diff algorithm. Currently, this is the default.</p>
-</dd>
-<dt class="hdlist1"><code>minimal</code></dt>
-<dd>
-<p>Spend extra time to make sure the smallest possible diff is
-produced.</p>
-</dd>
-<dt class="hdlist1"><code>patience</code></dt>
-<dd>
-<p>Use "patience diff" algorithm when generating patches.</p>
-</dd>
-<dt class="hdlist1"><code>histogram</code></dt>
-<dd>
-<p>This algorithm extends the patience algorithm to "support
-low-occurrence common elements".</p>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-</dd>
-<dt class="hdlist1"><code>diff.wsErrorHighlight</code></dt>
-<dd>
-<p>Highlight whitespace errors in the <code>context</code>, <code>old</code> or <code>new</code>
-lines of the diff.  Multiple values are separated by comma,
-<code>none</code> resets previous values, <code>default</code> reset the list to
-<code>new</code> and <code>all</code> is a shorthand for <code>old,new,context</code>.  The
-whitespace errors are colored with <code>color.diff.whitespace</code>.
-The command line option <code>--ws-error-highlight=</code><em>&lt;kind&gt;</em>
-overrides this setting.</p>
-</dd>
-<dt class="hdlist1"><code>diff.colorMoved</code></dt>
-<dd>
-<p>If set to either a valid <em>&lt;mode&gt;</em> or a <code>true</code> value, moved lines
-in a diff are colored differently.
-For details of valid modes see <code>--color-moved</code> in <a href="git-diff.html">git-diff(1)</a>.
-If simply set to <code>true</code> the default color mode will be used. When
-set to <code>false</code>, moved lines are not colored.</p>
-</dd>
-<dt class="hdlist1"><code>diff.colorMovedWS</code></dt>
-<dd>
-<p>When moved lines are colored using e.g. the <code>diff.colorMoved</code> setting,
-this option controls the mode how spaces are treated.
-For details of valid modes see <code>--color-moved-ws</code> in <a href="git-diff.html">git-diff(1)</a>.</p>
-</dd>
-<dt class="hdlist1">diff.tool</dt>
-<dd>
-<p>Controls which diff tool is used by <a href="git-difftool.html">git-difftool(1)</a>.
-This variable overrides the value configured in <code>merge.tool</code>.
-The list below shows the valid built-in values.
-Any other value is treated as a custom diff tool and requires
-that a corresponding difftool.&lt;tool&gt;.cmd variable is defined.</p>
-</dd>
-<dt class="hdlist1">diff.guitool</dt>
-<dd>
-<p>Controls which diff tool is used by <a href="git-difftool.html">git-difftool(1)</a> when
-the -g/--gui flag is specified. This variable overrides the value
-configured in <code>merge.guitool</code>. The list below shows the valid
-built-in values. Any other value is treated as a custom diff tool
-and requires that a corresponding difftool.&lt;guitool&gt;.cmd variable
-is defined.</p>
 </dd>
 <dt class="hdlist1">difftool.&lt;tool&gt;.cmd</dt>
 <dd>
