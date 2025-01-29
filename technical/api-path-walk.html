@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="generator" content="Asciidoctor 2.0.20"/>
-<title>Git API Documents</title>
+<title>Path-Walk API</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"/>
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,39 +435,96 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Git API Documents</h1>
+<h1>Path-Walk API</h1>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>Git has grown a set of internal APIs over time.  This collection
-documents them.</p>
+<p>The path-walk API is used to walk reachable objects, but to visit objects
+in batches based on a common path they appear in, or by type.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="api-error-handling.html">Error reporting in git</a></p>
-</li>
-<li>
-<p><a href="api-merge.html">merge API</a></p>
-</li>
-<li>
-<p><a href="api-parse-options.html">parse-options API</a></p>
-</li>
-<li>
-<p><a href="api-path-walk.html">Path-Walk API</a></p>
-</li>
-<li>
-<p><a href="api-simple-ipc.html">Simple-IPC API</a></p>
-</li>
-<li>
-<p><a href="api-trace2.html">= Trace2 API</a></p>
-</li>
-</ul>
+<div class="paragraph">
+<p>For example, all reachable commits are visited in a group. All tags are
+visited in a group. Then, all root trees are visited. At some point, all
+blobs reachable via a path <code>my/dir/to/A</code> are visited. When there are
+multiple paths possible to reach the same object, then only one of those
+paths is used to visit the object.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basics">Basics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To use the path-walk API, include <code>path-walk.h</code> and call
+<code>walk_objects_by_path</code>() with a customized <code>path_walk_info</code> struct. The
+struct is used to set all of the options for how the walk should proceed.
+Let&#8217;s dig into the different options and their use.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>path_fn</code> and <code>path_fn_data</code></dt>
+<dd>
+<p>The most important option is the <code>path_fn</code> option, which is a
+function pointer to the callback that can execute logic on the
+object IDs for objects grouped by type and path. This function
+also receives a <code>data</code> value that corresponds to the
+<code>path_fn_data</code> member, for providing custom data structures to
+this callback function.</p>
+</dd>
+<dt class="hdlist1"><code>revs</code></dt>
+<dd>
+<p>To configure the exact details of the reachable set of objects,
+use the <code>revs</code> member and initialize it using the revision
+machinery in <code>revision.h</code>. Initialize <code>revs</code> using calls such as
+<code>setup_revisions</code>() or <code>parse_revision_opt</code>(). Do not call
+<code>prepare_revision_walk</code>(), as that will be called within
+<code>walk_objects_by_path</code>().</p>
+<div class="paragraph">
+<p>It is also important that you do not specify the <code>--objects</code> flag for the
+<code>revs</code> struct. The revision walk should only be used to walk commits, and
+the objects will be walked in a separate way based on those starting
+commits.</p>
+</div>
+</dd>
+<dt class="hdlist1"><code>commits</code>, <code>blobs</code>, <code>trees</code>, <code>tags</code></dt>
+<dd>
+<p>By default, these members are enabled and signal that the path-walk
+API should call the <code>path_fn</code> on objects of these types. Specialized
+applications could disable some options to make it simpler to walk
+the objects or to have fewer calls to <code>path_fn</code>.</p>
+<div class="paragraph">
+<p>While it is possible to walk only commits in this way, consumers would be
+better off using the revision walk API instead.</p>
+</div>
+</dd>
+<dt class="hdlist1"><code>prune_all_uninteresting</code></dt>
+<dd>
+<p>By default, all reachable paths are emitted by the path-walk API.
+This option allows consumers to declare that they are not
+interested in paths where all included objects are marked with the
+<code>UNINTERESTING</code> flag. This requires using the <code>boundary</code> option in
+the revision walk so that the walk emits commits marked with the
+<code>UNINTERESTING</code> flag.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples">Examples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>See example usages in:
+	<code>t/helper/test-path-walk.c</code></p>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-01-29 15:43:31 -0800
+Last updated 2025-01-29 15:43:30 -0800
 </div>
 </div>
 </body>

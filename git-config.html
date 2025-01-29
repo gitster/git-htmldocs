@@ -2835,17 +2835,21 @@ See <code>column.ui</code> for details.</p>
 <p>Specify whether to output tag listings in <code>git</code> <code>tag</code> in columns.
 See <code>column.ui</code> for details.</p>
 </dd>
-<dt class="hdlist1">commit.cleanup</dt>
+</dl>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>commit.cleanup</code></dt>
 <dd>
 <p>This setting overrides the default of the <code>--cleanup</code> option in
-<code>git</code> <code>commit</code>. See <a href="git-commit.html">git-commit(1)</a> for details. Changing the
-default can be useful when you always want to keep lines that begin
+<code>git</code> <code>commit</code>. See <a href="git-commit.html">git-commit(1)</a> for details. Changing the default can be useful
+when you always want to keep lines that begin
 with the comment character # in your log message, in which case you
 would do <code>git</code> <code>config</code> <code>commit.cleanup</code> <code>whitespace</code> (note that you will
 have to remove the help lines that begin with # in the commit log
 template yourself, if you do this).</p>
 </dd>
-<dt class="hdlist1">commit.gpgSign</dt>
+<dt class="hdlist1"><code>commit.gpgSign</code></dt>
 <dd>
 <p>A boolean to specify whether all commits should be GPG signed.
 Use of this option when doing operations such as rebase can
@@ -2853,21 +2857,21 @@ result in a large number of commits being signed. It may be
 convenient to use an agent to avoid typing your GPG passphrase
 several times.</p>
 </dd>
-<dt class="hdlist1">commit.status</dt>
+<dt class="hdlist1"><code>commit.status</code></dt>
 <dd>
 <p>A boolean to enable/disable inclusion of status information in the
 commit message template when using an editor to prepare the commit
-message.  Defaults to true.</p>
+message.  Defaults to <code>true</code>.</p>
 </dd>
-<dt class="hdlist1">commit.template</dt>
+<dt class="hdlist1"><code>commit.template</code></dt>
 <dd>
 <p>Specify the pathname of a file to use as the template for
 new commit messages.</p>
 </dd>
-<dt class="hdlist1">commit.verbose</dt>
+<dt class="hdlist1"><code>commit.verbose</code></dt>
 <dd>
 <p>A boolean or int to specify the level of verbosity with <code>git</code> <code>commit</code>.
-See <a href="git-commit.html">git-commit(1)</a>.</p>
+See <a href="git-commit.html">git-commit(1)</a> for details.</p>
 </dd>
 <dt class="hdlist1">commitGraph.generationVersion</dt>
 <dd>
