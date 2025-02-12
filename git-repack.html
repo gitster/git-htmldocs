@@ -451,7 +451,9 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><em>git repack</em> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [-m] [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;] [--write-midx]</pre>
+<pre class="content"><em>git repack</em> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [-m]
+        [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;]
+        [--write-midx] [--name-hash-version=&lt;n&gt;]</pre>
 </div>
 </div>
 </div>
@@ -733,6 +735,11 @@ pack as the preferred pack for object selection by the MIDX (see
 <p>Write a multi-pack index (see <a href="git-multi-pack-index.html">git-multi-pack-index(1)</a>)
 containing the non-redundant packs.</p>
 </dd>
+<dt class="hdlist1">--name-hash-version=&lt;n&gt;</dt>
+<dd>
+<p>Provide this argument to the underlying <code>git</code> <code>pack-objects</code> process.
+See <a href="git-pack-objects.html">git-pack-objects(1)</a> for full details.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -782,7 +789,7 @@ attribute <code>delta</code> set to false.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-29 16:42:00 -0700
+Last updated 2025-02-12 10:11:31 -0800
 </div>
 </div>
 </body>
