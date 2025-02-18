@@ -7,6 +7,9 @@ linkgit:git-am[1]::
 linkgit:git-archive[1]::
 	Create an archive of files from a named tree.
 
+linkgit:git-backfill[1]::
+	Download missing objects in a partial clone.
+
 linkgit:git-bisect[1]::
 	Use binary search to find the commit that introduced a bug.
 
