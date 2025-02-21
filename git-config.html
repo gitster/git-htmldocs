@@ -728,7 +728,9 @@ canonical form.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><em>bool</em>: canonicalize values as either "true" or "false".</p>
+<p><em>bool</em>: canonicalize values <code>true</code>, <code>yes</code>,<code>on</code>, and positive
+numbers as "true", and values <code>false</code>, <code>no</code>, <code>off</code> and <code>0</code> as
+"false".</p>
 </li>
 <li>
 <p><em>int</em>: canonicalize values as simple decimal numbers. An optional suffix of
@@ -6016,6 +6018,23 @@ by the <code>GIT_SSL_CAPATH</code> environment variable.</p>
 This option is ignored if cURL lacks support for choosing the SSL
 backend at runtime.</p>
 </dd>
+<dt class="hdlist1">http.sslCertType</dt>
+<dd>
+<p>Type of client certificate used when fetching or pushing over HTTPS.
+"PEM", "DER" are supported when using openssl or gnutls backends. "P12"
+is supported on "openssl", "schannel", "securetransport", and gnutls 8.11+.
+See also libcurl <code>CURLOPT_SSLCERTTYPE</code>. Can be overridden by the
+<code>GIT_SSL_CERT_TYPE</code> environment variable.</p>
+</dd>
+<dt class="hdlist1">http.sslKeyType</dt>
+<dd>
+<p>Type of client private key used when fetching or pushing over HTTPS. (e.g.
+"PEM", "DER", or "ENG"). Only applicable when using "openssl" backend. "DER"
+is not supported with openssl. Particularly useful when set to "ENG" for
+authenticating with PKCS#11 tokens, with a PKCS#11 URL in sslCert option.
+See also libcurl <code>CURLOPT_SSLKEYTYPE</code>. Can be overridden by the
+<code>GIT_SSL_KEY_TYPE</code> environment variable.</p>
+</dd>
 <dt class="hdlist1">http.schannelCheckRevoke</dt>
 <dd>
 <p>Used to enforce or disable certificate revocation checks in cURL
@@ -6699,7 +6718,8 @@ to "conflict".</p>
 <p>Tell Git that canonical representation of files in the
 repository has changed over time (e.g. earlier commits record
 text files with CRLF line endings, but recent ones use LF line
-endings).  In such a repository, Git can convert the data
+endings).  In such a repository, for each file where a
+three-way content merge is needed, Git can convert the data
 recorded in commits to a canonical form before performing a
 merge to reduce unnecessary conflicts.  For more information,
 see section "Merging branches with differing checkin/checkout
@@ -9597,7 +9617,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-14 21:38:14 -0800
+Last updated 2025-02-21 13:44:53 -0800
 </div>
 </div>
 </body>

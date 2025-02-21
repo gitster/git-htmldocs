@@ -1290,8 +1290,8 @@ conflicts.</p>
 </div>
 <div class="paragraph">
 <p>To prevent these unnecessary merge conflicts, Git can be told to run a
-virtual check-out and check-in of all three stages of a file when
-resolving a three-way merge by setting the <code>merge.renormalize</code>
+virtual check-out and check-in of all three stages of each file that
+needs a three-way content merge, by setting the <code>merge.renormalize</code>
 configuration variable.  This prevents changes caused by check-in
 conversion from causing spurious merge conflicts when a converted file
 is merged with an unconverted file.</p>
@@ -2125,7 +2125,7 @@ frotz   unspecified</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-14 21:38:14 -0800
+Last updated 2025-02-21 13:44:53 -0800
 </div>
 </div>
 </body>

@@ -1231,7 +1231,7 @@ version includes a substantial change, <em>their</em> version is used;</p>
 <dt class="hdlist1">renormalize</dt>
 <dd>
 <p>This runs a virtual check-out and check-in of all three stages
-of a file when resolving a three-way merge.  This option is
+of any file which needs a three-way merge.  This option is
 meant to be used when merging branches with different clean
 filters or end-of-line normalization rules.  See "Merging
 branches with differing checkin/checkout attributes" in
@@ -1476,7 +1476,8 @@ to "conflict".</p>
 <p>Tell Git that canonical representation of files in the
 repository has changed over time (e.g. earlier commits record
 text files with CRLF line endings, but recent ones use LF line
-endings).  In such a repository, Git can convert the data
+endings).  In such a repository, for each file where a
+three-way content merge is needed, Git can convert the data
 recorded in commits to a canonical form before performing a
 merge to reduce unnecessary conflicts.  For more information,
 see section "Merging branches with differing checkin/checkout
