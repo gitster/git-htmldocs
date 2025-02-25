@@ -566,8 +566,8 @@ creates an "amend!" commit which also replaces the log message of
 replaces the log message of <em>&lt;commit&gt;</em> with its own log message
 but makes no changes to the content of <em>&lt;commit&gt;</em>.</p>
 <div class="paragraph">
-<p>The commit created by plain <code>--fixup=</code><em>&lt;commit&gt;</em> has a subject
-composed of "fixup!" followed by the subject line from <em>&lt;commit&gt;</em>,
+<p>The commit created by plain <code>--fixup=</code><em>&lt;commit&gt;</em> has a title
+composed of "fixup!" followed by the title of <em>&lt;commit&gt;</em>,
 and is recognized specially by <code>git</code> <code>rebase</code> <code>--autosquash</code>. The <code>-m</code>
 option may be used to supplement the log message of the created
 commit, but the additional commentary will be thrown away once the
@@ -576,7 +576,7 @@ commit, but the additional commentary will be thrown away once the
 </div>
 <div class="paragraph">
 <p>The commit created by <code>--fixup=amend:</code><em>&lt;commit&gt;</em> is similar but its
-subject is instead prefixed with "amend!". The log message of
+title is instead prefixed with "amend!". The log message of
 <em>&lt;commit&gt;</em> is copied into the log message of the "amend!" commit and
 opened in an editor so it can be refined. When <code>git</code> <code>rebase</code>
 <code>--autosquash</code> squashes the "amend!" commit into <em>&lt;commit&gt;</em>, the
@@ -601,7 +601,7 @@ See <a href="git-rebase.html">git-rebase(1)</a> for details.</p>
 <dt class="hdlist1"><code>--squash=</code><em>&lt;commit&gt;</em></dt>
 <dd>
 <p>Construct a commit message for use with <code>git</code> <code>rebase</code> <code>--autosquash</code>.
-The commit message subject line is taken from the specified
+The commit message title is taken from the specified
 commit with a prefix of "squash! ".  Can be used with additional
 commit message options (<code>-m</code>/<code>-c</code>/<code>-C</code>/<code>-F</code>). See
 <a href="git-rebase.html">git-rebase(1)</a> for details.</p>
@@ -1406,7 +1406,7 @@ overwritten by the next invocation of <code>git</code> <code>commit</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-14 21:38:14 -0800
+Last updated 2025-02-25 15:22:04 -0800
 </div>
 </div>
 </body>
