@@ -1261,6 +1261,12 @@ See also <a href="git-diff.html">git-diff(1)</a> <code>--find-renames</code>.</p
 <dd>
 <p>Deprecated synonym for <code>find-renames=</code><em>&lt;n&gt;</em>.</p>
 </dd>
+<dt class="hdlist1">no-renames</dt>
+<dd>
+<p>Turn off rename detection. This overrides the <code>merge.renames</code>
+configuration variable.
+See also <a href="git-diff.html">git-diff(1)</a> <code>--no-renames</code>.</p>
+</dd>
 <dt class="hdlist1">subtree[=&lt;path&gt;]</dt>
 <dd>
 <p>This option is a more advanced form of <em>subtree</em> strategy, where
@@ -1292,7 +1298,7 @@ strategy.</p>
 </div>
 <div class="paragraph">
 <p>The <em>recursive</em> strategy takes the same options as <em>ort</em>.  However,
-there are three additional options that <em>ort</em> ignores (not documented
+there are two additional options that <em>ort</em> ignores (not documented
 above) that are potentially useful with the <em>recursive</em> strategy:</p>
 </div>
 <div class="dlist">
@@ -1309,12 +1315,6 @@ avoid mismerges that occur due to unimportant matching lines
 <a href="git-diff.html">git-diff(1)</a> <code>--diff-algorithm</code>.  Note that <code>ort</code>
 specifically uses <code>diff-algorithm=histogram</code>, while <code>recursive</code>
 defaults to the <code>diff.algorithm</code> config setting.</p>
-</dd>
-<dt class="hdlist1">no-renames</dt>
-<dd>
-<p>Turn off rename detection. This overrides the <code>merge.renames</code>
-configuration variable.
-See also <a href="git-diff.html">git-diff(1)</a> <code>--no-renames</code>.</p>
 </dd>
 </dl>
 </div>
@@ -1718,7 +1718,7 @@ See <a href="gitattributes.html">gitattributes(5)</a> for details.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-14 21:38:14 -0800
+Last updated 2025-02-15 14:38:14 +0900
 </div>
 </div>
 </body>
