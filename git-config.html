@@ -2243,47 +2243,84 @@ attribute to another commit with a <em>*</em> in the output of
 <p>Mark lines that were changed by an ignored revision that we attributed to
 another commit with a <em>?</em> in the output of <a href="git-blame.html">git-blame(1)</a>.</p>
 </dd>
-<dt class="hdlist1">branch.autoSetupMerge</dt>
+<dt class="hdlist1"><code>branch.autoSetupMerge</code></dt>
 <dd>
-<p>Tells <em>git branch</em>, <em>git switch</em> and <em>git checkout</em> to set up new branches
+<p>Tells <code>git</code> <code>branch</code>, <code>git</code> <code>switch</code> and <code>git</code> <code>checkout</code> to set up new branches
 so that <a href="git-pull.html">git-pull(1)</a> will appropriately merge from the
 starting point branch. Note that even if this option is not set,
 this behavior can be chosen per-branch using the <code>--track</code>
-and <code>--no-track</code> options. The valid settings are: <code>false</code>&#8201;&#8212;&#8201;no
-automatic setup is done; <code>true</code>&#8201;&#8212;&#8201;automatic setup is done when the
-starting point is a remote-tracking branch; <code>always</code>&#8201;&#8212;&#8201;automatic setup is done when the starting point is either a
-local branch or remote-tracking branch; <code>inherit</code>&#8201;&#8212;&#8201;if the starting point
-has a tracking configuration, it is copied to the new
-branch; <code>simple</code>&#8201;&#8212;&#8201;automatic setup is done only when the starting point
-is a remote-tracking branch and the new branch has the same name as the
-remote branch. This option defaults to true.</p>
-</dd>
-<dt class="hdlist1">branch.autoSetupRebase</dt>
+and <code>--no-track</code> options.  This option defaults to <code>true</code>. The valid settings
+are:</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>false</code></dt>
 <dd>
-<p>When a new branch is created with <em>git branch</em>, <em>git switch</em> or <em>git checkout</em>
-that tracks another branch, this variable tells Git to set
-up pull to rebase instead of merge (see "branch.&lt;name&gt;.rebase").
-When <code>never</code>, rebase is never automatically set to true.
-When <code>local</code>, rebase is set to true for tracked branches of
-other local branches.
-When <code>remote</code>, rebase is set to true for tracked branches of
-remote-tracking branches.
-When <code>always</code>, rebase will be set to true for all tracking
-branches.
-See "branch.autoSetupMerge" for details on how to set up a
-branch to track another branch.
-This option defaults to never.</p>
+<p>no automatic setup is done</p>
 </dd>
-<dt class="hdlist1">branch.sort</dt>
+<dt class="hdlist1"><code>true</code></dt>
+<dd>
+<p>automatic setup is done when the starting point is a remote-tracking branch</p>
+</dd>
+<dt class="hdlist1"><code>always</code></dt>
+<dd>
+<p>automatic setup is done when the starting point is either a
+local branch or remote-tracking branch</p>
+</dd>
+<dt class="hdlist1"><code>inherit</code></dt>
+<dd>
+<p>if the starting point has a tracking configuration, it is copied to the new
+branch</p>
+</dd>
+<dt class="hdlist1"><code>simple</code></dt>
+<dd>
+<p>automatic setup is done only when the starting point
+is a remote-tracking branch and the new branch has the same name as the
+remote branch.</p>
+</dd>
+</dl>
+</div>
+</dd>
+<dt class="hdlist1"><code>branch.autoSetupRebase</code></dt>
+<dd>
+<p>When a new branch is created with <code>git</code> <code>branch</code>, <code>git</code> <code>switch</code> or <code>git</code> <code>checkout</code>
+that tracks another branch, this variable tells Git to set
+up pull to rebase instead of merge (see <code>branch.</code><em>&lt;name&gt;</em><code>.rebase</code>).
+The valid settings are:</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>never</code></dt>
+<dd>
+<p>rebase is never automatically set to true.</p>
+</dd>
+<dt class="hdlist1"><code>local</code></dt>
+<dd>
+<p>rebase is set to true for tracked branches of other local branches.</p>
+</dd>
+<dt class="hdlist1"><code>remote</code></dt>
+<dd>
+<p>rebase is set to true for tracked branches of remote-tracking branches.</p>
+</dd>
+<dt class="hdlist1"><code>always</code></dt>
+<dd>
+<p>rebase will be set to true for all tracking branches.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>See <code>branch.autoSetupMerge</code> for details on how to set up a branch to track another branch.
+This option defaults to <code>never</code>.</p>
+</div>
+</dd>
+<dt class="hdlist1"><code>branch.sort</code></dt>
 <dd>
 <p>This variable controls the sort ordering of branches when displayed by
-<a href="git-branch.html">git-branch(1)</a>. Without the "--sort=&lt;value&gt;" option provided, the
+<a href="git-branch.html">git-branch(1)</a>. Without the <code>--sort=</code><em>&lt;value&gt;</em> option provided, the
 value of this variable will be used as the default.
 See <a href="git-for-each-ref.html">git-for-each-ref(1)</a> field names for valid values.</p>
 </dd>
-<dt class="hdlist1">branch.&lt;name&gt;.remote</dt>
+<dt class="hdlist1"><code>branch.</code><em>&lt;name&gt;</em><code>.remote</code></dt>
 <dd>
-<p>When on branch &lt;name&gt;, it tells <em>git fetch</em> and <em>git push</em>
+<p>When on branch <em>&lt;name&gt;</em>, it tells <code>git</code> <code>fetch</code> and <code>git</code> <code>push</code>
 which remote to fetch from or push to.  The remote to push to
 may be overridden with <code>remote.pushDefault</code> (for all branches).
 The remote to push to, for the current branch, may be further
@@ -2294,55 +2331,55 @@ fetching and <code>remote.pushDefault</code> for pushing.
 Additionally, . (a period) is the current local repository
 (a dot-repository), see <code>branch.</code><em>&lt;name&gt;</em><code>.merge</code>'s final note below.</p>
 </dd>
-<dt class="hdlist1">branch.&lt;name&gt;.pushRemote</dt>
+<dt class="hdlist1"><code>branch.</code><em>&lt;name&gt;</em><code>.pushRemote</code></dt>
 <dd>
-<p>When on branch &lt;name&gt;, it overrides <code>branch.</code><em>&lt;name&gt;</em><code>.remote</code> for
+<p>When on branch <em>&lt;name&gt;</em>, it overrides <code>branch.</code><em>&lt;name&gt;</em><code>.remote</code> for
 pushing.  It also overrides <code>remote.pushDefault</code> for pushing
-from branch &lt;name&gt;.  When you pull from one place (e.g. your
+from branch <em>&lt;name&gt;</em>.  When you pull from one place (e.g. your
 upstream) and push to another place (e.g. your own publishing
 repository), you would want to set <code>remote.pushDefault</code> to
 specify the remote to push to for all branches, and use this
 option to override it for a specific branch.</p>
 </dd>
-<dt class="hdlist1">branch.&lt;name&gt;.merge</dt>
+<dt class="hdlist1"><code>branch.</code><em>&lt;name&gt;</em><code>.merge</code></dt>
 <dd>
-<p>Defines, together with branch.&lt;name&gt;.remote, the upstream branch
-for the given branch. It tells <em>git fetch</em>/<em>git pull</em>/<em>git rebase</em> which
-branch to merge and can also affect <em>git push</em> (see push.default).
-When in branch &lt;name&gt;, it tells <em>git fetch</em> the default
-refspec to be marked for merging in FETCH_HEAD. The value is
+<p>Defines, together with <code>branch.</code><em>&lt;name&gt;</em><code>.remote</code>, the upstream branch
+for the given branch. It tells <code>git</code> <code>fetch</code>/<code>git</code> <code>pull</code>/<code>git</code> <code>rebase</code> which
+branch to merge and can also affect <code>git</code> <code>push</code> (see <code>push.default</code>).
+When in branch <em>&lt;name&gt;</em>, it tells <code>git</code> <code>fetch</code> the default
+refspec to be marked for merging in <code>FETCH_HEAD</code>. The value is
 handled like the remote part of a refspec, and must match a
 ref which is fetched from the remote given by
-"branch.&lt;name&gt;.remote".
-The merge information is used by <em>git pull</em> (which first calls
-<em>git fetch</em>) to lookup the default branch for merging. Without
-this option, <em>git pull</em> defaults to merge the first refspec fetched.
+<code>branch.</code><em>&lt;name&gt;</em><code>.remote</code>.
+The merge information is used by <code>git</code> <code>pull</code> (which first calls
+<code>git</code> <code>fetch</code>) to lookup the default branch for merging. Without
+this option, <code>git</code> <code>pull</code> defaults to merge the first refspec fetched.
 Specify multiple values to get an octopus merge.
-If you wish to setup <em>git pull</em> so that it merges into &lt;name&gt; from
+If you wish to setup <code>git</code> <code>pull</code> so that it merges into &lt;name&gt; from
 another branch in the local repository, you can point
 branch.&lt;name&gt;.merge to the desired branch, and use the relative path
-setting . (a period) for branch.&lt;name&gt;.remote.</p>
+setting . (a period) for <code>branch.</code><em>&lt;name&gt;</em><code>.remote</code>.</p>
 </dd>
-<dt class="hdlist1">branch.&lt;name&gt;.mergeOptions</dt>
+<dt class="hdlist1"><code>branch.</code><em>&lt;name&gt;</em><code>.mergeOptions</code></dt>
 <dd>
-<p>Sets default options for merging into branch &lt;name&gt;. The syntax and
+<p>Sets default options for merging into branch <em>&lt;name&gt;</em>. The syntax and
 supported options are the same as those of <a href="git-merge.html">git-merge(1)</a>, but
 option values containing whitespace characters are currently not
 supported.</p>
 </dd>
-<dt class="hdlist1">branch.&lt;name&gt;.rebase</dt>
+<dt class="hdlist1"><code>branch.</code><em>&lt;name&gt;</em><code>.rebase</code></dt>
 <dd>
-<p>When true, rebase the branch &lt;name&gt; on top of the fetched branch,
+<p>When true, rebase the branch <em>&lt;name&gt;</em> on top of the fetched branch,
 instead of merging the default branch from the default remote when
-"git pull" is run. See "pull.rebase" for doing this in a non
+<code>git</code> <code>pull</code> is run. See <code>pull.rebase</code> for doing this in a non
 branch-specific manner.</p>
 <div class="paragraph">
-<p>When <code>merges</code> (or just <em>m</em>), pass the <code>--rebase-merges</code> option to <em>git rebase</em>
+<p>When <code>merges</code> (or just <code>m</code>), pass the <code>--rebase-merges</code> option to <code>git</code> <code>rebase</code>
 so that the local merge commits are included in the rebase (see
 <a href="git-rebase.html">git-rebase(1)</a> for details).</p>
 </div>
 <div class="paragraph">
-<p>When the value is <code>interactive</code> (or just <em>i</em>), the rebase is run in interactive
+<p>When the value is <code>interactive</code> (or just <code>i</code>), the rebase is run in interactive
 mode.</p>
 </div>
 <div class="paragraph">
@@ -2351,12 +2388,12 @@ it unless you understand the implications (see <a href="git-rebase.html">git-reb
 for details).</p>
 </div>
 </dd>
-<dt class="hdlist1">branch.&lt;name&gt;.description</dt>
+<dt class="hdlist1"><code>branch.</code><em>&lt;name&gt;</em><code>.description</code></dt>
 <dd>
 <p>Branch description, can be edited with
 <code>git</code> <code>branch</code> <code>--edit-description</code>. Branch description is
-automatically added to the format-patch cover letter or
-request-pull summary.</p>
+automatically added to the <code>format-patch</code> cover letter or
+<code>request-pull</code> summary.</p>
 </dd>
 <dt class="hdlist1">browser.&lt;tool&gt;.cmd</dt>
 <dd>
@@ -7406,8 +7443,8 @@ is "none", which means no promisor remote advertised by a
 server will be accepted. By accepting a promisor remote, the
 client agrees that the server might omit objects that are
 lazily fetchable from this promisor remote from its responses
-to "fetch" and "clone" requests from the client. See
-<a href="gitprotocol-v2.html">gitprotocol-v2(5)</a>.</p>
+to "fetch" and "clone" requests from the client. Name and URL
+comparisons are case sensitive. See <a href="gitprotocol-v2.html">gitprotocol-v2(5)</a>.</p>
 </dd>
 <dt class="hdlist1">protocol.allow</dt>
 <dd>
