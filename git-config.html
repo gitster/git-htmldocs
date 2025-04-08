@@ -6146,6 +6146,27 @@ the transfer is aborted.
 Can be overridden by the <code>GIT_HTTP_LOW_SPEED_LIMIT</code> and
 <code>GIT_HTTP_LOW_SPEED_TIME</code> environment variables.</p>
 </dd>
+<dt class="hdlist1">http.keepAliveIdle</dt>
+<dd>
+<p>Specifies how long in seconds to wait on an idle connection
+before sending TCP keepalive probes (if supported by the OS). If
+unset, curl&#8217;s default value is used. Can be overridden by the
+<code>GIT_HTTP_KEEPALIVE_IDLE</code> environment variable.</p>
+</dd>
+<dt class="hdlist1">http.keepAliveInterval</dt>
+<dd>
+<p>Specifies how long in seconds to wait between TCP keepalive
+probes (if supported by the OS). If unset, curl&#8217;s default value
+is used. Can be overridden by the <code>GIT_HTTP_KEEPALIVE_INTERVAL</code>
+environment variable.</p>
+</dd>
+<dt class="hdlist1">http.keepAliveCount</dt>
+<dd>
+<p>Specifies how many TCP keepalive probes to send before giving up
+and terminating the connection (if supported by the OS). If
+unset, curl&#8217;s default value is used. Can be overridden by the
+<code>GIT_HTTP_KEEPALIVE_COUNT</code> environment variable.</p>
+</dd>
 <dt class="hdlist1">http.noEPSV</dt>
 <dd>
 <p>A boolean which disables using of EPSV ftp command by curl.
