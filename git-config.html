@@ -6646,6 +6646,12 @@ positive value implies the command should run when the number of
 loose objects is at least the value of <code>maintenance.loose-objects.auto</code>.
 The default value is 100.</p>
 </dd>
+<dt class="hdlist1">maintenance.loose-objects.batchSize</dt>
+<dd>
+<p>This integer config option controls the maximum number of loose objects
+written into a packfile during the <code>loose-objects</code> task. The default is
+fifty thousand. Use value <code>0</code> to indicate no limit.</p>
+</dd>
 <dt class="hdlist1">maintenance.incremental-repack.auto</dt>
 <dd>
 <p>This integer config option controls how often the <code>incremental-repack</code>

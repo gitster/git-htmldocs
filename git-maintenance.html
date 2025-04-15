@@ -613,13 +613,19 @@ commands, it follows a two-step process. First, it deletes any loose
 objects that already exist in a pack-file; concurrent Git processes
 will examine the pack-file for the object data instead of the loose
 object. Second, it creates a new pack-file (starting with "loose-")
-containing a batch of loose objects. The batch size is limited to 50
-thousand objects to prevent the job from taking too long on a
-repository with many loose objects. The <code>gc</code> task writes unreachable
-objects as loose objects to be cleaned up by a later step only if
-they are not re-added to a pack-file; for this reason it is not
-advisable to enable both the <code>loose-objects</code> and <code>gc</code> tasks at the
-same time.</p>
+containing a batch of loose objects.</p>
+<div class="paragraph">
+<p>The batch size defaults to fifty thousand objects to prevent the job from
+taking too long on a repository with many loose objects. Use the
+<code>maintenance.loose-objects.batchSize</code> config option to adjust this size,
+including a value of <code>0</code> to remove the limit.</p>
+</div>
+<div class="paragraph">
+<p>The <code>gc</code> task writes unreachable objects as loose objects to be cleaned up
+by a later step only if they are not re-added to a pack-file; for this
+reason it is not advisable to enable both the <code>loose-objects</code> and <code>gc</code>
+tasks at the same time.</p>
+</div>
 </dd>
 <dt class="hdlist1">incremental-repack</dt>
 <dd>
@@ -1038,6 +1044,12 @@ positive value implies the command should run when the number of
 loose objects is at least the value of <code>maintenance.loose-objects.auto</code>.
 The default value is 100.</p>
 </dd>
+<dt class="hdlist1">maintenance.loose-objects.batchSize</dt>
+<dd>
+<p>This integer config option controls the maximum number of loose objects
+written into a packfile during the <code>loose-objects</code> task. The default is
+fifty thousand. Use value <code>0</code> to indicate no limit.</p>
+</dd>
 <dt class="hdlist1">maintenance.incremental-repack.auto</dt>
 <dd>
 <p>This integer config option controls how often the <code>incremental-repack</code>
@@ -1063,7 +1075,7 @@ of <code>maintenance.incremental-repack.auto</code>. The default value is 10.</p
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-14 21:38:14 -0800
+Last updated 2025-04-15 14:25:08 -0700
 </div>
 </div>
 </body>
