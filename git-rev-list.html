@@ -926,6 +926,35 @@ trees and blobs will not have their associated path printed.</p>
 <p>Show progress reports on stderr as objects are considered. The
 <em>&lt;header&gt;</em> text will be printed with each progress update.</p>
 </dd>
+<dt class="hdlist1">-z</dt>
+<dd>
+<p>Instead of being newline-delimited, each outputted object and its
+accompanying metadata is delimited using NUL bytes. Output is printed
+in the following form:</p>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;OID&gt; NUL [&lt;token&gt;=&lt;value&gt; NUL]...</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Additional object metadata, such as object paths or boundary objects, is
+printed using the <em>&lt;token&gt;</em><code>=</code><em>&lt;value&gt;</em> form. Token values are printed as-is
+without any encoding/truncation. An OID entry never contains a <em>=</em> character
+and thus is used to signal the start of a new object record. Examples:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;OID&gt; NUL
+&lt;OID&gt; NUL path=&lt;path&gt; NUL
+&lt;OID&gt; NUL boundary=yes NUL
+&lt;OID&gt; NUL missing=yes NUL [&lt;token&gt;=&lt;value&gt; NUL]...</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This mode is only compatible with the <code>--objects</code>, <code>--boundary</code>, and
+<code>--missing</code> output options.</p>
+</div>
+</dd>
 </dl>
 </div>
 </div>
@@ -2989,7 +3018,7 @@ repository size (taking the size of <code>origin</code> as a baseline).</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-15 14:38:14 +0900
+Last updated 2025-02-14 21:38:14 -0800
 </div>
 </div>
 </body>

@@ -6662,6 +6662,16 @@ Otherwise, a positive value implies the command should run when the
 number of pack-files not in the multi-pack-index is at least the value
 of <code>maintenance.incremental-repack.auto</code>. The default value is 10.</p>
 </dd>
+<dt class="hdlist1">maintenance.reflog-expire.auto</dt>
+<dd>
+<p>This integer config option controls how often the <code>reflog-expire</code> task
+should be run as part of <code>git</code> <code>maintenance</code> <code>run</code> <code>--auto</code>. If zero, then
+the <code>reflog-expire</code> task will not run with the <code>--auto</code> option. A
+negative value will force the task to run every time. Otherwise, a
+positive value implies the command should run when the number of
+expired reflog entries in the "HEAD" reflog is at least the value of
+<code>maintenance.loose-objects.auto</code>. The default value is 100.</p>
+</dd>
 <dt class="hdlist1">man.viewer</dt>
 <dd>
 <p>Specify the programs that may be used to display help in the
