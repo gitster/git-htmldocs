@@ -8253,7 +8253,8 @@ the values inherited from a lower priority configuration files (e.g.
 </dd>
 <dt class="hdlist1">remote.&lt;name&gt;.followRemoteHEAD</dt>
 <dd>
-<p>How <a href="git-fetch.html">git-fetch(1)</a> should handle updates to <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code>.
+<p>How <a href="git-fetch.html">git-fetch(1)</a> should handle updates to <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code>
+when fetching using the configured refspecs of a remote.
 The default value is "create", which will create <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code>
 if it exists on the remote, but not locally; this will not touch an
 already existing local reference. Setting it to "warn" will print
