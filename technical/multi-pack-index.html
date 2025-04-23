@@ -604,7 +604,7 @@ the pseudo-pack order for <code>$H2</code>, followed by the pseudo-pack order fo
 </div>
 <div class="paragraph">
 <p>The layout will then be extended so that each layer of the incremental
-MIDX chain can write a *.<code>bitmap</code>. The objects in each layer&#8217;s bitmap
+MIDX chain can write a <code>*.bitmap</code>. The objects in each layer&#8217;s bitmap
 are offset by the number of objects in the previous layers of the chain.</p>
 </div>
 </li>
@@ -731,10 +731,10 @@ perform multi-pack reuse across the set of packs in a MIDX.</p>
 <div class="paragraph">
 <p>Each layer of an incremental MIDX chain may have its objects (and the
 objects from any previous layer in the same MIDX chain) represented in
-its own *.<code>bitmap</code> file.</p>
+its own <code>*.bitmap</code> file.</p>
 </div>
 <div class="paragraph">
-<p>The structure of a *.<code>bitmap</code> file belonging to an incremental MIDX
+<p>The structure of a <code>*.bitmap</code> file belonging to an incremental MIDX
 chain is identical to that of a non-incremental MIDX bitmap, or a
 classic single-pack bitmap. Since objects are added to the end of the
 incremental MIDX&#8217;s pseudo-pack order (see above), it is possible to
@@ -742,8 +742,8 @@ extend a bitmap when appending to the end of a MIDX chain.</p>
 </div>
 <div class="paragraph">
 <p>(Note: it is possible likewise to compress a contiguous sequence of MIDX
-incremental layers, and their *.<code>bitmap</code> files into a single layer and
-*.<code>bitmap</code>, but this is not yet implemented.)</p>
+incremental layers, and their <code>*.bitmap</code> files into a single layer and
+<code>*.bitmap</code>, but this is not yet implemented.)</p>
 </div>
 <div class="paragraph">
 <p>The object positions used are global within the pseudo-pack order, so

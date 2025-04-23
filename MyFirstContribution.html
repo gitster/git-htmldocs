@@ -999,9 +999,9 @@ the declarations and the logic, respectively.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>struct</code> <code>strbuf</code> provides some safety belts to your basic <code>char</code>*, one of
+<p>The <code>struct</code> <code>strbuf</code> provides some safety belts to your basic <code>char*</code>, one of
 which is a length member to prevent buffer overruns. It needs to be initialized
-nicely with <code>STRBUF_INIT</code>. Keep it in mind when you need to pass around <code>char</code>*.</p>
+nicely with <code>STRBUF_INIT</code>. Keep it in mind when you need to pass around <code>char*</code>.</p>
 </div>
 <div class="paragraph">
 <p><code>lookup_commit_reference_by_name</code> resolves the name you pass it, so you can play
@@ -1041,7 +1041,7 @@ following:</p>
 <p>Your new command is undocumented! Let&#8217;s fix that.</p>
 </div>
 <div class="paragraph">
-<p>Take a look at <code>Documentation/git-</code>*.<code>adoc</code>. These are the manpages for the
+<p>Take a look at <code>Documentation/git-*.adoc</code>. These are the manpages for the
 subcommands that Git knows about. You can open these up and take a look to get
 acquainted with the format, but then go ahead and make a new file
 <code>Documentation/git-psuh.adoc</code>. Like with most of the documentation in the Git
@@ -1897,7 +1897,7 @@ valuable, such as changing the Reply-to address or adding more CC and BCC lines.
 <td class="content">
 If you&#8217;re not sure whom to CC, running <code>contrib/contacts/git-contacts</code> can
 list potential reviewers. In addition, you can do <code>git</code> <code>send-email</code>
-<code>--cc-cmd=</code>'perl <code>contrib/contacts/git-contacts</code>' <code>feature/</code>*.<code>patch</code><sup class="footnote" id="_footnote_contrib-scripts">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup> to
+<code>--cc-cmd=</code>'perl <code>contrib/contacts/git-contacts</code>' <code>feature/*.patch</code><sup class="footnote" id="_footnote_contrib-scripts">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup> to
 automatically pass this list of emails to <code>send-email</code>.
 </td>
 </tr>
@@ -1973,7 +1973,7 @@ and your range-diff will be prefaced with "Range-diff against v1".</p>
 directory, alongside the v1 patches. Using a single directory makes it easy to
 refer to the old v1 patches while proofreading the v2 patches, but you will need
 to be careful to send out only the v2 patches. We will use a pattern like
-<code>psuh/v2-</code>*.<code>patch</code> (not <code>psuh/</code>*.<code>patch</code>, which would match v1 and v2 patches).</p>
+<code>psuh/v2-*.patch</code> (not <code>psuh/*.patch</code>, which would match v1 and v2 patches).</p>
 </div>
 <div class="paragraph">
 <p>Edit your cover letter again. Now is a good time to mention what&#8217;s different
@@ -2239,7 +2239,7 @@ should generate your diffs from <em>&lt;topic&gt;</em><code>..</code><em>&lt;myb
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-10 09:41:59 -0700
+Last updated 2025-03-26 00:41:02 -0700
 </div>
 </div>
 </body>

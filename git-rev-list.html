@@ -1522,7 +1522,7 @@ commits are marked as TREESAME (subject to be simplified away).</p>
 <p>Limit output to the one commit object which is roughly halfway between
 included and excluded commits. Note that the bad bisection ref
 <code>refs/bisect/bad</code> is added to the included commits (if it
-exists) and the good bisection refs <code>refs/bisect/good-</code>* are
+exists) and the good bisection refs <code>refs/bisect/good-*</code> are
 added to the excluded commits (if they exist). Thus, supposing there
 are no refs in <code>refs/bisect/</code>, if</p>
 <div class="listingblock">
@@ -1697,7 +1697,7 @@ the output to be more easily parsed by commands such as
 </dd>
 <dt class="hdlist1">--filter=&lt;filter-spec&gt;</dt>
 <dd>
-<p>Only useful with one of the <code>--objects</code>*; omits objects (usually
+<p>Only useful with one of the <code>--objects*</code>; omits objects (usually
 blobs) from the list of printed objects.  The <em>&lt;filter-spec&gt;</em>
 may be one of the following:</p>
 <div class="paragraph">
@@ -2008,7 +2008,7 @@ omitted.</p>
 has no effect.</p>
 </div>
 <div class="paragraph">
-<p><code>--date=format:..</code>. feeds the format ... to your system <code>strftime</code>,
+<p><code>--date=format:..</code>. feeds the format <code>...</code> to your system <code>strftime</code>,
 except for %s, %z, and %Z, which are handled internally.
 Use <code>--date=format:</code>%c to show the date in your system locale&#8217;s
 preferred format.  See the <code>strftime</code> manual for a complete list of
