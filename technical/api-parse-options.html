@@ -735,12 +735,14 @@ Use of <code>--no-option</code> will clear the list of preceding values.</p>
 </dd>
 <dt class="hdlist1"><code>OPT_INTEGER</code>(<code>short,</code> <code>long,</code> &amp;int_var, <code>description</code>)</dt>
 <dd>
-<p>Introduce an option with integer argument.
-The integer is put into <code>int_var</code>.</p>
+<p>Introduce an option with integer argument. The argument must be a
+integer and may include a suffix of <em>k</em>, <em>m</em> or <em>g</em> to
+scale the provided value by 1024, 1024^2 or 1024^3 respectively.
+The scaled value is put into <code>int_var</code>.</p>
 </dd>
-<dt class="hdlist1"><code>OPT_MAGNITUDE</code>(<code>short,</code> <code>long,</code> &amp;unsigned_long_var, <code>description</code>)</dt>
+<dt class="hdlist1"><code>OPT_UNSIGNED</code>(<code>short,</code> <code>long,</code> &amp;unsigned_long_var, <code>description</code>)</dt>
 <dd>
-<p>Introduce an option with a size argument. The argument must be a
+<p>Introduce an option with an unsigned integer argument. The argument must be a
 non-negative integer and may include a suffix of <em>k</em>, <em>m</em> or <em>g</em> to
 scale the provided value by 1024, 1024^2 or 1024^3 respectively.
 The scaled value is put into <code>unsigned_long_var</code>.</p>
@@ -923,7 +925,7 @@ for real-world examples.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-14 21:38:14 -0800
+Last updated 2025-04-24 18:27:36 -0700
 </div>
 </div>
 </body>

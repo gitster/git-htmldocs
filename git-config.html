@@ -3572,6 +3572,12 @@ per-repository basis, or as a more flexible and centralized
 alternative to having an <code>init.templateDir</code> where you&#8217;ve changed
 default hooks.</p>
 </div>
+<div class="paragraph">
+<p>You can also disable all hooks entirely by setting <code>core.hooksPath</code>
+to <code>/dev/null</code>. This is usually only advisable for expert users and
+on a per-command basis using configuration parameters of the form
+<code>git</code> <code>-c</code> <code>core.hooksPath=/dev/null</code> ....</p>
+</div>
 </dd>
 <dt class="hdlist1">core.editor</dt>
 <dd>
