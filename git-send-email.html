@@ -590,6 +590,22 @@ illustration below where [<code>PATCH</code> <code>v2</code> <code>0/3</code>] i
 is not set, this will be prompted for.</p>
 </div>
 </dd>
+<dt class="hdlist1">--[no-]outlook-id-fix</dt>
+<dd>
+<p>Microsoft Outlook SMTP servers discard the Message-ID sent via email and
+assign a new random Message-ID, thus breaking threads.</p>
+<div class="paragraph">
+<p>With <code>--outlook-id-fix</code>, <em>git send-email</em> uses a mechanism specific to
+Outlook servers to learn the Message-ID the server assigned to fix the
+threading. Use it only when you know that the server reports the
+rewritten Message-ID the same way as Outlook servers do.</p>
+</div>
+<div class="paragraph">
+<p>Without this option specified, the fix is done by default when talking
+to <em>smtp.office365.com</em> or <em>smtp-mail.outlook.com</em>. Use
+<code>--no-outlook-id-fix</code> to disable even when talking to these two servers.</p>
+</div>
+</dd>
 <dt class="hdlist1">--subject=&lt;string&gt;</dt>
 <dd>
 <p>Specify the initial subject of the email thread.
@@ -1325,7 +1341,7 @@ Authen::SASL and Mail::Address.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-02-14 21:38:14 -0800
+Last updated 2025-05-12 15:19:42 -0700
 </div>
 </div>
 </body>
