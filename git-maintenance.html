@@ -658,6 +658,16 @@ for more information.</p>
 <p>The <code>reflog-expire</code> task deletes any entries in the reflog older than the
 expiry threshold. See <a href="git-reflog.html">git-reflog(1)</a> for more information.</p>
 </dd>
+<dt class="hdlist1">rerere-gc</dt>
+<dd>
+<p>The <code>rerere-gc</code> task invokes garbage collection for stale entries in
+the rerere cache. See <a href="git-rerere.html">git-rerere(1)</a> for more information.</p>
+</dd>
+<dt class="hdlist1">worktree-prune</dt>
+<dd>
+<p>The <code>worktree-prune</code> task deletes stale or broken worktrees. See
+linkit:git-worktree[1] for more information.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -1075,6 +1085,25 @@ positive value implies the command should run when the number of
 expired reflog entries in the "HEAD" reflog is at least the value of
 <code>maintenance.loose-objects.auto</code>. The default value is 100.</p>
 </dd>
+<dt class="hdlist1">maintenance.rerere-gc.auto</dt>
+<dd>
+<p>This integer config option controls how often the <code>rerere-gc</code> task
+should be run as part of <code>git</code> <code>maintenance</code> <code>run</code> <code>--auto</code>. If zero, then
+the <code>rerere-gc</code> task will not run with the <code>--auto</code> option. A negative
+value will force the task to run every time. Otherwise, any positive
+value implies the command will run when the "rr-cache" directory exists
+and has at least one entry, regardless of whether it is stale or not.
+This heuristic may be refined in the future. The default value is 1.</p>
+</dd>
+<dt class="hdlist1">maintenance.worktree-prune.auto</dt>
+<dd>
+<p>This integer config option controls how often the <code>worktree-prune</code> task
+should be run as part of <code>git</code> <code>maintenance</code> <code>run</code> <code>--auto</code>. If zero, then
+the <code>worktree-prune</code> task will not run with the <code>--auto</code> option. A
+negative value will force the task to run every time. Otherwise, a
+positive value implies the command should run when the number of
+prunable worktrees exceeds the value. The default value is 1.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -1090,7 +1119,7 @@ expired reflog entries in the "HEAD" reflog is at least the value of
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-04-16 14:42:40 -0700
+Last updated 2025-05-15 17:31:22 -0700
 </div>
 </div>
 </body>
