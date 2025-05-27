@@ -453,8 +453,7 @@ pre>code {
 <div class="sectionbody">
 <div class="verseblock">
 <pre class="content"><em>git cat-file</em> &lt;type&gt; &lt;object&gt;
-<em>git cat-file</em> (-e | -p) &lt;object&gt;
-<em>git cat-file</em> (-t | -s) [--allow-unknown-type] &lt;object&gt;
+<em>git cat-file</em> (-e | -p | -t | -s) &lt;object&gt;
 <em>git cat-file</em> (--textconv | --filters)
              [&lt;rev&gt;:&lt;path|tree-ish&gt; | --path=&lt;path|tree-ish&gt; &lt;rev&gt;]
 <em>git cat-file</em> (--batch | --batch-check | --batch-command) [--batch-all-objects]
@@ -710,10 +709,6 @@ should generally result in faster output, especially with
 <code>--batch</code>.  Note that <code>cat-file</code> will still show each object
 only once, even if it is stored multiple times in the
 repository.</p>
-</dd>
-<dt class="hdlist1">--allow-unknown-type</dt>
-<dd>
-<p>Allow <code>-s</code> or <code>-t</code> to query broken/corrupt objects of unknown type.</p>
 </dd>
 <dt class="hdlist1">--follow-symlinks</dt>
 <dd>
@@ -1046,7 +1041,7 @@ will be reported.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-04-16 14:42:40 -0700
+Last updated 2025-05-27 15:29:51 -0700
 </div>
 </div>
 </body>
