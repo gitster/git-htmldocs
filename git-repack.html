@@ -454,7 +454,7 @@ pre>code {
 <div class="verseblock">
 <pre class="content"><em>git repack</em> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [-m]
         [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;]
-        [--write-midx] [--name-hash-version=&lt;n&gt;]</pre>
+        [--write-midx] [--name-hash-version=&lt;n&gt;] [--path-walk]</pre>
 </div>
 </div>
 </div>
@@ -745,6 +745,11 @@ containing the non-redundant packs.</p>
 <p>Provide this argument to the underlying <code>git</code> <code>pack-objects</code> process.
 See <a href="git-pack-objects.html">git-pack-objects(1)</a> for full details.</p>
 </dd>
+<dt class="hdlist1">--path-walk</dt>
+<dd>
+<p>Pass the <code>--path-walk</code> option to the underlying <code>git</code> <code>pack-objects</code>
+process. See <a href="git-pack-objects.html">git-pack-objects(1)</a> for full details.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -794,7 +799,7 @@ attribute <code>delta</code> set to false.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-04-07 15:21:58 -0700
+Last updated 2025-06-18 14:54:41 -0700
 </div>
 </div>
 </body>

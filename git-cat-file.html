@@ -867,6 +867,12 @@ newline. The available atoms are:</p>
 <dd>
 <p>The type of the object (the same as <code>cat-file</code> <code>-t</code> reports).</p>
 </dd>
+<dt class="hdlist1"><code>objectmode</code></dt>
+<dd>
+<p>If the specified object has mode information (such as a tree or
+index entry), the mode expressed as an octal integer. Otherwise,
+empty string.</p>
+</dd>
 <dt class="hdlist1"><code>objectsize</code></dt>
 <dd>
 <p>The size, in bytes, of the object (the same as <code>cat-file</code> <code>-s</code>
@@ -944,6 +950,16 @@ then <code>cat-file</code> will ignore any custom format and print:</p>
 <div class="listingblock">
 <div class="content">
 <pre>&lt;object&gt; SP ambiguous LF</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If a name is specified that refers to a submodule entry in a tree and the
+target object does not exist in the repository, then <code>cat-file</code> will ignore
+any custom format and print (with the object ID of the submodule):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;oid&gt; SP submodule LF</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1041,7 +1057,7 @@ will be reported.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-05-27 15:29:51 -0700
+Last updated 2025-06-18 14:54:41 -0700
 </div>
 </div>
 </body>

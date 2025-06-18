@@ -4657,6 +4657,11 @@ walking fewer objects.</p>
 <p><code>pack.allowPackReuse=multi</code> may improve the time it takes to create a pack by
 reusing objects from multiple packs instead of just one.</p>
 </li>
+<li>
+<p><code>pack.usePathWalk</code> may speed up packfile creation and make the packfiles be
+significantly smaller in the presence of certain filename collisions with Git&#8217;s
+default name-hash.</p>
+</li>
 </ul>
 </div>
 </dd>
@@ -7424,6 +7429,11 @@ that extra objects are added to the pack-file if the included
 commits contain certain types of direct renames. Default is
 <code>true</code>.</p>
 </dd>
+<dt class="hdlist1">pack.usePathWalk</dt>
+<dd>
+<p>Enable the <code>--path-walk</code> option by default for <code>git</code> <code>pack-objects</code>
+processes. See <a href="git-pack-objects.html">git-pack-objects(1)</a> for full details.</p>
+</dd>
 <dt class="hdlist1">pack.preferBitmapTips</dt>
 <dd>
 <p>When selecting which commits will receive bitmaps, prefer a
@@ -8477,14 +8487,14 @@ the <code>SUDO_UID</code> variable from root&#8217;s environment before invoking
 <dt class="hdlist1">sendemail.identity</dt>
 <dd>
 <p>A configuration identity. When given, causes values in the
-<em>sendemail.&lt;identity&gt;</em> subsection to take precedence over
-values in the <em>sendemail</em> section. The default identity is
+<code>sendemail.</code><em>&lt;identity&gt;</em> subsection to take precedence over
+values in the <code>sendemail</code> section. The default identity is
 the value of <code>sendemail.identity</code>.</p>
 </dd>
 <dt class="hdlist1">sendemail.smtpEncryption</dt>
 <dd>
 <p>See <a href="git-send-email.html">git-send-email(1)</a> for description.  Note that this
-setting is not subject to the <em>identity</em> mechanism.</p>
+setting is not subject to the <code>identity</code> mechanism.</p>
 </dd>
 <dt class="hdlist1">sendemail.smtpSSLCertPath</dt>
 <dd>
@@ -8493,22 +8503,22 @@ Set it to an empty string to disable certificate verification.</p>
 </dd>
 <dt class="hdlist1">sendemail.&lt;identity&gt;.*</dt>
 <dd>
-<p>Identity-specific versions of the <em>sendemail.*</em> parameters
+<p>Identity-specific versions of the <code>sendemail.*</code> parameters
 found below, taking precedence over those when this
 identity is selected, through either the command-line or
 <code>sendemail.identity</code>.</p>
 </dd>
 <dt class="hdlist1">sendemail.multiEdit</dt>
 <dd>
-<p>If true (default), a single editor instance will be spawned to edit
+<p>If <code>true</code> (default), a single editor instance will be spawned to edit
 files you have to edit (patches when <code>--annotate</code> is used, and the
-summary when <code>--compose</code> is used). If false, files will be edited one
+summary when <code>--compose</code> is used). If <code>false</code>, files will be edited one
 after the other, spawning a new editor each time.</p>
 </dd>
 <dt class="hdlist1">sendemail.confirm</dt>
 <dd>
 <p>Sets the default for whether to confirm before sending. Must be
-one of <em>always</em>, <em>never</em>, <em>cc</em>, <em>compose</em>, or <em>auto</em>. See <code>--confirm</code>
+one of <code>always</code>, <code>never</code>, <code>cc</code>, <code>compose</code>, or <code>auto</code>. See <code>--confirm</code>
 in the <a href="git-send-email.html">git-send-email(1)</a> documentation for the meaning of these
 values.</p>
 </dd>
@@ -8538,7 +8548,7 @@ email aliases files.  You must also supply <code>sendemail.aliasFileType</code>.
 <dt class="hdlist1">sendemail.aliasFileType</dt>
 <dd>
 <p>Format of the file(s) specified in sendemail.aliasesFile. Must be
-one of <em>mutt</em>, <em>mailrc</em>, <em>pine</em>, <em>elm</em>, <em>gnus</em>, or <em>sendmail</em>.</p>
+one of <code>mutt</code>, <code>mailrc</code>, <code>pine</code>, <code>elm</code>, <code>gnus</code>, or <code>sendmail</code>.</p>
 <div class="paragraph">
 <p>What an alias file in each format looks like can be found in
 the documentation of the email program of the same name. The
@@ -8612,7 +8622,7 @@ documentation for details.</p>
 <dt class="hdlist1">sendemail.smtpBatchSize</dt>
 <dd>
 <p>Number of messages to be sent per connection, after that a relogin
-will happen.  If the value is 0 or undefined, send all messages in
+will happen.  If the value is <code>0</code> or undefined, send all messages in
 one connection.
 See also the <code>--batch-size</code> option of <a href="git-send-email.html">git-send-email(1)</a>.</p>
 </dd>
@@ -8624,7 +8634,7 @@ See also the <code>--relogin-delay</code> option of <a href="git-send-email.html
 <dt class="hdlist1">sendemail.forbidSendmailVariables</dt>
 <dd>
 <p>To avoid common misconfiguration mistakes, <a href="git-send-email.html">git-send-email(1)</a>
-will abort with a warning if any configuration options for "sendmail"
+will abort with a warning if any configuration options for <code>sendmail</code>
 exist. Set this variable to bypass the check.</p>
 </dd>
 <dt class="hdlist1">sequence.editor</dt>
