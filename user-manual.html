@@ -3037,7 +3037,7 @@ an entry in the <code class="literal">commands</code>[] array in <code class="li
 an entry in <code class="literal">BUILTIN_OBJECTS</code> in the <code class="literal">Makefile</code>.
 </li></ul></div>
 <p>Sometimes, more than one builtin is contained in one source file.  For
-example, <code class="literal">cmd_whatchanged</code>() and <code class="literal">cmd_log</code>() both reside in <code class="literal">builtin/log.c</code>,
+example, <code class="literal">cmd_show</code>() and <code class="literal">cmd_log</code>() both reside in <code class="literal">builtin/log.c</code>,
 since they share quite a bit of code.  In that case, the commands which are
 <span class="emphasis"><em>not</em></span> named like the .<code class="literal">c</code> file in which they live have to be listed in
 <code class="literal">BUILT_INS</code> in the <code class="literal">Makefile</code>.</p>
