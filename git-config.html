@@ -6296,8 +6296,10 @@ running <em>git log</em> and friends.</p>
 <dt class="hdlist1">imap.folder</dt>
 <dd>
 <p>The folder to drop the mails into, which is typically the Drafts
-folder. For example: "INBOX.Drafts", "INBOX/Drafts" or
-"[Gmail]/Drafts". Required.</p>
+folder. For example: <code>INBOX.Drafts</code>, <code>INBOX/Drafts</code> or
+[<code>Gmail</code>]<code>/Drafts</code>. The IMAP folder to interact with MUST be specified;
+the value of this configuration variable is used as the fallback
+default value when the <code>--folder</code> option is not given.</p>
 </dd>
 <dt class="hdlist1">imap.tunnel</dt>
 <dd>
@@ -6344,8 +6346,9 @@ format=fixed email.  Default is <code>false</code>.</p>
 <p>Specify the authentication method for authenticating with the IMAP server.
 If Git was built with the NO_CURL option, or if your curl version is older
 than 7.34.0, or if you&#8217;re running git-imap-send with the <code>--no-curl</code>
-option, the only supported method is <em>CRAM-MD5</em>. If this is not set
-then <em>git imap-send</em> uses the basic IMAP plaintext LOGIN command.</p>
+option, the only supported methods are <code>PLAIN</code>, <code>CRAM-MD5</code>, <code>OAUTHBEARER</code>
+and <code>XOAUTH2</code>. If this is not set then <code>git</code> <code>imap-send</code> uses the basic IMAP
+plaintext <code>LOGIN</code> command.</p>
 </dd>
 <dt class="hdlist1">include.path</dt>
 <dt class="hdlist1">includeIf.&lt;condition&gt;.path</dt>
