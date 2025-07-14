@@ -453,9 +453,9 @@ pre>code {
 <div class="sectionbody">
 <div class="verseblock">
 <pre class="content"><em>git config list</em> [&lt;file-option&gt;] [&lt;display-option&gt;] [--includes]
-<em>git config get</em> [&lt;file-option&gt;] [&lt;display-option&gt;] [--includes] [--all] [--regexp] [--value=&lt;value&gt;] [--fixed-value] [--default=&lt;default&gt;] &lt;name&gt;
-<em>git config set</em> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--all] [--value=&lt;value&gt;] [--fixed-value] &lt;name&gt; &lt;value&gt;
-<em>git config unset</em> [&lt;file-option&gt;] [--all] [--value=&lt;value&gt;] [--fixed-value] &lt;name&gt;
+<em>git config get</em> [&lt;file-option&gt;] [&lt;display-option&gt;] [--includes] [--all] [--regexp] [--value=&lt;pattern&gt;] [--fixed-value] [--default=&lt;default&gt;] [--url=&lt;url&gt;] &lt;name&gt;
+<em>git config set</em> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--all] [--value=&lt;pattern&gt;] [--fixed-value] &lt;name&gt; &lt;value&gt;
+<em>git config unset</em> [&lt;file-option&gt;] [--all] [--value=&lt;pattern&gt;] [--fixed-value] &lt;name&gt;
 <em>git config rename-section</em> [&lt;file-option&gt;] &lt;old-name&gt; &lt;new-name&gt;
 <em>git config remove-section</em> [&lt;file-option&gt;] &lt;name&gt;
 <em>git config edit</em> [&lt;file-option&gt;]
@@ -474,7 +474,7 @@ escaped.</p>
 <div class="paragraph">
 <p>Multiple lines can be added to an option by using the <code>--append</code> option.
 If you want to update or unset an option which can occur on multiple
-lines, a <code>value-pattern</code> (which is an extended regular expression,
+lines, <code>--value=</code><em>&lt;pattern&gt;</em> (which is an extended regular expression,
 unless the <code>--fixed-value</code> option is given) needs to be given.  Only the
 existing values that match the pattern are updated or unset.  If
 you want to handle the lines that do <strong>not</strong> match the pattern, just
@@ -597,7 +597,7 @@ options whose values match the given pattern.</p>
 <dt class="hdlist1">--replace-all</dt>
 <dd>
 <p>Default behavior is to replace at most one line. This replaces
-all lines matching the key (and optionally the <code>value-pattern</code>).</p>
+all lines matching the key (and optionally <code>--value=</code><em>&lt;pattern&gt;</em>).</p>
 </dd>
 <dt class="hdlist1">--append</dt>
 <dd>
@@ -710,12 +710,22 @@ you can use <em>master:.gitmodules</em> to read values from the file
 section in <a href="gitrevisions.html">gitrevisions(7)</a> for a more complete list of
 ways to spell blob names.</p>
 </dd>
+<dt class="hdlist1"><code>--value=</code><em>&lt;pattern&gt;</em></dt>
+<dt class="hdlist1"><code>--no-value</code></dt>
+<dd>
+<p>With <code>get</code>, <code>set</code>, and <code>unset</code>, match only against
+<em>&lt;pattern&gt;</em>. The pattern is an extended regular expression unless
+<code>--fixed-value</code> is given.</p>
+<div class="paragraph">
+<p>Use <code>--no-value</code> to unset <em>&lt;pattern&gt;</em>.</p>
+</div>
+</dd>
 <dt class="hdlist1">--fixed-value</dt>
 <dd>
-<p>When used with the <code>value-pattern</code> argument, treat <code>value-pattern</code> as
+<p>When used with <code>--value=</code><em>&lt;pattern&gt;</em>, treat <em>&lt;pattern&gt;</em> as
 an exact string instead of a regular expression. This will restrict
 the name/value pairs that are matched to only those where the value
-is exactly equal to the <code>value-pattern</code>.</p>
+is exactly equal to <em>&lt;pattern&gt;</em>.</p>
 </dd>
 <dt class="hdlist1">--type &lt;type&gt;</dt>
 <dd>
@@ -789,6 +799,13 @@ contain line breaks.</p>
 <dd>
 <p>Output only the names of config variables for <code>list</code> or
 <code>get</code>.</p>
+</dd>
+<dt class="hdlist1"><code>--show-names</code></dt>
+<dt class="hdlist1"><code>--no-show-names</code></dt>
+<dd>
+<p>With <code>get</code>, show config keys in addition to their values. The
+default is <code>--no-show-names</code> unless <code>--url</code> is given and there
+are no subsections in <em>&lt;name&gt;</em>.</p>
 </dd>
 <dt class="hdlist1">--show-origin</dt>
 <dd>
@@ -4661,6 +4678,13 @@ reusing objects from multiple packs instead of just one.</p>
 <p><code>pack.usePathWalk</code> may speed up packfile creation and make the packfiles be
 significantly smaller in the presence of certain filename collisions with Git&#8217;s
 default name-hash.</p>
+</li>
+<li>
+<p><code>init.defaultRefFormat=reftable</code> causes newly initialized repositories to use
+the reftable format for storing references. This new format solves issues with
+case-insensitive filesystems, compresses better and performs significantly
+better with many use cases. Refer to Documentation/technical/reftable.adoc for
+more information on this new storage format.</p>
 </li>
 </ul>
 </div>
@@ -9817,7 +9841,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-20 18:10:42 -0700
+Last updated 2025-07-14 12:11:05 -0700
 </div>
 </div>
 </body>
