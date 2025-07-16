@@ -788,12 +788,14 @@ must be used for each option.</p>
 <p>Path to a store of trusted CA certificates for SMTP SSL/TLS
 certificate validation (either a directory that has been processed
 by <code>c_rehash</code>, or a single file containing one or more PEM format
-certificates concatenated together: see verify(1) -CAfile and
--CApath for more information on these). Set it to an empty string
-to disable certificate verification. Defaults to the value of the
-<code>sendemail.smtpSSLCertPath</code> configuration variable, if set, or the
-backing SSL library&#8217;s compiled-in default otherwise (which should
-be the best choice on most platforms).</p>
+certificates concatenated together: see the description of the
+<code>-CAfile</code> <em>&lt;file&gt;</em> and the <code>-CApath</code> <em>&lt;dir&gt;</em> options of
+<a href="https://docs.openssl.org/master/man1/openssl-verify/" class="bare">https://docs.openssl.org/master/man1/openssl-verify/</a>
+[OpenSSL&#8217;s verify(1) manual page] for more information on these).
+Set it to an empty string to disable certificate verification.
+Defaults to the value of the <code>sendemail.smtpSSLCertPath</code> configuration
+variable, if set, or the backing SSL library&#8217;s compiled-in default
+otherwise (which should be the best choice on most platforms).</p>
 </dd>
 <dt class="hdlist1">--smtp-user=&lt;user&gt;</dt>
 <dd>
@@ -1156,8 +1158,8 @@ values.</p>
 </dd>
 <dt class="hdlist1">sendemail.mailmap</dt>
 <dd>
-<p>If true, makes <a href="git-send-email.html">git-send-email(1)</a> assume <code>--mailmap</code>,
-otherwise assume <code>--no-mailmap</code>. False by default.</p>
+<p>If <code>true</code>, makes <a href="git-send-email.html">git-send-email(1)</a> assume <code>--mailmap</code>,
+otherwise assume <code>--no-mailmap</code>. <code>False</code> by default.</p>
 </dd>
 <dt class="hdlist1">sendemail.mailmap.file</dt>
 <dd>
@@ -1246,6 +1248,12 @@ recognized by the parser.</p>
 <p>These configuration variables all provide a default for
 <a href="git-send-email.html">git-send-email(1)</a> command-line options. See its
 documentation for details.</p>
+</dd>
+<dt class="hdlist1">sendemail.outlookidfix</dt>
+<dd>
+<p>If <code>true</code>, makes <a href="git-send-email.html">git-send-email(1)</a> assume <code>--outlook-id-fix</code>,
+and if <code>false</code> assume <code>--no-outlook-id-fix</code>. If not specified, it will
+behave the same way as if <code>--outlook-id-fix</code> is not specified.</p>
 </dd>
 <dt class="hdlist1">sendemail.signedOffCc (deprecated)</dt>
 <dd>
@@ -1388,11 +1396,24 @@ available online. Community maintained credential helpers are also available:</p
 <p><a href="https://github.com/AdityaGarg8/git-credential-email">git-credential-yahoo</a>
 (cross platform, dedicated helper for authenticating Yahoo accounts)</p>
 </li>
+<li>
+<p><a href="https://github.com/AdityaGarg8/git-credential-email">git-credential-aol</a>
+(cross platform, dedicated helper for authenticating AOL accounts)</p>
+</li>
 </ul>
 </div>
 <div class="paragraph">
 <p>You can also see <a href="gitcredentials.html">gitcredentials(7)</a> for more OAuth based authentication
 helpers.</p>
+</div>
+<div class="paragraph">
+<p>Proton Mail does not provide an SMTP server to send emails. If you are a paid
+customer of Proton Mail, you can use
+<a href="https://proton.me/mail/bridge">Proton Mail Bridge</a>
+officially provided by Proton Mail to create a local SMTP server for sending
+emails. For both free and paid users, community maintained projects like
+<a href="https://github.com/AdityaGarg8/git-credential-email">git-protonmail</a> can be
+used.</p>
 </div>
 <div class="paragraph">
 <p>Note: the following core Perl modules that may be installed with your
@@ -1410,6 +1431,47 @@ distribution of Perl are required:</p>
 <div class="paragraph">
 <p><a href="https://metacpan.org/pod/Authen::SASL">Authen::SASL</a> and
 <a href="https://metacpan.org/pod/Mail::Address">Mail::Address</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_exploiting_the_sendmailcmd_option_of_git_send_email">Exploiting the <code>sendmailCmd</code> option of <code>git</code> <code>send-email</code></h3>
+<div class="paragraph">
+<p>Apart from sending emails via an SMTP server, <code>git</code> <code>send-email</code> can also send
+emails through any application that supports sendmail-like commands. You can
+read documentation of <code>--sendmail-cmd=</code><em>&lt;command&gt;</em> above for more information.
+This ability can be very useful if you want to use another application as an
+SMTP client for <code>git</code> <code>send-email</code>, or if your email provider uses proprietary
+APIs instead of SMTP to send emails.</p>
+</div>
+<div class="paragraph">
+<p>As an example, lets see how to configure <a href="https://marlam.de/msmtp/">msmtp</a>, a
+popular SMTP client found in many Linux distributions. Edit <code>~/.gitconfig</code>
+to instruct <code>git-send-email</code> to use it for sending emails.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[sendemail]
+        sendmailCmd = /usr/bin/msmtp # Change this to the path where msmtp is installed</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Links of a few such community maintained helpers are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://marlam.de/msmtp/">msmtp</a>
+(popular SMTP client with many features, available for Linux and macOS)</p>
+</li>
+<li>
+<p><a href="https://github.com/AdityaGarg8/git-credential-email">git-protonmail</a>
+(cross platform client that can send emails using the ProtonMail API)</p>
+</li>
+<li>
+<p><a href="https://github.com/AdityaGarg8/git-credential-email">git-msgraph</a>
+(cross platform client that can send emails using the Microsoft Graph API)</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -1432,7 +1494,7 @@ distribution of Perl are required:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-18 14:54:41 -0700
+Last updated 2025-07-16 14:23:57 -0700
 </div>
 </div>
 </body>

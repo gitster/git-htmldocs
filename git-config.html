@@ -8578,8 +8578,8 @@ values.</p>
 </dd>
 <dt class="hdlist1">sendemail.mailmap</dt>
 <dd>
-<p>If true, makes <a href="git-send-email.html">git-send-email(1)</a> assume <code>--mailmap</code>,
-otherwise assume <code>--no-mailmap</code>. False by default.</p>
+<p>If <code>true</code>, makes <a href="git-send-email.html">git-send-email(1)</a> assume <code>--mailmap</code>,
+otherwise assume <code>--no-mailmap</code>. <code>False</code> by default.</p>
 </dd>
 <dt class="hdlist1">sendemail.mailmap.file</dt>
 <dd>
@@ -8668,6 +8668,12 @@ recognized by the parser.</p>
 <p>These configuration variables all provide a default for
 <a href="git-send-email.html">git-send-email(1)</a> command-line options. See its
 documentation for details.</p>
+</dd>
+<dt class="hdlist1">sendemail.outlookidfix</dt>
+<dd>
+<p>If <code>true</code>, makes <a href="git-send-email.html">git-send-email(1)</a> assume <code>--outlook-id-fix</code>,
+and if <code>false</code> assume <code>--no-outlook-id-fix</code>. If not specified, it will
+behave the same way as if <code>--outlook-id-fix</code> is not specified.</p>
 </dd>
 <dt class="hdlist1">sendemail.signedOffCc (deprecated)</dt>
 <dd>

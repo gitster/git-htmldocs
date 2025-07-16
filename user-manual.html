@@ -3085,9 +3085,9 @@ hex characters, which is passed as <code class="literal">char</code> <code class
 <p>You will see both of these things throughout the code.</p>
 <p>Now, for the meat:</p>
 <pre class="screen">        case 0:
-                buf = read_object_with_reference(sha1, argv[1], &amp;size, NULL);</pre>
+                buf = odb_read_object_peeled(r-&gt;objects, sha1, argv[1], &amp;size, NULL);</pre>
 <p>This is how you read a blob (actually, not only a blob, but any type of
-object).  To know how the function <code class="literal">read_object_with_reference</code>() actually
+object).  To know how the function <code class="literal">odb_read_object_peeled</code>() actually
 works, find the source code for it (something like <code class="literal">git</code> <code class="literal">grep</code>
 <code class="literal">read_object_with</code> | <code class="literal">grep</code> ":[<code class="literal">a-z</code>]" in the Git repository), and read
 the source.</p>
