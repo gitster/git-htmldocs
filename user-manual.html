@@ -3467,9 +3467,8 @@ full pathname may have special meaning:</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
 A leading "<code class="literal">**</code>" followed by a slash means match in all
 directories. For example, "<code class="literal">**/foo</code>" matches file or directory
-"<code class="literal">foo</code>" anywhere, the same as pattern "<code class="literal">foo</code>". "<code class="literal">**/foo/bar</code>"
-matches file or directory "<code class="literal">bar</code>" anywhere that is directly
-under directory "<code class="literal">foo</code>".
+"<code class="literal">foo</code>" anywhere. "<code class="literal">**/foo/bar</code>" matches file or directory "<code class="literal">bar</code>"
+anywhere that is directly under directory "<code class="literal">foo</code>".
 </li><li class="listitem">
 A trailing "<code class="literal">/**</code>" matches everything inside. For example,
 "<code class="literal">abc/**</code>" matches all files inside directory "abc", relative

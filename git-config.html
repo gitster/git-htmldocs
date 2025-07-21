@@ -1691,14 +1691,14 @@ tilde expansion happens to such a string: <code>~/</code>
 is expanded to the value of <code>$HOME</code>, and <code>~user/</code> to the
 specified user&#8217;s home directory.</p>
 <div class="paragraph">
-<p>If a path starts with %(<code>prefix</code>)<code>/</code>, the remainder is interpreted as a
+<p>If a path starts with <code>%</code>(<code>prefix</code>)<code>/</code>, the remainder is interpreted as a
 path relative to Git&#8217;s "runtime prefix", i.e. relative to the location
-where Git itself was installed. For example, %(<code>prefix</code>)<code>/bin/</code> refers to
+where Git itself was installed. For example, <code>%</code>(<code>prefix</code>)<code>/bin/</code> refers to
 the directory in which the Git executable itself lives. If Git was
 compiled without runtime prefix support, the compiled-in prefix will be
 substituted instead. In the unlikely event that a literal path needs to
 be specified that should <em>not</em> be expanded, it needs to be prefixed by
-.<code>/</code>, like so: .<code>/</code>%(<code>prefix</code>)<code>/bin</code>.</p>
+.<code>/</code>, like so: .<code>/%</code>(<code>prefix</code>)<code>/bin</code>.</p>
 </div>
 </dd>
 </dl>
@@ -5466,7 +5466,7 @@ access method.</p>
 </dd>
 <dt class="hdlist1">gpg.program</dt>
 <dd>
-<p>Use this custom program instead of "<code>gpg</code>" found on <code>$PATH</code> when
+<p>Pathname of the program to use instead of "<code>gpg</code>" when
 making or verifying a PGP signature. The program must support the
 same command-line interface as GPG, namely, to verify a detached
 signature, "<code>gpg</code> <code>--verify</code> <code>$signature</code> <code>-</code> &lt;$file" is run, and the
@@ -6504,18 +6504,18 @@ mark up the diff further for human consumption, provided that it
 retains a one-to-one correspondence with the lines in the
 original diff. Defaults to disabled (no filtering).</p>
 </dd>
-<dt class="hdlist1">log.abbrevCommit</dt>
+<dt class="hdlist1"><code>log.abbrevCommit</code></dt>
 <dd>
-<p>If true, makes
+<p>If <code>true</code>, make
 <a href="git-log.html">git-log(1)</a>, <a href="git-show.html">git-show(1)</a>, and
 <a href="git-whatchanged.html">git-whatchanged(1)</a>
 assume <code>--abbrev-commit</code>. You may
 override this option with <code>--no-abbrev-commit</code>.</p>
 </dd>
-<dt class="hdlist1">log.date</dt>
+<dt class="hdlist1"><code>log.date</code></dt>
 <dd>
-<p>Set the default date-time mode for the <em>log</em> command.
-Setting a value for log.date is similar to using <em>git log</em>'s
+<p>Set the default date-time mode for the <code>log</code> command.
+Setting a value for log.date is similar to using <code>git</code> <code>log</code>'s
 <code>--date</code> option.  See <a href="git-log.html">git-log(1)</a> for details.</p>
 <div class="paragraph">
 <p>If the format is set to "auto:foo" and the pager is in use, format
@@ -6523,61 +6523,68 @@ Setting a value for log.date is similar to using <em>git log</em>'s
 be used.</p>
 </div>
 </dd>
-<dt class="hdlist1">log.decorate</dt>
+<dt class="hdlist1"><code>log.decorate</code></dt>
 <dd>
 <p>Print out the ref names of any commits that are shown by the log
-command. If <em>short</em> is specified, the ref name prefixes <em>refs/heads/</em>,
-<em>refs/tags/</em> and <em>refs/remotes/</em> will not be printed. If <em>full</em> is
-specified, the full ref name (including prefix) will be printed.
-If <em>auto</em> is specified, then if the output is going to a terminal,
-the ref names are shown as if <em>short</em> were given, otherwise no ref
-names are shown. This is the same as the <code>--decorate</code> option
-of the <code>git</code> <code>log</code>.</p>
+command. Possible values are:</p>
+<div class="listingblock">
+<div class="content">
+<pre>`short`;; the ref name prefixes `refs/heads/`, `refs/tags/` and
+        `refs/remotes/` are not printed.
+`full`;; the full ref name (including prefix) are printed.
+`auto`;; if the output is going to a terminal,
+        the ref names are shown as if `short` were given, otherwise no ref
+        names are shown.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is the same as the <code>--decorate</code> option of the <code>git</code> <code>log</code>.</p>
+</div>
 </dd>
-<dt class="hdlist1">log.initialDecorationSet</dt>
+<dt class="hdlist1"><code>log.initialDecorationSet</code></dt>
 <dd>
 <p>By default, <code>git</code> <code>log</code> only shows decorations for certain known ref
 namespaces. If <em>all</em> is specified, then show all refs as
 decorations.</p>
 </dd>
-<dt class="hdlist1">log.excludeDecoration</dt>
+<dt class="hdlist1"><code>log.excludeDecoration</code></dt>
 <dd>
 <p>Exclude the specified patterns from the log decorations. This is
 similar to the <code>--decorate-refs-exclude</code> command-line option, but
 the config option can be overridden by the <code>--decorate-refs</code>
 option.</p>
 </dd>
-<dt class="hdlist1">log.diffMerges</dt>
+<dt class="hdlist1"><code>log.diffMerges</code></dt>
 <dd>
 <p>Set diff format to be used when <code>--diff-merges=on</code> is
 specified, see <code>--diff-merges</code> in <a href="git-log.html">git-log(1)</a> for
 details. Defaults to <code>separate</code>.</p>
 </dd>
-<dt class="hdlist1">log.follow</dt>
+<dt class="hdlist1"><code>log.follow</code></dt>
 <dd>
 <p>If <code>true</code>, <code>git</code> <code>log</code> will act as if the <code>--follow</code> option was used when
 a single &lt;path&gt; is given.  This has the same limitations as <code>--follow</code>,
 i.e. it cannot be used to follow multiple files and does not work well
 on non-linear history.</p>
 </dd>
-<dt class="hdlist1">log.graphColors</dt>
+<dt class="hdlist1"><code>log.graphColors</code></dt>
 <dd>
 <p>A list of colors, separated by commas, that can be used to draw
 history lines in <code>git</code> <code>log</code> <code>--graph</code>.</p>
 </dd>
-<dt class="hdlist1">log.showRoot</dt>
+<dt class="hdlist1"><code>log.showRoot</code></dt>
 <dd>
 <p>If true, the initial commit will be shown as a big creation event.
 This is equivalent to a diff against an empty tree.
 Tools like <a href="git-log.html">git-log(1)</a> or <a href="git-whatchanged.html">git-whatchanged(1)</a>, which
 normally hide the root commit will now show it. True by default.</p>
 </dd>
-<dt class="hdlist1">log.showSignature</dt>
+<dt class="hdlist1"><code>log.showSignature</code></dt>
 <dd>
 <p>If true, makes <a href="git-log.html">git-log(1)</a>, <a href="git-show.html">git-show(1)</a>, and
 <a href="git-whatchanged.html">git-whatchanged(1)</a> assume <code>--show-signature</code>.</p>
 </dd>
-<dt class="hdlist1">log.mailmap</dt>
+<dt class="hdlist1"><code>log.mailmap</code></dt>
 <dd>
 <p>If true, makes <a href="git-log.html">git-log(1)</a>, <a href="git-show.html">git-show(1)</a>, and
 <a href="git-whatchanged.html">git-whatchanged(1)</a> assume <code>--use-mailmap</code>, otherwise
@@ -7563,9 +7570,9 @@ commands, set <code>core.pager</code> or <code>GIT_PAGER</code> to <code>cat</co
 <p>Alias for a --pretty= format string, as specified in
 <a href="git-log.html">git-log(1)</a>. Any aliases defined here can be used just
 as the built-in pretty formats could. For example,
-running <code>git</code> <code>config</code> <code>pretty.changelog</code> "format:* %H %s"
+running <code>git</code> <code>config</code> <code>pretty.changelog</code> "format:* <code>%H</code> <code>%s</code>"
 would cause the invocation <code>git</code> <code>log</code> <code>--pretty=changelog</code>
-to be equivalent to running <code>git</code> <code>log</code> "--pretty=format:* %H %s".
+to be equivalent to running <code>git</code> <code>log</code> "--pretty=format:* <code>%H</code> <code>%s</code>".
 Note that an alias with the same name as a built-in format
 will be silently ignored.</p>
 </dd>
@@ -8439,6 +8446,14 @@ a cruft pack and the respective parameters are not given over
 the command line. See similarly named <code>pack.*</code> configuration
 variables for defaults and meaning.</p>
 </dd>
+<dt class="hdlist1">repack.midxMustContainCruft</dt>
+<dd>
+<p>When set to true, <a href="git-repack.html">git-repack(1)</a> will unconditionally include
+cruft pack(s), if any, in the multi-pack index when invoked with
+<code>--write-midx</code>. When false, cruft packs are only included in the MIDX
+when necessary (e.g., because they might be required to form a
+reachability closure with MIDX bitmaps). Defaults to true.</p>
+</dd>
 <dt class="hdlist1">rerere.autoUpdate</dt>
 <dd>
 <p>When set to true, <code>git-rerere</code> updates the index with the
@@ -8510,7 +8525,7 @@ value.</p>
 </div>
 <div class="paragraph">
 <p>The value of this setting is interpolated, i.e. <code>~/</code><em>&lt;path&gt;</em> expands to a
-path relative to the home directory and %(<code>prefix</code>)<code>/</code><em>&lt;path&gt;</em> expands to a
+path relative to the home directory and <code>%</code>(<code>prefix</code>)<code>/</code><em>&lt;path&gt;</em> expands to a
 path relative to Git&#8217;s (runtime) prefix.</p>
 </div>
 <div class="paragraph">
