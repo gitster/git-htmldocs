@@ -7740,6 +7740,24 @@ for details).</p>
 <p>The default merge strategy to use when pulling multiple branches
 at once.</p>
 </dd>
+<dt class="hdlist1">pull.autoStash</dt>
+<dd>
+<p>When set to true, automatically create a temporary stash entry
+to record the local changes before the operation begins, and
+restore them after the operation completes.  When your "git
+pull" rebases (instead of merges), this may be convenient, since
+unlike merging pull that tolerates local changes that do not
+interfere with the merge, rebasing pull refuses to work with any
+local changes.</p>
+<div class="paragraph">
+<p>If <code>pull.autostash</code> is set (either to true or false),
+<code>merge.autostash</code> and <code>rebase.autostash</code> are ignored.  If
+<code>pull.autostash</code> is not set at all, depending on the value of
+<code>pull.rebase</code>, <code>merge.autostash</code> or <code>rebase.autostash</code> is used
+instead.  Can be overridden by the <code>--</code>[<code>no-</code>]<code>autostash</code> command line
+option.</p>
+</div>
+</dd>
 <dt class="hdlist1">pull.twohead</dt>
 <dd>
 <p>The default merge strategy to use when pulling a single branch.</p>

@@ -595,6 +595,40 @@ plaintext <code>LOGIN</code> command.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_getting_a_list_of_available_folders">GETTING A LIST OF AVAILABLE FOLDERS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to send an email to a specific folder, you need to know the correct name of
+intended folder in your mailbox. The names like "Junk", "Trash" etc. displayed by
+various email clients need not be the actual names of the folders stored in the mail
+server of your email provider.</p>
+</div>
+<div class="paragraph">
+<p>In order to get the correct folder name to be used with <code>git</code> <code>imap-send</code>, you can run
+<code>git</code> <code>imap-send</code> <code>--list</code>. This will display a list of valid folder names. An example
+of such an output when run on a Gmail account is:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>* LIST (\HasNoChildren) "/" "INBOX"
+* LIST (\HasChildren \Noselect) "/" "[Gmail]"
+* LIST (\All \HasNoChildren) "/" "[Gmail]/All Mail"
+* LIST (\Drafts \HasNoChildren) "/" "[Gmail]/Drafts"
+* LIST (\HasNoChildren \Important) "/" "[Gmail]/Important"
+* LIST (\HasNoChildren \Sent) "/" "[Gmail]/Sent Mail"
+* LIST (\HasNoChildren \Junk) "/" "[Gmail]/Spam"
+* LIST (\Flagged \HasNoChildren) "/" "[Gmail]/Starred"
+* LIST (\HasNoChildren \Trash) "/" "[Gmail]/Trash"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here, you can observe that the correct name for the "Junk" folder is [<code>Gmail</code>]<code>/Spam</code>
+and for the "Trash" folder is [<code>Gmail</code>]<code>/Trash</code>. Similar logic can be used to determine
+other folders as well.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_examples">EXAMPLES</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -786,7 +820,7 @@ users may wish to visit this web page for more information:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-07-02 13:17:18 -0700
+Last updated 2025-08-01 11:40:48 -0700
 </div>
 </div>
 </body>
