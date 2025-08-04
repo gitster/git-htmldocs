@@ -452,13 +452,13 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><em>git for-each-ref</em> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
-                   [(--sort=&lt;key&gt;)&#8230;&#8203;] [--format=&lt;format&gt;]
-                   [--include-root-refs] [ --stdin | &lt;pattern&gt;&#8230;&#8203; ]
-                   [--points-at=&lt;object&gt;]
-                   [--merged[=&lt;object&gt;]] [--no-merged[=&lt;object&gt;]]
-                   [--contains[=&lt;object&gt;]] [--no-contains[=&lt;object&gt;]]
-                   [--exclude=&lt;pattern&gt; &#8230;&#8203;] [--start-after=&lt;marker&gt;]</pre>
+<pre class="content"><code>git</code> <code>for-each-ref</code> [<code>--count=</code><em>&lt;count&gt;</em>] [<code>--shell</code>|<code>--perl</code>|<code>--python</code>|<code>--tcl</code>]
+		   [(<code>--sort=</code><em>&lt;key&gt;</em>)&#8230;&#8203;] [<code>--format=</code><em>&lt;format&gt;</em>]
+		   [<code>--include-root-refs</code>] [<code>--points-at=</code><em>&lt;object&gt;</em>]
+		   [<code>--merged</code>[<code>=</code><em>&lt;object&gt;</em>]] [<code>--no-merged</code>[<code>=</code><em>&lt;object&gt;</em>]]
+		   [<code>--contains</code>[<code>=</code><em>&lt;object&gt;</em>]] [<code>--no-contains</code>[<code>=</code><em>&lt;object&gt;</em>]]
+		   [(<code>--exclude=</code><em>&lt;pattern&gt;</em>)&#8230;&#8203;] [<code>--start-after=</code><em>&lt;marker&gt;</em>]
+		   [ <code>--stdin</code> | <em>&lt;pattern&gt;</em>&#8230;&#8203; ]</pre>
 </div>
 </div>
 </div>
@@ -584,7 +584,8 @@ specified marker. When paging, it should be noted that references may be
 deleted, modified or added between invocations. Output will only yield those
 references which follow the marker lexicographically. Output begins from the
 first reference that would come after the marker alphabetically. Cannot be
-used with general pattern matching or custom sort options.</p>
+used with <code>--sort=</code><em>&lt;key&gt;</em> or <code>--stdin</code> options, or the <em>&lt;pattern&gt;</em> argument(s)
+to limit the refs.</p>
 </dd>
 </dl>
 </div>
@@ -1147,7 +1148,7 @@ commits and from none of the <code>--no-merged</code> commits are shown.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-03 22:01:44 -0700
+Last updated 2025-08-04 09:35:46 -0700
 </div>
 </div>
 </body>

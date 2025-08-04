@@ -3060,7 +3060,7 @@ when made a builtin, and then saw less than 10 versions).
 </li></ul></div>
 <p>So, look into <code class="literal">builtin/cat-file.c</code>, search for <code class="literal">cmd_cat_file</code>() and look what
 it does.</p>
-<pre class="screen">        git_config(git_default_config);
+<pre class="screen">        repo_config(the_repository, git_default_config);
         if (argc != 3)
                 usage("git cat-file [-t|-s|-e|-p|&lt;type&gt;] &lt;sha1&gt;");
         if (get_sha1(argv[2], sha1))
