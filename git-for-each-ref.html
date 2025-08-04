@@ -458,7 +458,7 @@ pre>code {
                    [--points-at=&lt;object&gt;]
                    [--merged[=&lt;object&gt;]] [--no-merged[=&lt;object&gt;]]
                    [--contains[=&lt;object&gt;]] [--no-contains[=&lt;object&gt;]]
-                   [--exclude=&lt;pattern&gt; &#8230;&#8203;]</pre>
+                   [--exclude=&lt;pattern&gt; &#8230;&#8203;] [--start-after=&lt;marker&gt;]</pre>
 </div>
 </div>
 </div>
@@ -576,6 +576,15 @@ same rules as <em>&lt;pattern&gt;</em> above.</p>
 <dt class="hdlist1">--include-root-refs</dt>
 <dd>
 <p>List root refs (HEAD and pseudorefs) apart from regular refs.</p>
+</dd>
+<dt class="hdlist1">--start-after=&lt;marker&gt;</dt>
+<dd>
+<p>Allows paginating the output by skipping references up to and including the
+specified marker. When paging, it should be noted that references may be
+deleted, modified or added between invocations. Output will only yield those
+references which follow the marker lexicographically. Output begins from the
+first reference that would come after the marker alphabetically. Cannot be
+used with general pattern matching or custom sort options.</p>
 </dd>
 </dl>
 </div>
@@ -1138,7 +1147,7 @@ commits and from none of the <code>--no-merged</code> commits are shown.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-20 18:10:42 -0700
+Last updated 2025-08-03 22:01:44 -0700
 </div>
 </div>
 </body>
