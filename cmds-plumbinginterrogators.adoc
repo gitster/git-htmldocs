@@ -43,6 +43,9 @@ linkgit:git-name-rev[1]::
 linkgit:git-pack-redundant[1]::
 	Find redundant pack files.
 
+linkgit:git-repo[1]::
+	Retrieve information about the repository.
+
 linkgit:git-rev-list[1]::
 	Lists commit objects in reverse chronological order.
 

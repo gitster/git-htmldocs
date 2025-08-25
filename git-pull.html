@@ -548,7 +548,8 @@ merging.</p>
 <dd>
 <p>Pass --verbose to git-fetch and git-merge.</p>
 </dd>
-<dt class="hdlist1">--[no-]recurse-submodules[=(yes|on-demand|no)]</dt>
+<dt class="hdlist1">--recurse-submodules[=(yes|on-demand|no)]</dt>
+<dt class="hdlist1">--no-recurse-submodules</dt>
 <dd>
 <p>This option controls if new commits of populated submodules should
 be fetched, and if the working trees of active submodules should be
@@ -712,7 +713,8 @@ option can be used to override <code>--squash</code>.</p>
 <p>Only useful when merging.</p>
 </div>
 </dd>
-<dt class="hdlist1"><code>--</code>[<code>no-</code>]<code>verify</code></dt>
+<dt class="hdlist1"><code>--verify</code></dt>
+<dt class="hdlist1"><code>--no-verify</code></dt>
 <dd>
 <p>By default, the pre-merge and commit-msg hooks are run.
 When <code>--no-verify</code> is given, these are bypassed.
@@ -825,7 +827,8 @@ unless you have read <a href="git-rebase.html">git-rebase(1)</a> carefully.
 <h3 id="_options_related_to_fetching">Options related to fetching</h3>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">--[no-]all</dt>
+<dt class="hdlist1">--all</dt>
+<dt class="hdlist1">--no-all</dt>
 <dd>
 <p>Fetch all remotes, except for the ones that has the
 <code>remote.</code><em>&lt;name&gt;</em><code>.skipFetchAll</code> configuration variable set.
@@ -1875,7 +1878,7 @@ version.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-20 18:10:42 -0700
+Last updated 2025-08-25 14:46:08 -0700
 </div>
 </div>
 </body>

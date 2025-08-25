@@ -486,7 +486,8 @@ index file, all SHA-1 references in the <code>refs</code> namespace, and all ref
 <p>Print out objects that exist but that aren&#8217;t reachable from any
 of the reference nodes.</p>
 </dd>
-<dt class="hdlist1">--[no-]dangling</dt>
+<dt class="hdlist1">--dangling</dt>
+<dt class="hdlist1">--no-dangling</dt>
 <dd>
 <p>Print objects that exist but that are never <em>directly</em> used (default).
 <code>--no-dangling</code> can be used to omit this information from the output.</p>
@@ -564,7 +565,8 @@ SHA-1 also display a name that describes <strong>how</strong> they are reachable
 compatible with <a href="git-rev-parse.html">git-rev-parse(1)</a>, e.g.
 <code>HEAD@</code>{1234567890}~25^2:src/.</p>
 </dd>
-<dt class="hdlist1">--[no-]progress</dt>
+<dt class="hdlist1">--progress</dt>
+<dt class="hdlist1">--no-progress</dt>
 <dd>
 <p>Progress status is reported on the standard error stream by
 default when it is attached to a terminal, unless
@@ -572,7 +574,8 @@ default when it is attached to a terminal, unless
 progress status even if the standard error stream is not
 directed to a terminal.</p>
 </dd>
-<dt class="hdlist1">--[no-]references</dt>
+<dt class="hdlist1">--references</dt>
+<dt class="hdlist1">--no-references</dt>
 <dd>
 <p>Control whether to check the references database consistency
 via <em>git refs verify</em>. See <a href="git-refs.html">git-refs(1)</a> for details.
@@ -1101,7 +1104,7 @@ created such a file.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-20 18:10:42 -0700
+Last updated 2025-08-25 14:46:08 -0700
 </div>
 </div>
 </body>

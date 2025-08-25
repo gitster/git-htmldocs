@@ -675,14 +675,16 @@ exists. <code>-B</code> overrides this safeguard, resetting <em>&lt;new-branch&g
 <p>With <code>add</code>, detach <code>HEAD</code> in the new worktree. See "DETACHED HEAD"
 in <a href="git-checkout.html">git-checkout(1)</a>.</p>
 </dd>
-<dt class="hdlist1">--[no-]checkout</dt>
+<dt class="hdlist1">--checkout</dt>
+<dt class="hdlist1">--no-checkout</dt>
 <dd>
 <p>By default, <code>add</code> checks out <em>&lt;commit-ish&gt;</em>, however, <code>--no-checkout</code> can
 be used to suppress checkout in order to make customizations,
 such as configuring sparse-checkout. See "Sparse checkout"
 in <a href="git-read-tree.html">git-read-tree(1)</a>.</p>
 </dd>
-<dt class="hdlist1">--[no-]guess-remote</dt>
+<dt class="hdlist1">--guess-remote</dt>
+<dt class="hdlist1">--no-guess-remote</dt>
 <dd>
 <p>With <code>worktree</code> <code>add</code> <em>&lt;path&gt;</em>, without <em>&lt;commit-ish&gt;</em>, instead
 of creating a new branch from <code>HEAD</code>, if there exists a tracking
@@ -694,7 +696,8 @@ the remote-tracking branch as "upstream" from the new branch.</p>
 <code>worktree.guessRemote</code> config option.</p>
 </div>
 </dd>
-<dt class="hdlist1">--[no-]relative-paths</dt>
+<dt class="hdlist1">--relative-paths</dt>
+<dt class="hdlist1">--no-relative-paths</dt>
 <dd>
 <p>Link worktrees using relative paths or absolute paths (default).
 Overrides the <code>worktree.useRelativePaths</code> config option, see
@@ -704,7 +707,8 @@ Overrides the <code>worktree.useRelativePaths</code> config option, see
 mismatch, even if the links are correct.</p>
 </div>
 </dd>
-<dt class="hdlist1">--[no-]track</dt>
+<dt class="hdlist1">--track</dt>
+<dt class="hdlist1">--no-track</dt>
 <dd>
 <p>When creating a new branch, if <em>&lt;commit-ish&gt;</em> is a branch,
 mark it as "upstream" from the new branch.  This is the
@@ -1097,7 +1101,7 @@ checkouts of a superproject.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-20 18:10:42 -0700
+Last updated 2025-08-25 14:46:08 -0700
 </div>
 </div>
 </body>

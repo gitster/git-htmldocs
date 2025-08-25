@@ -499,7 +499,8 @@ may be used by scripts or other git commands, such as <a href="git-pull.html">gi
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1">--[no-]all</dt>
+<dt class="hdlist1">--all</dt>
+<dt class="hdlist1">--no-all</dt>
 <dd>
 <p>Fetch all remotes, except for the ones that has the
 <code>remote.</code><em>&lt;name&gt;</em><code>.skipFetchAll</code> configuration variable set.
@@ -607,7 +608,8 @@ scripts. See section OUTPUT in <a href="git-fetch.html">git-fetch(1)</a> for det
 precedence over the <code>fetch.output</code> config option.</p>
 </div>
 </dd>
-<dt class="hdlist1">--[no-]write-fetch-head</dt>
+<dt class="hdlist1">--write-fetch-head</dt>
+<dt class="hdlist1">--no-write-fetch-head</dt>
 <dd>
 <p>Write the list of remote refs fetched in the <code>FETCH_HEAD</code>
 file directly under <code>$GIT_DIR</code>.  This is the default.
@@ -633,14 +635,17 @@ This option overrides that check.</p>
 <p>Allow several &lt;repository&gt; and &lt;group&gt; arguments to be
 specified. No &lt;refspec&gt;s may be specified.</p>
 </dd>
-<dt class="hdlist1">--[no-]auto-maintenance</dt>
-<dt class="hdlist1">--[no-]auto-gc</dt>
+<dt class="hdlist1">--auto-maintenance</dt>
+<dt class="hdlist1">--no-auto-maintenance</dt>
+<dt class="hdlist1">--auto-gc</dt>
+<dt class="hdlist1">--no-auto-gc</dt>
 <dd>
 <p>Run <code>git</code> <code>maintenance</code> <code>run</code> <code>--auto</code> at the end to perform automatic
 repository maintenance if needed. (<code>--</code>[<code>no-</code>]<code>auto-gc</code> is a synonym.)
 This is enabled by default.</p>
 </dd>
-<dt class="hdlist1">--[no-]write-commit-graph</dt>
+<dt class="hdlist1">--write-commit-graph</dt>
+<dt class="hdlist1">--no-write-commit-graph</dt>
 <dd>
 <p>Write a commit-graph after fetching. This overrides the config
 setting <code>fetch.writeCommitGraph</code>.</p>

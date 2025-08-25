@@ -460,7 +460,7 @@ pre>code {
 		   [<code>--merged</code>[<code>=</code><em>&lt;object&gt;</em>]] [<code>--no-merged</code>[<code>=</code><em>&lt;object&gt;</em>]]
 		   [<code>--contains</code>[<code>=</code><em>&lt;object&gt;</em>]] [<code>--no-contains</code>[<code>=</code><em>&lt;object&gt;</em>]]
 		   [(<code>--exclude=</code><em>&lt;pattern&gt;</em>)&#8230;&#8203;] [<code>--start-after=</code><em>&lt;marker&gt;</em>]
-		   [ <code>--stdin</code> | <em>&lt;pattern&gt;</em>&#8230;&#8203; ]</pre>
+		   [ <code>--stdin</code> | (<em>&lt;pattern&gt;</em><code>...</code>)]</pre>
 </div>
 </div>
 </div>
@@ -477,11 +477,11 @@ pre>code {
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1">migrate</dt>
+<dt class="hdlist1"><code>migrate</code></dt>
 <dd>
 <p>Migrate ref store between different formats.</p>
 </dd>
-<dt class="hdlist1">verify</dt>
+<dt class="hdlist1"><code>verify</code></dt>
 <dd>
 <p>Verify reference database consistency.</p>
 </dd>
@@ -499,11 +499,11 @@ formatting, and sorting. This subcommand is an alias for
 <h2 id="_options">OPTIONS</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The following options are specific to <em>git refs migrate</em>:</p>
+<p>The following options are specific to <code>git</code> <code>refs</code> <code>migrate</code>:</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">--ref-format=&lt;format&gt;</dt>
+<dt class="hdlist1"><code>--ref-format=</code><em>&lt;format&gt;</em></dt>
 <dd>
 <p>The ref format to migrate the ref store to. Can be one of:</p>
 <div class="ulist">
@@ -518,7 +518,7 @@ internals are subject to change.</p>
 </ul>
 </div>
 </dd>
-<dt class="hdlist1">--dry-run</dt>
+<dt class="hdlist1"><code>--dry-run</code></dt>
 <dd>
 <p>Perform the migration, but do not modify the repository. The migrated
 refs will be written into a separate directory that can be inspected
@@ -526,8 +526,8 @@ separately. The name of the directory will be reported on stdout. This
 can be used to double check that the migration works as expected before
 performing the actual migration.</p>
 </dd>
-<dt class="hdlist1">--reflog</dt>
-<dt class="hdlist1">--no-reflog</dt>
+<dt class="hdlist1"><code>--reflog</code></dt>
+<dt class="hdlist1"><code>--no-reflog</code></dt>
 <dd>
 <p>Choose between migrating the reflog data to the new backend,
 and discarding them.  The default is "--reflog", to migrate.</p>
@@ -535,16 +535,16 @@ and discarding them.  The default is "--reflog", to migrate.</p>
 </dl>
 </div>
 <div class="paragraph">
-<p>The following options are specific to <em>git refs verify</em>:</p>
+<p>The following options are specific to <code>git</code> <code>refs</code> <code>verify</code>:</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">--strict</dt>
+<dt class="hdlist1"><code>--strict</code></dt>
 <dd>
 <p>Enable stricter error checking. This will cause warnings to be
 reported as errors. See <a href="git-fsck.html">git-fsck(1)</a>.</p>
 </dd>
-<dt class="hdlist1">--verbose</dt>
+<dt class="hdlist1"><code>--verbose</code></dt>
 <dd>
 <p>When verifying the reference database consistency, be chatty.</p>
 </dd>
@@ -555,104 +555,105 @@ reported as errors. See <a href="git-fsck.html">git-fsck(1)</a>.</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">&lt;pattern&gt;&#8230;&#8203;</dt>
+<dt class="hdlist1"><em>&lt;pattern&gt;</em>...</dt>
 <dd>
-<p>If one or more patterns are given, only refs are shown that
-match against at least one pattern, either using fnmatch(3) or
+<p>If one or more <em>&lt;pattern&gt;</em> parameters are given, only refs are shown that
+match against at least one pattern, either using <code>fnmatch</code>(3) or
 literally, in the latter case matching completely or from the
 beginning up to a slash.</p>
 </dd>
-<dt class="hdlist1">--stdin</dt>
+<dt class="hdlist1"><code>--stdin</code></dt>
 <dd>
-<p>If <code>--stdin</code> is supplied, then the list of patterns is read from
-standard input instead of from the argument list.</p>
+<p>The list of patterns is read from standard input instead of from
+the argument list.</p>
 </dd>
-<dt class="hdlist1">--count=&lt;count&gt;</dt>
+<dt class="hdlist1"><code>--count=</code><em>&lt;count&gt;</em></dt>
 <dd>
-<p>By default the command shows all refs that match
-<em>&lt;pattern&gt;</em>.  This option makes it stop after showing
-that many refs.</p>
+<p>Stop after showing <em>&lt;count&gt;</em> refs.</p>
 </dd>
-<dt class="hdlist1">--sort=&lt;key&gt;</dt>
+<dt class="hdlist1"><code>--sort=</code><em>&lt;key&gt;</em></dt>
 <dd>
-<p>A field name to sort on.  Prefix <code>-</code> to sort in
+<p>Sort on the field name <em>&lt;key&gt;</em>.  Prefix <code>-</code> to sort in
 descending order of the value.  When unspecified,
-<code>refname</code> is used.  You may use the --sort=&lt;key&gt; option
+<code>refname</code> is used.  You may use the <code>--sort=</code><em>&lt;key&gt;</em> option
 multiple times, in which case the last key becomes the primary
 key.</p>
 </dd>
-<dt class="hdlist1">--format=&lt;format&gt;</dt>
+<dt class="hdlist1"><code>--format</code>[<code>=</code><em>&lt;format&gt;</em>]</dt>
 <dd>
 <p>A string that interpolates <code>%</code>(<code>fieldname</code>) from a ref being shown and
 the object it points at. In addition, the string literal <code>%%</code>
 renders as <code>%</code> and <code>%xx</code> - where <code>xx</code> are hex digits - renders as
 the character with hex code <code>xx</code>. For example, <code>%00</code> interpolates to
-<code>\0</code> (NUL), <code>%09</code> to <code>\t</code> (TAB), and <code>%0a</code> to <code>\n</code> (LF).</p>
+<code>\0</code> (<em>NUL</em>), <code>%09</code> to <code>\t</code> (<em>TAB</em>), and <code>%0a</code> to <code>\n</code> (<em>LF</em>).</p>
+</dd>
+</dl>
+</div>
 <div class="paragraph">
 <p>When unspecified, <em>&lt;format&gt;</em> defaults to <code>%</code>(<code>objectname</code>) <code>SPC</code> <code>%</code>(<code>objecttype</code>)
 <code>TAB</code> <code>%</code>(<code>refname</code>).</p>
 </div>
-</dd>
-<dt class="hdlist1">--color[=&lt;when&gt;]</dt>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>--color</code>[<code>=</code><em>&lt;when&gt;</em>]</dt>
 <dd>
 <p>Respect any colors specified in the <code>--format</code> option. The
-<em>&lt;when&gt;</em> field must be one of <code>always</code>, <code>never</code>, or <code>auto</code> (if
+<em>&lt;when_</em> field must be one of <code>always</code>, <code>never</code>, or <code>auto</code> (if
 <em>&lt;when&gt;</em> is absent, behave as if <code>always</code> was given).</p>
 </dd>
-<dt class="hdlist1">--shell</dt>
-<dt class="hdlist1">--perl</dt>
-<dt class="hdlist1">--python</dt>
-<dt class="hdlist1">--tcl</dt>
+<dt class="hdlist1"><code>--shell</code></dt>
+<dt class="hdlist1"><code>--perl</code></dt>
+<dt class="hdlist1"><code>--python</code></dt>
+<dt class="hdlist1"><code>--tcl</code></dt>
 <dd>
 <p>If given, strings that substitute <code>%</code>(<code>fieldname</code>)
 placeholders are quoted as string literals suitable for
 the specified host language.  This is meant to produce
-a scriptlet that can directly be `eval`ed.</p>
+a scriptlet that can directly be "eval"ed.</p>
 </dd>
-<dt class="hdlist1">--points-at=&lt;object&gt;</dt>
+<dt class="hdlist1"><code>--points-at=</code><em>&lt;object&gt;</em></dt>
 <dd>
 <p>Only list refs which points at the given object.</p>
 </dd>
-<dt class="hdlist1">--merged[=&lt;object&gt;]</dt>
+<dt class="hdlist1"><code>--merged</code>[<code>=</code><em>&lt;object&gt;</em>]</dt>
 <dd>
 <p>Only list refs whose tips are reachable from the
-specified commit (HEAD if not specified).</p>
+specified commit (<code>HEAD</code> if not specified).</p>
 </dd>
-<dt class="hdlist1">--no-merged[=&lt;object&gt;]</dt>
+<dt class="hdlist1"><code>--no-merged</code>[<code>=</code><em>&lt;object&gt;</em>]</dt>
 <dd>
-<p>Only list refs whose tips are not reachable from the
-specified commit (HEAD if not specified).</p>
-</dd>
-<dt class="hdlist1">--contains[=&lt;object&gt;]</dt>
-<dd>
-<p>Only list refs which contain the specified commit (HEAD if not
+<p>Only list refs whose tips are not reachable from <em>&lt;object&gt;</em>(<code>HEAD</code> if not
 specified).</p>
 </dd>
-<dt class="hdlist1">--no-contains[=&lt;object&gt;]</dt>
+<dt class="hdlist1"><code>--contains</code>[<code>=</code><em>&lt;object&gt;</em>]</dt>
 <dd>
-<p>Only list refs which don&#8217;t contain the specified commit (HEAD
+<p>Only list refs which contain <em>&lt;object&gt;</em>(<code>HEAD</code> if not specified).</p>
+</dd>
+<dt class="hdlist1"><code>--no-contains</code>[<code>=</code><em>&lt;object&gt;</em>]</dt>
+<dd>
+<p>Only list refs which don&#8217;t contain <em>&lt;object&gt;</em> (<code>HEAD</code>
 if not specified).</p>
 </dd>
-<dt class="hdlist1">--ignore-case</dt>
+<dt class="hdlist1"><code>--ignore-case</code></dt>
 <dd>
 <p>Sorting and filtering refs are case insensitive.</p>
 </dd>
-<dt class="hdlist1">--omit-empty</dt>
+<dt class="hdlist1"><code>--omit-empty</code></dt>
 <dd>
 <p>Do not print a newline after formatted refs where the format expands
 to the empty string.</p>
 </dd>
-<dt class="hdlist1">--exclude=&lt;pattern&gt;</dt>
+<dt class="hdlist1"><code>--exclude=</code><em>&lt;excluded-pattern&gt;</em></dt>
 <dd>
-<p>If one or more patterns are given, only refs which do not match
-any excluded pattern(s) are shown. Matching is done using the
-same rules as <em>&lt;pattern&gt;</em> above.</p>
+<p>If one or more <code>--exclude</code> options are given, only refs which do not
+match any <em>&lt;excluded-pattern&gt;</em> parameters are shown. Matching is done
+using the same rules as <em>&lt;pattern&gt;</em> above.</p>
 </dd>
-<dt class="hdlist1">--include-root-refs</dt>
+<dt class="hdlist1"><code>--include-root-refs</code></dt>
 <dd>
-<p>List root refs (HEAD and pseudorefs) apart from regular refs.</p>
+<p>List root refs (<code>HEAD</code> and pseudorefs) apart from regular refs.</p>
 </dd>
-<dt class="hdlist1">--start-after=&lt;marker&gt;</dt>
+<dt class="hdlist1"><code>--start-after=</code><em>&lt;marker&gt;</em></dt>
 <dd>
 <p>Allows paginating the output by skipping references up to and including the
 specified marker. When paging, it should be noted that references may be
@@ -702,7 +703,7 @@ unregister it first with git-maintenance(1).</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-22 13:19:47 -0700
+Last updated 2025-08-25 14:46:08 -0700
 </div>
 </div>
 </body>
