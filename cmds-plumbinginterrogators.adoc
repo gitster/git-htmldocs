@@ -25,6 +25,9 @@ linkgit:git-for-each-repo[1]::
 linkgit:git-get-tar-commit-id[1]::
 	Extract commit ID from an archive created using git-archive.
 
+linkgit:git-last-modified[1]::
+	EXPERIMENTAL: Show when files were last modified.
+
 linkgit:git-ls-files[1]::
 	Show information about files in the index and the working tree.
 
