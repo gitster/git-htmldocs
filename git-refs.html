@@ -460,7 +460,8 @@ pre>code {
 		   [<code>--merged</code>[<code>=</code><em>&lt;object&gt;</em>]] [<code>--no-merged</code>[<code>=</code><em>&lt;object&gt;</em>]]
 		   [<code>--contains</code>[<code>=</code><em>&lt;object&gt;</em>]] [<code>--no-contains</code>[<code>=</code><em>&lt;object&gt;</em>]]
 		   [(<code>--exclude=</code><em>&lt;pattern&gt;</em>)&#8230;&#8203;] [<code>--start-after=</code><em>&lt;marker&gt;</em>]
-		   [ <code>--stdin</code> | (<em>&lt;pattern&gt;</em><code>...</code>)]</pre>
+		   [ <code>--stdin</code> | (<em>&lt;pattern&gt;</em><code>...</code>)]
+<code>git</code> <code>refs</code> <code>exists</code> <em>&lt;ref&gt;</em></pre>
 </div>
 </div>
 </div>
@@ -490,6 +491,13 @@ pre>code {
 <p>List references in the repository with support for filtering,
 formatting, and sorting. This subcommand is an alias for
 <a href="git-for-each-ref.html">git-for-each-ref(1)</a> and offers identical functionality.</p>
+</dd>
+<dt class="hdlist1">exists</dt>
+<dd>
+<p>Check whether the given reference exists. Returns an exit code of 0 if
+it does, 2 if it is missing, and 1 in case looking up the reference
+failed with an error other than the reference being missing. This does
+not verify whether the reference resolves to an actual object.</p>
 </dd>
 </dl>
 </div>
@@ -703,7 +711,7 @@ unregister it first with git-maintenance(1).</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-25 14:46:08 -0700
+Last updated 2025-09-12 12:13:52 -0700
 </div>
 </div>
 </body>
