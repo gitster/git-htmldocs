@@ -452,7 +452,7 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><code>git</code> <code>repo</code> <code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>)] [<em>&lt;key&gt;</em>&#8230;&#8203;]</pre>
+<pre class="content"><code>git</code> <code>repo</code> <code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>)] [<code>-z</code>] [<em>&lt;key&gt;</em>&#8230;&#8203;]</pre>
 </div>
 </div>
 </div>
@@ -472,7 +472,7 @@ pre>code {
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>)] [<em>&lt;key&gt;</em>...]</dt>
+<dt class="hdlist1"><code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>)] [<code>-z</code>] [<em>&lt;key&gt;</em>...]</dt>
 <dd>
 <p>Retrieve metadata-related information about the current repository. Only
 the requested data will be returned based on their keys (see "INFO KEYS"
@@ -500,6 +500,9 @@ characters are quoted as explained for the configuration variable
 between the key and the value and using a NUL character after each value.
 This format is better suited for being parsed by another applications than
 <code>keyvalue</code>. Unlike in the <code>keyvalue</code> format, the values are never quoted.</p>
+<div class="paragraph">
+<p><code>-z</code> is an alias for <code>--format=nul</code>.</p>
+</div>
 </dd>
 </dl>
 </div>
@@ -525,6 +528,10 @@ values that they return:</p>
 <dt class="hdlist1"><code>layout.shallow</code></dt>
 <dd>
 <p><code>true</code> if this is a shallow repository, otherwise <code>false</code>.</p>
+</dd>
+<dt class="hdlist1"><code>object.format</code></dt>
+<dd>
+<p>The object format (hash algorithm) used in the repository.</p>
 </dd>
 <dt class="hdlist1"><code>references.format</code></dt>
 <dd>
@@ -590,7 +597,7 @@ using the <code>nul</code> format:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-25 14:46:08 -0700
+Last updated 2025-09-15 10:47:08 -0700
 </div>
 </div>
 </body>
