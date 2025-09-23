@@ -810,6 +810,35 @@ then authentication is not attempted.</p>
 commands and replies will be printed. Useful to debug TLS
 connection and authentication problems.</p>
 </dd>
+<dt class="hdlist1">--imap-sent-folder=&lt;folder&gt;</dt>
+<dd>
+<p>Some email providers (e.g. iCloud) do not send a copy of the emails sent
+using SMTP to the <code>Sent</code> folder or similar in your mailbox. Use this option
+to use <code>git</code> <code>imap-send</code> to send a copy of the emails to the folder specified
+using this option. You can run <code>git</code> <code>imap-send</code> <code>--list</code> to get a list of
+valid folder names, including the correct name of the <code>Sent</code> folder in
+your mailbox. You can also use this option to send emails to a dedicated
+IMAP folder of your choice.</p>
+<div class="paragraph">
+<p>This feature requires setting up <code>git</code> <code>imap-send</code>. See <a href="git-imap-send.html">git-imap-send(1)</a>
+for instructions.</p>
+</div>
+</dd>
+<dt class="hdlist1">--use-imap-only</dt>
+<dt class="hdlist1">--no-use-imap-only</dt>
+<dd>
+<p>If this is set, all emails will only be copied to the IMAP folder specified
+with <code>--imap-sent-folder</code> or <code>sendemail.imapSentFolder</code> and will not be sent
+to the recipients. Useful if you just want to create a draft of the emails
+and use another email client to send them.
+If disabled with <code>--no-use-imap-only</code>, the emails will be sent like usual.
+Disabled by default, but the <code>sendemail.useImapOnly</code> configuration
+variable can be used to enable it.</p>
+<div class="paragraph">
+<p>This feature requires setting up <code>git</code> <code>imap-send</code>. See <a href="git-imap-send.html">git-imap-send(1)</a>
+for instructions.</p>
+</div>
+</dd>
 <dt class="hdlist1">--batch-size=&lt;num&gt;</dt>
 <dd>
 <p>Some email servers (e.g. <em>smtp.163.com</em>) limit the number of emails to be
@@ -1250,6 +1279,8 @@ recognized by the parser.</p>
 <dt class="hdlist1">sendemail.smtpServerPort</dt>
 <dt class="hdlist1">sendemail.smtpServerOption</dt>
 <dt class="hdlist1">sendemail.smtpUser</dt>
+<dt class="hdlist1">sendemail.imapSentFolder</dt>
+<dt class="hdlist1">sendemail.useImapOnly</dt>
 <dt class="hdlist1">sendemail.thread</dt>
 <dt class="hdlist1">sendemail.transferEncoding</dt>
 <dt class="hdlist1">sendemail.validate</dt>
@@ -1303,10 +1334,10 @@ edit <code>~/.gitconfig</code> to specify your account settings:</p>
 <div class="listingblock">
 <div class="content">
 <pre>[sendemail]
-        smtpEncryption = tls
+        smtpEncryption = ssl
         smtpServer = smtp.gmail.com
         smtpUser = yourname@gmail.com
-        smtpServerPort = 587</pre>
+        smtpServerPort = 465</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1327,10 +1358,10 @@ if you want to use <code>OAUTHBEARER</code>, edit your <code>~/.gitconfig</code>
 <div class="listingblock">
 <div class="content">
 <pre>[sendemail]
-        smtpEncryption = tls
+        smtpEncryption = ssl
         smtpServer = smtp.gmail.com
         smtpUser = yourname@gmail.com
-        smtpServerPort = 587
+        smtpServerPort = 465
         smtpAuth = OAUTHBEARER</pre>
 </div>
 </div>
@@ -1504,7 +1535,7 @@ to instruct <code>git-send-email</code> to use it for sending emails.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-25 14:46:08 -0700
+Last updated 2025-09-23 13:59:22 -0700
 </div>
 </div>
 </body>
