@@ -461,7 +461,8 @@ pre>code {
 		   [<code>--contains</code>[<code>=</code><em>&lt;object&gt;</em>]] [<code>--no-contains</code>[<code>=</code><em>&lt;object&gt;</em>]]
 		   [(<code>--exclude=</code><em>&lt;pattern&gt;</em>)&#8230;&#8203;] [<code>--start-after=</code><em>&lt;marker&gt;</em>]
 		   [ <code>--stdin</code> | (<em>&lt;pattern&gt;</em><code>...</code>)]
-<code>git</code> <code>refs</code> <code>exists</code> <em>&lt;ref&gt;</em></pre>
+<code>git</code> <code>refs</code> <code>exists</code> <em>&lt;ref&gt;</em>
+<code>git</code> <code>refs</code> <code>optimize</code> [<code>--all</code>] [<code>--no-prune</code>] [<code>--auto</code>] [<code>--include</code> <em>&lt;pattern&gt;</em>] [<code>--exclude</code> <em>&lt;pattern&gt;</em>]</pre>
 </div>
 </div>
 </div>
@@ -498,6 +499,12 @@ formatting, and sorting. This subcommand is an alias for
 it does, 2 if it is missing, and 1 in case looking up the reference
 failed with an error other than the reference being missing. This does
 not verify whether the reference resolves to an actual object.</p>
+</dd>
+<dt class="hdlist1">optimize</dt>
+<dd>
+<p>Optimizes references to improve repository performance and reduce disk
+usage. This subcommand is an alias for <a href="git-pack-refs.html">git-pack-refs(1)</a> and
+offers identical functionality.</p>
 </dd>
 </dl>
 </div>
@@ -673,6 +680,74 @@ to limit the refs.</p>
 </dd>
 </dl>
 </div>
+<div class="paragraph">
+<p>The following options are specific to <em>git refs optimize</em>:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">--all</dt>
+<dd>
+<p>The command by default packs all tags and refs that are already
+packed, and leaves other refs
+alone.  This is because branches are expected to be actively
+developed and packing their tips does not help performance.
+This option causes all refs to be packed as well, with the exception
+of hidden refs, broken refs, and symbolic refs. Useful for a repository
+with many branches of historical interests.</p>
+</dd>
+<dt class="hdlist1">--no-prune</dt>
+<dd>
+<p>The command usually removes loose refs under <code>$GIT_DIR/refs</code>
+hierarchy after packing them.  This option tells it not to.</p>
+</dd>
+<dt class="hdlist1">--auto</dt>
+<dd>
+<p>Pack refs as needed depending on the current state of the ref database. The
+behavior depends on the ref format used by the repository and may change in the
+future.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>"files": Loose references are packed into the <code>packed-refs</code> file
+based on the ratio of loose references to the size of the
+<code>packed-refs</code> file. The bigger the <code>packed-refs</code> file, the more loose
+references need to exist before we repack.</p>
+</li>
+<li>
+<p>"reftable": Tables are compacted such that they form a geometric
+sequence. For two tables N and N+1, where N+1 is newer, this
+maintains the property that N is at least twice as big as N+1. Only
+tables that violate this property are compacted.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">--include &lt;pattern&gt;</dt>
+<dd>
+<p>Pack refs based on a <code>glob</code>(<code>7</code>) pattern. Repetitions of this option
+accumulate inclusion patterns. If a ref is both included in <code>--include</code> and
+<code>--exclude</code>, <code>--exclude</code> takes precedence. Using <code>--include</code> will preclude all
+tags from being included by default. Symbolic refs and broken refs will never
+be packed. When used with <code>--all</code>, it will be a noop. Use <code>--no-include</code> to clear
+and reset the list of patterns.</p>
+</dd>
+<dt class="hdlist1">--exclude &lt;pattern&gt;</dt>
+<dd>
+<p>Do not pack refs matching the given <code>glob</code>(<code>7</code>) pattern. Repetitions of this option
+accumulate exclusion patterns. Use <code>--no-exclude</code> to clear and reset the list of
+patterns. If a ref is already packed, including it with <code>--exclude</code> will not
+unpack it.</p>
+<div class="paragraph">
+<p>When used with <code>--all</code>, pack only loose refs which do not match any of
+the provided <code>--exclude</code> patterns.</p>
+</div>
+<div class="paragraph">
+<p>When used with <code>--include</code>, refs provided to <code>--include</code>, minus refs that are
+provided to <code>--exclude</code> will be packed.</p>
+</div>
+</dd>
+</dl>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -711,7 +786,7 @@ unregister it first with git-maintenance(1).</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-09-12 12:13:52 -0700
+Last updated 2025-10-02 14:07:14 -0700
 </div>
 </div>
 </body>
