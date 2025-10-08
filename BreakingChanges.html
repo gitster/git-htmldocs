@@ -694,6 +694,76 @@ provide useful advice about init.defaultBranch, 2020-12-11).  The new name
 matches the default branch name used in new repositories by many of the
 big Git forges.</p>
 </li>
+<li>
+<p>Git will require Rust as a mandatory part of the build process. While Git
+already started to adopt Rust in Git 2.49, all parts written in Rust are
+optional for the time being. This includes:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The Rust wrapper around libgit.a that is part of "contrib/" and which has
+been introduced in Git 2.49.</p>
+</li>
+<li>
+<p>Subsystems that have an alternative implementation in Rust to test
+interoperability between our C and Rust codebase.</p>
+</li>
+<li>
+<p>Newly written features that are not mission critical for a fully functional
+Git client.</p>
+<div class="paragraph">
+<p>These changes are meant as test balloons to allow distributors of Git to prepare
+for Rust becoming a mandatory part of the build process. There will be multiple
+milestones for the introduction of Rust:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Initially, with Git 2.52, support for Rust will be auto-detected by Meson and
+disabled in our Makefile so that the project can sort out the initial
+infrastructure.</p>
+</li>
+<li>
+<p>In Git 2.53, both build systems will default-enable support for Rust.
+Consequently, builds will break by default if Rust is not available on the
+build host. The use of Rust can still be explicitly disabled via build
+flags.</p>
+</li>
+<li>
+<p>In Git 3.0, the build options will be removed and support for Rust is
+mandatory.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>You can explicitly ask both Meson and our Makefile-based system to enable Rust
+by saying <code>meson</code> <code>configure</code> <code>-Drust=enabled</code> and <code>make</code> <code>WITH_RUST=YesPlease</code>,
+respectively.</p>
+</div>
+<div class="paragraph">
+<p>The Git project will declare the last version before Git 3.0 to be a long-term
+support release. This long-term release will receive important bug fixes for at
+least four release cycles and security fixes for six release cycles. The Git
+project will hand over maintainership of the long-term release to distributors
+in case they need to extend the life of that long-term release even further.
+Details of how this long-term release will be handed over to the community will
+be discussed once the Git project decides to stop officially supporting it.</p>
+</div>
+<div class="paragraph">
+<p>We will evaluate the impact on downstream distributions before making Rust
+mandatory in Git 3.0. If we see that the impact on downstream distributions
+would be significant, we may decide to defer this change to a subsequent minor
+release. This evaluation will also take into account our own experience with
+how painful it is to keep Rust an optional component.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
 </ul>
 </div>
 </div>
@@ -839,7 +909,7 @@ almost no users of any of the commands anymore.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-02 14:07:14 -0700
+Last updated 2025-10-08 13:52:53 -0700
 </div>
 </div>
 </body>
