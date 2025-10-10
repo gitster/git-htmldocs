@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="generator" content="Asciidoctor 2.0.23"/>
-<title>git-merge-tree(1)</title>
+<title>Git Sparse-Index Design Document</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"/>
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -433,503 +433,316 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
-<style>
-pre>code {
-   display: inline;
-}
-</style>
 </head>
-<body class="manpage">
+<body class="article">
 <div id="header">
-<h1>git-merge-tree(1) Manual Page</h1>
-<h2 id="_name">NAME</h2>
-<div class="sectionbody">
-<p>git-merge-tree - Perform merge without touching index or working tree</p>
-</div>
+<h1>Git Sparse-Index Design Document</h1>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_synopsis">SYNOPSIS</h2>
-<div class="sectionbody">
-<div class="verseblock">
-<pre class="content"><em>git merge-tree</em> [--write-tree] [&lt;options&gt;] &lt;branch1&gt; &lt;branch2&gt;
-<em>git merge-tree</em> [--trivial-merge] &lt;base-tree&gt; &lt;branch1&gt; &lt;branch2&gt; (deprecated)</pre>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="NEWMERGE">DESCRIPTION</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This command has a modern <code>--write-tree</code> mode and a deprecated
-<code>--trivial-merge</code> mode.  With the exception of the
-<a href="#DEPMERGE">DEPRECATED DESCRIPTION</a> section at the end, the rest of
-this documentation describes the modern <code>--write-tree</code> mode.</p>
+<p>The sparse-checkout feature allows users to focus a working directory on
+a subset of the files at HEAD. The cone mode patterns, enabled by
+<code>core.sparseCheckoutCone</code>, allow for very fast pattern matching to
+discover which files at HEAD belong in the sparse-checkout cone.</p>
 </div>
 <div class="paragraph">
-<p>Performs a merge, but does not make any new commits and does not read
-from or write to either the working tree or index.</p>
-</div>
-<div class="paragraph">
-<p>The performed merge will use the same features as the "real"
-<a href="git-merge.html">git-merge(1)</a>, including:</p>
+<p>Three important scale dimensions for a Git working directory are:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>three way content merges of individual files</p>
+<p><code>HEAD</code>: How many files are present at <code>HEAD</code>?</p>
 </li>
 <li>
-<p>rename detection</p>
+<p>Populated: How many files are within the sparse-checkout cone.</p>
 </li>
 <li>
-<p>proper directory/file conflict handling</p>
-</li>
-<li>
-<p>recursive ancestor consolidation (i.e. when there is more than one
-merge base, creating a virtual merge base by merging the merge bases)</p>
-</li>
-<li>
-<p>etc.</p>
+<p>Modified: How many files has the user modified in the working directory?</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>After the merge completes, a new toplevel tree object is created.  See
-<code>OUTPUT</code> below for details.</p>
+<p>We will use big-O notation&#8201;&#8212;&#8201;O(X)&#8201;&#8212;&#8201;to denote how expensive certain
+operations are in terms of these dimensions.</p>
+</div>
+<div class="paragraph">
+<p>These dimensions are ordered by their magnitude: users (typically) modify
+fewer files than are populated, and we can only populate files at <code>HEAD</code>.</p>
+</div>
+<div class="paragraph">
+<p>Problems occur if there is an extreme imbalance in these dimensions. For
+example, if <code>HEAD</code> contains millions of paths but the populated set has
+only tens of thousands, then commands like <code>git</code> <code>status</code> and <code>git</code> <code>add</code> can
+be dominated by operations that require O(<code>HEAD</code>) operations instead of
+O(Populated). Primarily, the cost is in parsing and rewriting the index,
+which is filled primarily with files at <code>HEAD</code> that are marked with the
+<code>SKIP_WORKTREE</code> bit.</p>
+</div>
+<div class="paragraph">
+<p>The sparse-index intends to take these commands that read and modify the
+index from O(<code>HEAD</code>) to O(Populated). To do this, we need to modify the
+index format in a significant way: add "sparse directory" entries.</p>
+</div>
+<div class="paragraph">
+<p>With cone mode patterns, it is possible to detect when an entire
+directory will have its contents outside of the sparse-checkout definition.
+Instead of listing all of the files it contains as individual entries, a
+sparse-index contains an entry with the directory name, referencing the
+object ID of the tree at <code>HEAD</code> and marked with the <code>SKIP_WORKTREE</code> bit.
+If we need to discover the details for paths within that directory, we
+can parse trees to find that list.</p>
+</div>
+<div class="paragraph">
+<p>At time of writing, sparse-directory entries violate expectations about the
+index format and its in-memory data structure. There are many consumers in
+the codebase that expect to iterate through all of the index entries and
+see only files. In fact, these loops expect to see a reference to every
+staged file. One way to handle this is to parse trees to replace a
+sparse-directory entry with all of the files within that tree as the index
+is loaded. However, parsing trees is slower than parsing the index format,
+so that is a slower operation than if we left the index alone. The plan is
+to make all of these integrations "sparse aware" so this expansion through
+tree parsing is unnecessary and they use fewer resources than when using a
+full index.</p>
+</div>
+<div class="paragraph">
+<p>The implementation plan below follows four phases to slowly integrate with
+the sparse-index. The intention is to incrementally update Git commands to
+interact safely with the sparse-index without significant slowdowns. This
+may not always be possible, but the hope is that the primary commands that
+users need in their daily work are dramatically improved.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_options">OPTIONS</h2>
+<h2 id="_phase_i_format_and_initial_speedups">Phase I: Format and initial speedups</h2>
 <div class="sectionbody">
-<div class="dlist">
-<dl>
-<dt class="hdlist1">--stdin</dt>
-<dd>
-<p>Read the commits to merge from the standard input rather than
-the command-line. See <a href="#INPUT">INPUT FORMAT</a> below for more
-information.  Implies <code>-z</code>.</p>
-</dd>
-<dt class="hdlist1">-z</dt>
-<dd>
-<p>Do not quote filenames in the &lt;Conflicted file info&gt; section,
-and end each filename with a NUL character rather than
-newline.  Also begin the messages section with a NUL character
-instead of a newline.  See <a href="#OUTPUT">OUTPUT</a> below for more
-information.</p>
-</dd>
-<dt class="hdlist1">--name-only</dt>
-<dd>
-<p>In the Conflicted file info section, instead of writing a list
-of (mode, oid, stage, path) tuples to output for conflicted
-files, just provide a list of filenames with conflicts (and
-do not list filenames multiple times if they have multiple
-conflicting stages).</p>
-</dd>
-<dt class="hdlist1">--messages</dt>
-<dt class="hdlist1">--no-messages</dt>
-<dd>
-<p>Write any informational messages such as "Auto-merging &lt;path&gt;"
-or CONFLICT notices to the end of stdout.  If unspecified, the
-default is to include these messages if there are merge
-conflicts, and to omit them otherwise.</p>
-</dd>
-<dt class="hdlist1">--quiet</dt>
-<dd>
-<p>Disable all output from the program.  Useful when you are only
-interested in the exit status.  Allows merge-tree to exit
-early when it finds a conflict, and allows it to avoid writing
-most objects created by merges.</p>
-</dd>
-<dt class="hdlist1">--allow-unrelated-histories</dt>
-<dd>
-<p>merge-tree will by default error out if the two branches specified
-share no common history.  This flag can be given to override that
-check and make the merge proceed anyway.</p>
-</dd>
-<dt class="hdlist1">--merge-base=&lt;tree-ish&gt;</dt>
-<dd>
-<p>Instead of finding the merge-bases for &lt;branch1&gt; and &lt;branch2&gt;,
-specify a merge-base for the merge.  This option is incompatible with
-<code>--stdin</code>.</p>
 <div class="paragraph">
-<p>Specifying multiple bases is currently not supported, which means that when
-merging two branches with more than one merge-base, using this option may
-cause merge results to differ from what <code>git</code> <code>merge</code> would compute.  This
-can include potentially losing some changes made on one side of the history
-in the resulting merge.</p>
+<p>During this phase, Git learns to enable the sparse-index and safely parse
+one. Protections are put in place so that every consumer of the in-memory
+data structure can operate with its current assumption of every file at
+<code>HEAD</code>.</p>
 </div>
 <div class="paragraph">
-<p>With this option, since the merge-base is provided directly, &lt;branch1&gt; and
-&lt;branch2&gt; do not need to specify commits; trees are enough.</p>
+<p>At first, every index parse will call a helper method,
+<code>ensure_full_index</code>(), which scans the index for sparse-directory entries
+(pointing to trees) and replaces them with the full list of paths (with
+blob contents) by parsing tree objects. This will be slower in all cases.
+The only noticeable change in behavior will be that the serialized index
+file contains sparse-directory entries.</p>
 </div>
-</dd>
-<dt class="hdlist1">-X&lt;option&gt;</dt>
-<dt class="hdlist1">--strategy-option=&lt;option&gt;</dt>
-<dd>
-<p>Pass the merge strategy-specific option through to the merge strategy.
-See <a href="git-merge.html">git-merge(1)</a> for details.</p>
-</dd>
-</dl>
+<div class="paragraph">
+<p>To start, we use a new required index extension, <code>sdir</code>, to allow
+inserting sparse-directory entries into indexes with file format
+versions 2, 3, and 4. This prevents Git versions that do not understand
+the sparse-index from operating on one, while allowing tools that do not
+understand the sparse-index to operate on repositories as long as they do
+not interact with the index. A new format, index v5, will be introduced
+that includes sparse-directory entries by default. It might also
+introduce other features that have been considered for improving the
+index, as well.</p>
+</div>
+<div class="paragraph">
+<p>Next, consumers of the index will be guarded against operating on a
+sparse-index by inserting calls to <code>ensure_full_index</code>() or
+<code>expand_index_to_path</code>(). If a specific path is requested, then those will
+be protected from within the <code>index_file_exists</code>() and <code>index_name_pos</code>()
+API calls: they will call <code>ensure_full_index</code>() if necessary. The
+intention here is to preserve existing behavior when interacting with a
+sparse-checkout. We don&#8217;t want a change to happen by accident, without
+tests. Many of these locations may not need any change before removing the
+guards, but we should not do so without tests to ensure the expected
+behavior happens.</p>
+</div>
+<div class="paragraph">
+<p>It may be desirable to <em>change</em> the behavior of some commands in the
+presence of a sparse index or more generally in any sparse-checkout
+scenario. In such cases, these should be carefully communicated and
+tested. No such behavior changes are intended during this phase.</p>
+</div>
+<div class="paragraph">
+<p>During a scan of the codebase, not every iteration of the cache entries
+needs an <code>ensure_full_index</code>() check. The basic reasons include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The loop is scanning for entries with non-zero stage. These entries
+are not collapsed into a sparse-directory entry.</p>
+</li>
+<li>
+<p>The loop is scanning for submodules. These entries are not collapsed
+into a sparse-directory entry.</p>
+</li>
+<li>
+<p>The loop is part of the index API, especially around reading or
+writing the format.</p>
+</li>
+<li>
+<p>The loop is checking for correct order of cache entries and that is
+correct if and only if the sparse-directory entries are in the correct
+location.</p>
+</li>
+<li>
+<p>The loop ignores entries with the <code>SKIP_WORKTREE</code> bit set, or is
+otherwise already aware of sparse directory entries.</p>
+</li>
+<li>
+<p>The sparse-index is disabled at this point when using the split-index
+feature, so no effort is made to protect the split-index API.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Even after inserting these guards, we will keep expanding sparse-indexes
+for most Git commands using the <code>command_requires_full_index</code> repository
+setting. This setting will be on by default and disabled one builtin at a
+time until we have sufficient confidence that all of the index operations
+are properly guarded.</p>
+</div>
+<div class="paragraph">
+<p>To complete this phase, the commands <code>git</code> <code>status</code> and <code>git</code> <code>add</code> will be
+integrated with the sparse-index so that they operate with O(Populated)
+performance. They will be carefully tested for operations within and
+outside the sparse-checkout definition.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="OUTPUT">OUTPUT</h2>
+<h2 id="_phase_ii_careful_integrations">Phase II: Careful integrations</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>For a successful merge, the output from git-merge-tree is simply one
-line:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;OID of toplevel tree&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Whereas for a conflicted merge, the output is by default of the form:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;OID of toplevel tree&gt;
-&lt;Conflicted file info&gt;
-&lt;Informational messages&gt;</pre>
-</div>
+<p>This phase focuses on ensuring that all index extensions and APIs work
+well with a sparse-index. This requires significant increases to our test
+coverage, especially for operations that interact with the working
+directory outside of the sparse-checkout definition. Some of these
+behaviors may not be the desirable ones, such as some tests already
+marked for failure in <code>t1092-sparse-checkout-compatibility.sh</code>.</p>
 </div>
 <div class="paragraph">
-<p>These are discussed individually below.</p>
-</div>
-<div class="paragraph">
-<p>However, there is an exception.  If <code>--stdin</code> is passed, then there is
-an extra section at the beginning, a NUL character at the end, and then
-all the sections repeat for each line of input.  Thus, if the first merge
-is conflicted and the second is clean, the output would be of the form:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;Merge status&gt;
-&lt;OID of toplevel tree&gt;
-&lt;Conflicted file info&gt;
-&lt;Informational messages&gt;
-NUL
-&lt;Merge status&gt;
-&lt;OID of toplevel tree&gt;
-NUL</pre>
-</div>
-</div>
-<div class="sect2">
-<h3 id="MS">Merge status</h3>
-<div class="paragraph">
-<p>This is an integer status followed by a NUL character.  The integer status is:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>0: merge had conflicts
-1: merge was clean</pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="OIDTLT">OID of toplevel tree</h3>
-<div class="paragraph">
-<p>This is a tree object that represents what would be checked out in the
-working tree at the end of <code>git</code> <code>merge</code>.  If there were conflicts, then
-files within this tree may have embedded conflict markers.  This section
-is always followed by a newline (or NUL if <code>-z</code> is passed).</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="CFI">Conflicted file info</h3>
-<div class="paragraph">
-<p>This is a sequence of lines with the format</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;mode&gt; &lt;object&gt; &lt;stage&gt; &lt;filename&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The filename will be quoted as explained for the configuration
-variable <code>core.quotePath</code> (see <a href="git-config.html">git-config(1)</a>).  However, if
-the <code>--name-only</code> option is passed, the mode, object, and stage will
-be omitted.  If <code>-z</code> is passed, the "lines" are terminated by a NUL
-character instead of a newline character.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="IM">Informational messages</h3>
-<div class="paragraph">
-<p>This section provides informational messages, typically about
-conflicts.  The format of the section varies significantly depending
-on whether <code>-z</code> is passed.</p>
-</div>
-<div class="paragraph">
-<p>If <code>-z</code> is passed:</p>
-</div>
-<div class="paragraph">
-<p>The output format is zero or more conflict informational records, each
-of the form:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;list-of-paths&gt;&lt;conflict-type&gt;NUL&lt;conflict-message&gt;NUL</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>where &lt;list-of-paths&gt; is of the form</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;number-of-paths&gt;NUL&lt;path1&gt;NUL&lt;path2&gt;NUL...&lt;pathN&gt;NUL</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>and includes paths (or branch names) affected by the conflict or
-informational message in &lt;conflict-message&gt;.  Also, &lt;conflict-type&gt; is a
-stable string explaining the type of conflict, such as</p>
+<p>The index extensions that may require special integrations are:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>"Auto-merging"</p>
+<p>FS Monitor</p>
 </li>
 <li>
-<p>"CONFLICT (rename/delete)"</p>
-</li>
-<li>
-<p>"CONFLICT (submodule lacks merge base)"</p>
-</li>
-<li>
-<p>"CONFLICT (binary)"</p>
+<p>Untracked cache</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>and &lt;conflict-message&gt; is a more detailed message about the conflict which often
-(but not always) embeds the &lt;stable-short-type-description&gt; within it.  These
-strings may change in future Git versions.  Some examples:</p>
+<p>While integrating with these features, we should look for patterns that
+might lead to better APIs for interacting with the index. Coalescing
+common usage patterns into an API call can reduce the number of places
+where sparse-directories need to be handled carefully.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_phase_iii_important_command_speedups">Phase III: Important command speedups</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At this point, the patterns for testing and implementing sparse-directory
+logic should be relatively stable. This phase focuses on updating some of
+the most common builtins that use the index to operate as O(Populated).
+Here is a potential list of commands that could be valuable to integrate
+at this point:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>"Auto-merging &lt;file&gt;"</p>
+<p><code>git</code> <code>commit</code></p>
 </li>
 <li>
-<p>"CONFLICT (rename/delete): &lt;oldfile&gt; renamed&#8230;&#8203;but deleted in&#8230;&#8203;"</p>
+<p><code>git</code> <code>checkout</code></p>
 </li>
 <li>
-<p>"Failed to merge submodule &lt;submodule&gt; (no merge base)"</p>
+<p><code>git</code> <code>merge</code></p>
 </li>
 <li>
-<p>"Warning: cannot merge binary files: &lt;filename&gt;"</p>
+<p><code>git</code> <code>rebase</code></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>If <code>-z</code> is NOT passed:</p>
+<p>Hopefully, commands such as <code>git</code> <code>merge</code> and <code>git</code> <code>rebase</code> can benefit
+instead from merge algorithms that do not use the index as a data
+structure, such as the merge-ORT strategy. As these topics mature, we
+may enable the ORT strategy by default for repositories using the
+sparse-index feature.</p>
 </div>
 <div class="paragraph">
-<p>This section starts with a blank line to separate it from the previous
-sections, and then only contains the &lt;conflict-message&gt; information
-from the previous section (separated by newlines).  These are
-non-stable strings that should not be parsed by scripts, and are just
-meant for human consumption.  Also, note that while &lt;conflict-message&gt;
-strings usually do not contain embedded newlines, they sometimes do.
-(However, the free-form messages will never have an embedded NUL
-character).  So, the entire block of information is meant for human
-readers as an agglomeration of all conflict messages.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_exit_status">EXIT STATUS</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>For a successful, non-conflicted merge, the exit status is 0.  When the
-merge has conflicts, the exit status is 1.  If the merge is not able to
-complete (or start) due to some kind of error, the exit status is
-something other than 0 or 1 (and the output is unspecified).  When
---stdin is passed, the return status is 0 for both successful and
-conflicted merges, and something other than 0 or 1 if it cannot complete
-all the requested merges.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_usage_notes">USAGE NOTES</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This command is intended as low-level plumbing, similar to
-<a href="git-hash-object.html">git-hash-object(1)</a>, <a href="git-mktree.html">git-mktree(1)</a>,
-<a href="git-commit-tree.html">git-commit-tree(1)</a>, <a href="git-write-tree.html">git-write-tree(1)</a>,
-<a href="git-update-ref.html">git-update-ref(1)</a>, and <a href="git-mktag.html">git-mktag(1)</a>.  Thus, it can be
-used as a part of a series of steps such as:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>vi message.txt
-BRANCH1=refs/heads/test
-BRANCH2=main
-NEWTREE=$(git merge-tree --write-tree $BRANCH1 $BRANCH2) || {
-    echo "There were conflicts..." 1&gt;&amp;2
-    exit 1
-}
-NEWCOMMIT=$(git commit-tree $NEWTREE -F message.txt \
-    -p $BRANCH1 -p $BRANCH2)
-git update-ref $BRANCH1 $NEWCOMMIT</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note that when the exit status is non-zero, <code>NEWTREE</code> in this sequence
-will contain a lot more output than just a tree.</p>
-</div>
-<div class="paragraph">
-<p>For conflicts, the output includes the same information that you&#8217;d get
-with <a href="git-merge.html">git-merge(1)</a>:</p>
+<p>Along with <code>git</code> <code>status</code> and <code>git</code> <code>add</code>, these commands cover the majority
+of users' interactions with the working directory. In addition, we can
+integrate with these commands:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>what would be written to the working tree (the
-<a href="#OIDTLT">OID of toplevel tree</a>)</p>
+<p><code>git</code> <code>grep</code></p>
 </li>
 <li>
-<p>the higher order stages that would be written to the index (the
-<a href="#CFI">Conflicted file info</a>)</p>
-</li>
-<li>
-<p>any messages that would have been printed to stdout (the
-<a href="#IM">Informational messages</a>)</p>
+<p><code>git</code> <code>rm</code></p>
 </li>
 </ul>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="INPUT">INPUT FORMAT</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p><em>git merge-tree --stdin</em> input format is fully text based. Each line
-has this format:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>[&lt;base-commit&gt; -- ]&lt;branch1&gt; &lt;branch2&gt;</pre>
-</div>
+<p>These have been proposed as some whose behavior could change when in a
+repo with a sparse-checkout definition. It would be good to include this
+behavior automatically when using a sparse-index. Some clarity is needed
+to make the behavior switch clear to the user.</p>
 </div>
 <div class="paragraph">
-<p>If one line is separated by <code>--</code>, the string before the separator is
-used for specifying a merge-base for the merge and the string after
-the separator describes the branches to be merged.</p>
+<p>This phase is the first where parallel work might be possible without too
+much conflicts between topics.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mistakes_to_avoid">MISTAKES TO AVOID</h2>
+<h2 id="_phase_iv_the_long_tail">Phase IV: The long tail</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Do NOT look through the resulting toplevel tree to try to find which
-files conflict; parse the <a href="#CFI">Conflicted file info</a> section instead.
-Not only would parsing an entire tree be horrendously slow in large
-repositories, there are numerous types of conflicts not representable by
-conflict markers (modify/delete, mode conflict, binary file changed on
-both sides, file/directory conflicts, various rename conflict
-permutations, etc.)</p>
+<p>This last phase is less a "phase" and more "the new normal" after all of
+the previous work.</p>
 </div>
 <div class="paragraph">
-<p>Do NOT interpret an empty <a href="#CFI">Conflicted file info</a> list as a clean
-merge; check the exit status.  A merge can have conflicts without having
-individual files conflict (there are a few types of directory rename
-conflicts that fall into this category, and others might also be added
-in the future).</p>
+<p>To start, the <code>command_requires_full_index</code> option could be removed in
+favor of expanding only when hitting an API guard.</p>
 </div>
 <div class="paragraph">
-<p>Do NOT attempt to guess or make the user guess the conflict types from
-the <a href="#CFI">Conflicted file info</a> list.  The information there is
-insufficient to do so.  For example: Rename/rename(1to2) conflicts (both
-sides renamed the same file differently) will result in three different
-files having higher order stages (but each only has one higher order
-stage), with no way (short of the <a href="#IM">Informational messages</a> section)
-to determine which three files are related.  File/directory conflicts
-also result in a file with exactly one higher order stage.
-Possibly-involved-in-directory-rename conflicts (when
-"merge.directoryRenames" is unset or set to "conflicts") also result in
-a file with exactly one higher order stage.  In all cases, the
-<a href="#IM">Informational messages</a> section has the necessary info, though it
-is not designed to be machine parseable.</p>
+<p>There are many Git commands that could use special attention to operate as
+O(Populated), while some might be so rare that it is acceptable to leave
+them with additional overhead when a sparse-index is present.</p>
 </div>
 <div class="paragraph">
-<p>Do NOT assume that each path from <a href="#CFI">Conflicted file info</a>, and
-the logical conflicts in the <a href="#IM">Informational messages</a> have a
-one-to-one mapping, nor that there is a one-to-many mapping, nor a
-many-to-one mapping.  Many-to-many mappings exist, meaning that each
-path can have many logical conflict types in a single merge, and each
-logical conflict type can affect many paths.</p>
+<p>Here are some commands that might be useful to update:</p>
 </div>
-<div class="paragraph">
-<p>Do NOT assume all filenames listed in the <a href="#IM">Informational messages</a>
-section had conflicts.  Messages can be included for files that have no
-conflicts, such as "Auto-merging &lt;file&gt;".</p>
-</div>
-<div class="paragraph">
-<p>AVOID taking the OIDS from the <a href="#CFI">Conflicted file info</a> and
-re-merging them to present the conflicts to the user.  This will lose
-information.  Instead, look up the version of the file found within the
-<a href="#OIDTLT">OID of toplevel tree</a> and show that instead.  In particular,
-the latter will have conflict markers annotated with the original
-branch/commit being merged and, if renames were involved, the original
-filename.  While you could include the original branch/commit in the
-conflict marker annotations when re-merging, the original filename is
-not available from the <a href="#CFI">Conflicted file info</a> and thus you would
-be losing information that might help the user resolve the conflict.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="DEPMERGE">DEPRECATED DESCRIPTION</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Per the <a href="#NEWMERGE">DESCRIPTION</a> and unlike the rest of this
-documentation, this section describes the deprecated <code>--trivial-merge</code>
-mode.</p>
-</div>
-<div class="paragraph">
-<p>Other than the optional <code>--trivial-merge</code>, this mode accepts no
-options.</p>
-</div>
-<div class="paragraph">
-<p>This mode reads three tree-ish, and outputs trivial merge results and
-conflicting stages to the standard output in a semi-diff format.
-Since this was designed for higher level scripts to consume and merge
-the results back into the index, it omits entries that match
-&lt;branch1&gt;.  The result of this second form is similar to what
-three-way <em>git read-tree -m</em> does, but instead of storing the results
-in the index, the command outputs the entries to the standard output.</p>
-</div>
-<div class="paragraph">
-<p>This form not only has limited applicability (a trivial merge cannot
-handle content merges of individual files, rename detection, proper
-directory/file conflict handling, etc.), the output format is also
-difficult to work with, and it will generally be less performant than
-the first form even on successful merges (especially if working in
-large repositories).</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_git">GIT</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Part of the <a href="git.html">git(1)</a> suite</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>git</code> <code>sparse-checkout</code> <code>set</code></p>
+</li>
+<li>
+<p><code>git</code> <code>am</code></p>
+</li>
+<li>
+<p><code>git</code> <code>clean</code></p>
+</li>
+<li>
+<p><code>git</code> <code>stash</code></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-10 14:32:39 -0700
+Last updated 2025-06-20 18:10:42 -0700
 </div>
 </div>
 </body>
