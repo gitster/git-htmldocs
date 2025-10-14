@@ -1701,6 +1701,10 @@ substituted instead. In the unlikely event that a literal path needs to
 be specified that should <em>not</em> be expanded, it needs to be prefixed by
 .<code>/</code>, like so: .<code>/%</code>(<code>prefix</code>)<code>/bin</code>.</p>
 </div>
+<div class="paragraph">
+<p>If prefixed with <code>:</code>(<code>optional</code>), the configuration variable is treated
+as if it does not exist, if the named path does not exist.</p>
+</div>
 </dd>
 </dl>
 </div>
@@ -8978,29 +8982,32 @@ follows:</p>
 change as git gains new features.</p>
 </div>
 </dd>
-<dt class="hdlist1">stash.index</dt>
+</dl>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>stash.index</code></dt>
 <dd>
-<p>If this is set to true, <code>git</code> <code>stash</code> <code>apply</code> and <code>git</code> <code>stash</code> <code>pop</code> will
-behave as if <code>--index</code> was supplied. Defaults to false. See the
-descriptions in <a href="git-stash.html">git-stash(1)</a>.</p>
+<p>	If this is set to true, <code>git</code> <code>stash</code> <code>apply</code> and <code>git</code> <code>stash</code> <code>pop</code> will
+	behave as if <code>--index</code> was supplied. Defaults to false.
+See the descriptions in <a href="git-stash.html">git-stash(1)</a>.</p>
 </dd>
-<dt class="hdlist1">stash.showIncludeUntracked</dt>
+<dt class="hdlist1"><code>stash.showIncludeUntracked</code></dt>
 <dd>
 <p>If this is set to true, the <code>git</code> <code>stash</code> <code>show</code> command will show
-the untracked files of a stash entry.  Defaults to false. See
-the description of the <em>show</em> command in <a href="git-stash.html">git-stash(1)</a>.</p>
+the untracked files of a stash entry. Defaults to false. See the description of the 'show' command in <a href="git-stash.html">git-stash(1)</a>.</p>
 </dd>
-<dt class="hdlist1">stash.showPatch</dt>
+<dt class="hdlist1"><code>stash.showPatch</code></dt>
 <dd>
 <p>If this is set to true, the <code>git</code> <code>stash</code> <code>show</code> command without an
 option will show the stash entry in patch form.  Defaults to false.
-See the description of the <em>show</em> command in <a href="git-stash.html">git-stash(1)</a>.</p>
+See the description of the 'show' command in <a href="git-stash.html">git-stash(1)</a>.</p>
 </dd>
-<dt class="hdlist1">stash.showStat</dt>
+<dt class="hdlist1"><code>stash.showStat</code></dt>
 <dd>
 <p>If this is set to true, the <code>git</code> <code>stash</code> <code>show</code> command without an
 option will show a diffstat of the stash entry.  Defaults to true.
-See the description of the <em>show</em> command in <a href="git-stash.html">git-stash(1)</a>.</p>
+See the description of the 'show' command in <a href="git-stash.html">git-stash(1)</a>.</p>
 </dd>
 <dt class="hdlist1">status.relativePaths</dt>
 <dd>
@@ -9236,26 +9243,27 @@ as computed via <code>submodule.alternateLocation</code>. Possible values are
 or <code>info</code>, and if there is an error with the computed alternate, the
 clone proceeds as if no alternate was specified.</p>
 </dd>
-<dt class="hdlist1">tag.forceSignAnnotated</dt>
+<dt class="hdlist1"><code>tag.forceSignAnnotated</code></dt>
 <dd>
 <p>A boolean to specify whether annotated tags created should be GPG signed.
 If <code>--annotate</code> is specified on the command line, it takes
 precedence over this option.</p>
 </dd>
-<dt class="hdlist1">tag.sort</dt>
+<dt class="hdlist1"><code>tag.sort</code></dt>
 <dd>
 <p>This variable controls the sort ordering of tags when displayed by
-<a href="git-tag.html">git-tag(1)</a>. Without the "--sort=&lt;value&gt;" option provided, the
-value of this variable will be used as the default.</p>
+<a href="git-tag.html">git-tag(1)</a>.
+Without the <code>--sort=</code><em>&lt;value&gt;</em> option provided, the value of this variable will
+be used as the default.</p>
 </dd>
-<dt class="hdlist1">tag.gpgSign</dt>
+<dt class="hdlist1"><code>tag.gpgSign</code></dt>
 <dd>
 <p>A boolean to specify whether all tags should be GPG signed.
 Use of this option when running in an automated script can
 result in a large number of tags being signed. It is therefore
-convenient to use an agent to avoid typing your gpg passphrase
+convenient to use an agent to avoid typing your GPG passphrase
 several times. Note that this option doesn&#8217;t affect tag signing
-behavior enabled by "-u &lt;keyid&gt;" or "--local-user=&lt;keyid&gt;" options.</p>
+behavior enabled by <code>-u</code> <em>&lt;keyid&gt;</em> or <code>--local-user=</code><em>&lt;keyid&gt;</em> options.</p>
 </dd>
 <dt class="hdlist1">tar.umask</dt>
 <dd>
@@ -9949,7 +9957,7 @@ in multiple config files.</p>
 Currently only <a href="git-instaweb.html">git-instaweb(1)</a> and <a href="git-help.html">git-help(1)</a>
 may use it.</p>
 </dd>
-<dt class="hdlist1">worktree.guessRemote</dt>
+<dt class="hdlist1"><code>worktree.guessRemote</code></dt>
 <dd>
 <p>If no branch is specified and neither <code>-b</code> nor <code>-B</code> nor
 <code>--detach</code> is used, then <code>git</code> <code>worktree</code> <code>add</code> defaults to
@@ -9958,16 +9966,16 @@ set to true, <code>worktree</code> <code>add</code> tries to find a remote-track
 branch whose name uniquely matches the new branch name.  If
 such a branch exists, it is checked out and set as "upstream"
 for the new branch.  If no such match can be found, it falls
-back to creating a new branch from the current HEAD.</p>
+back to creating a new branch from the current <code>HEAD</code>.</p>
 </dd>
-<dt class="hdlist1">worktree.useRelativePaths</dt>
+<dt class="hdlist1"><code>worktree.useRelativePaths</code></dt>
 <dd>
-<p>Link worktrees using relative paths (when "true") or absolute
-paths (when "false"). This is particularly useful for setups
+<p>Link worktrees using relative paths (when "<code>true</code>") or absolute
+paths (when "<code>false</code>"). This is particularly useful for setups
 where the repository and worktrees may be moved between
-different locations or environments. Defaults to "false".</p>
+different locations or environments. Defaults to "<code>false</code>".</p>
 <div class="paragraph">
-<p>Note that setting <code>worktree.useRelativePaths</code> to "true" implies enabling the
+<p>Note that setting <code>worktree.useRelativePaths</code> to "<code>true</code>" implies enabling the
 <code>extensions.relativeWorktrees</code> config (see <a href="git-config.html">git-config(1)</a>),
 thus making it incompatible with older versions of Git.</p>
 </div>
