@@ -4518,8 +4518,6 @@ explicitly for the <code>diff.guitool</code> to be used.</p>
 <p>Unless otherwise stated, is an error to specify an extension if
 <code>core.repositoryFormatVersion</code> is not <code>1</code>. See
 <a href="gitrepository-layout.html">gitrepository-layout(5)</a>.</p>
-<div class="openblock">
-<div class="content">
 <div class="dlist">
 <dl>
 <dt class="hdlist1">compatObjectFormat</dt>
@@ -4590,6 +4588,8 @@ be fetched from it in the future.</p>
 <dt class="hdlist1">refStorage</dt>
 <dd>
 <p>Specify the ref storage format to use. The acceptable values are:</p>
+<div class="openblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
@@ -4600,6 +4600,8 @@ be fetched from it in the future.</p>
 internals are subject to change.</p>
 </li>
 </ul>
+</div>
+</div>
 </div>
 <div class="paragraph">
 <p>Note that this setting should only be set by <a href="git-init.html">git-init(1)</a> or
@@ -4629,6 +4631,8 @@ config files.</p>
 certain values from the common config file to the main working tree&#8217;s
 <code>config.worktree</code> file, if present:</p>
 </div>
+<div class="openblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
@@ -4641,6 +4645,8 @@ to <code>$GIT_COMMON_DIR/config.worktree</code>.</p>
 </li>
 </ul>
 </div>
+</div>
+</div>
 <div class="paragraph">
 <p>It may also be beneficial to adjust the locations of <code>core.sparseCheckout</code>
 and <code>core.sparseCheckoutCone</code> depending on your desire for customizable
@@ -4652,14 +4658,11 @@ worktree independently. See <a href="git-sparse-checkout.html">git-sparse-checko
 details.</p>
 </div>
 <div class="paragraph">
-<p>+
-For historical reasons, this extension is respected regardless of the
+<p>For historical reasons, this extension is respected regardless of the
 <code>core.repositoryFormatVersion</code> setting.</p>
 </div>
 </dd>
 </dl>
-</div>
-</div>
 </div>
 </dd>
 <dt class="hdlist1">fastimport.unpackLimit</dt>
