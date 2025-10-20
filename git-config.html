@@ -607,17 +607,15 @@ values. This is the same as providing <em>--value=^$</em> in <code>set</code>.</
 <dt class="hdlist1">--comment &lt;message&gt;</dt>
 <dd>
 <p>Append a comment at the end of new or modified lines.</p>
-<div class="literalblock">
-<div class="content">
-<pre>If _&lt;message&gt;_ begins with one or more whitespaces followed
-by "#", it is used as-is.  If it begins with "#", a space is
+<div class="paragraph">
+<p>If <em>&lt;message&gt;</em> begins with one or more whitespaces followed
+by "<mark>", it is used as-is.  If it begins with "</mark>", a space is
 prepended before it is used.  Otherwise, a string " # " (a
 space followed by a hash followed by a space) is prepended
 to it.  And the resulting string is placed immediately after
-the value defined for the variable.  The _&lt;message&gt;_ must
+the value defined for the variable.  The <em>&lt;message&gt;</em> must
 not contain linefeed characters (no multi-line comments are
-permitted).</pre>
-</div>
+permitted).</p>
 </div>
 </dd>
 <dt class="hdlist1">--all</dt>
@@ -3093,11 +3091,9 @@ external third-party tool.</p>
 limited set of supported platforms.  Currently, this includes Windows
 and MacOS.</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>Otherwise, this variable contains the pathname of the "fsmonitor"
-hook command.</pre>
-</div>
+<div class="paragraph">
+<p>Otherwise, this variable contains the pathname of the "fsmonitor"
+hook command.</p>
 </div>
 <div class="paragraph">
 <p>This hook command is used to identify all files that may have changed
@@ -8991,6 +8987,11 @@ change as git gains new features.</p>
 <p>	If this is set to true, <code>git</code> <code>stash</code> <code>apply</code> and <code>git</code> <code>stash</code> <code>pop</code> will
 	behave as if <code>--index</code> was supplied. Defaults to false.
 See the descriptions in <a href="git-stash.html">git-stash(1)</a>.</p>
+<div class="paragraph">
+<p>This also affects invocations of <a href="git-stash.html">git-stash(1)</a> via <code>--autostash</code> from
+commands like <a href="git-merge.html">git-merge(1)</a>, <a href="git-rebase.html">git-rebase(1)</a>, and
+<a href="git-pull.html">git-pull(1)</a>.</p>
+</div>
 </dd>
 <dt class="hdlist1"><code>stash.showIncludeUntracked</code></dt>
 <dd>
@@ -10023,7 +10024,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-25 14:46:08 -0700
+Last updated 2025-10-20 15:09:57 -0700
 </div>
 </div>
 </body>
