@@ -460,74 +460,45 @@ pre>code {
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Incorporates changes from a remote repository into the current branch.
-If the current branch is behind the remote, then by default it will
-fast-forward the current branch to match the remote.  If the current
-branch and the remote have diverged, the user needs to specify how to
-reconcile the divergent branches with <code>--rebase</code> or <code>--no-rebase</code> (or
-the corresponding configuration option in <code>pull.rebase</code>).</p>
+<p>Integrate changes from a remote repository into the current branch.</p>
 </div>
 <div class="paragraph">
-<p>More precisely, <code>git</code> <code>pull</code> runs <code>git</code> <code>fetch</code> with the given parameters
-and then depending on configuration options or command line flags,
-will call either <code>git</code> <code>rebase</code> or <code>git</code> <code>merge</code> to reconcile diverging
-branches.</p>
+<p>First, <code>git</code> <code>pull</code> runs <code>git</code> <code>fetch</code> with the same arguments
+(excluding merge options) to fetch remote branch(es).
+Then it decides which remote branch to integrate: if you run <code>git</code> <code>pull</code>
+with no arguments this defaults to the <a href="#UPSTREAM-BRANCHES">upstream</a>
+for the current branch.
+Then it integrates that branch into the current branch.</p>
 </div>
 <div class="paragraph">
-<p>&lt;repository&gt; should be the name of a remote repository as
-passed to <a href="git-fetch.html">git-fetch(1)</a>.  &lt;refspec&gt; can name an
-arbitrary remote ref (for example, the name of a tag) or even
-a collection of refs with corresponding remote-tracking branches
-(e.g., refs/heads/*:refs/remotes/origin/*),
-but usually it is the name of a branch in the remote repository.</p>
+<p>There are 4 main options for integrating the remote branch:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>git</code> <code>pull</code> <code>--ff-only</code> will only do "fast-forward" updates: it
+fails if your local branch has diverged from the remote branch.
+This is the default.</p>
+</li>
+<li>
+<p><code>git</code> <code>pull</code> <code>--rebase</code> runs <code>git</code> <code>rebase</code></p>
+</li>
+<li>
+<p><code>git</code> <code>pull</code> <code>--no-rebase</code> runs <code>git</code> <code>merge</code>.</p>
+</li>
+<li>
+<p><code>git</code> <code>pull</code> <code>--squash</code> runs <code>git</code> <code>merge</code> <code>--squash</code></p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>Default values for &lt;repository&gt; and &lt;branch&gt; are read from the
-"remote" and "merge" configuration for the current branch
-as set by <a href="git-branch.html">git-branch(1)</a> <code>--track</code>.</p>
+<p>You can also set the configuration options <code>pull.rebase</code>, <code>pull.squash</code>,
+or <code>pull.ff</code> with your preferred behaviour.</p>
 </div>
 <div class="paragraph">
-<p>Assume the following history exists and the current branch is
-"<code>master</code>":</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>          A---B---C master on origin
-         /
-    D---E---F---G master
-        ^
-        origin/master in your repository</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Then "<code>git</code> <code>pull</code>" will fetch and replay the changes from the remote
-<code>master</code> branch since it diverged from the local <code>master</code> (i.e., <code>E</code>)
-until its current commit (<code>C</code>) on top of <code>master</code> and record the
-result in a new commit along with the names of the two parent commits
-and a log message from the user describing the changes.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>          A---B---C origin/master
-         /         \
-    D---E---F---G---H master</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>See <a href="git-merge.html">git-merge(1)</a> for details, including how conflicts
-are presented and handled.</p>
-</div>
-<div class="paragraph">
-<p>In Git 1.7.0 or later, to cancel a conflicting merge, use
-<code>git</code> <code>reset</code> <code>--merge</code>.  <strong>Warning</strong>: In older versions of Git, running <em>git pull</em>
-with uncommitted changes is discouraged: while possible, it leaves you
-in a state that may be hard to back out of in the case of a conflict.</p>
-</div>
-<div class="paragraph">
-<p>If any of the remote changes overlap with local uncommitted changes,
-the merge will be automatically canceled and the work tree untouched.
-It is generally best to get any local changes in working order before
-pulling or stash them away with <a href="git-stash.html">git-stash(1)</a>.</p>
+<p>If there&#8217;s a merge conflict during the merge or rebase that you don&#8217;t
+want to handle, you can safely abort it with <code>git</code> <code>merge</code> <code>--abort</code> or <code>git</code>
+<code>--rebase</code> <code>abort</code>.</p>
 </div>
 </div>
 </div>
@@ -536,6 +507,30 @@ pulling or stash them away with <a href="git-stash.html">git-stash(1)</a>.</p>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
+<dt class="hdlist1">&lt;repository&gt;</dt>
+<dd>
+<p>The "remote" repository to pull from.  This can be either
+a URL (see the section <a href="#URLS">GIT URLS</a> below) or the name
+of a remote (see the section <a href="#REMOTES">REMOTES</a> below).</p>
+<div class="paragraph">
+<p>Defaults to the configured upstream for the current branch, or <code>origin</code>.
+See <a href="#UPSTREAM-BRANCHES">UPSTREAM BRANCHES</a> below for more on how to
+configure upstreams.</p>
+</div>
+</dd>
+<dt class="hdlist1">&lt;refspec&gt;</dt>
+<dd>
+<p>Which branch or other reference(s) to fetch and integrate into the
+current branch, for example <code>main</code> in <code>git</code> <code>pull</code> <code>origin</code> <code>main</code>.
+Defaults to the configured upstream for the current branch.</p>
+<div class="paragraph">
+<p>This can be a branch, tag, or other collection of reference(s).
+See <a href="#fetch-refspec">&lt;refspec</a>&gt; below under "Options related to fetching"
+for the full syntax, and <a href="#DEFAULT-BEHAVIOUR">DEFAULT BEHAVIOUR</a> below
+for how <code>git</code> <code>pull</code> uses this argument to determine which remote branch
+to integrate.</p>
+</div>
+</dd>
 <dt class="hdlist1">-q</dt>
 <dt class="hdlist1">--quiet</dt>
 <dd>
@@ -1081,6 +1076,10 @@ or pull operation.  This parameter can be either a URL
 (see the section <a href="#URLS">GIT URLS</a> below) or the name
 of a remote (see the section <a href="#REMOTES">REMOTES</a> below).</p>
 </dd>
+</dl>
+</div>
+<div id="fetch-refspec" class="dlist">
+<dl>
 <dt class="hdlist1">&lt;refspec&gt;</dt>
 <dd>
 <p>Specifies which refs to fetch and which local refs to update.
@@ -1764,7 +1763,7 @@ substitutes the changed version instead.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_default_behaviour">DEFAULT BEHAVIOUR</h2>
+<h2 id="DEFAULT-BEHAVIOUR">DEFAULT BEHAVIOUR</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Often people use <code>git</code> <code>pull</code> without giving any parameter.
@@ -1955,7 +1954,7 @@ version.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-25 14:46:08 -0700
+Last updated 2025-10-22 15:04:39 -0700
 </div>
 </div>
 </body>
