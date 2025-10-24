@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="generator" content="Asciidoctor 2.0.23"/>
-<title>Git Commit-Graph Design Notes</title>
+<title>Large Object Promisors</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"/>
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,572 +436,837 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Git Commit-Graph Design Notes</h1>
+<h1>Large Object Promisors</h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Git walks the commit graph for many reasons, including:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Listing and filtering commit history.</p>
-</li>
-<li>
-<p>Computing merge bases.</p>
-</li>
-</ol>
+<p>Since Git has been created, users have been complaining about issues
+with storing large files in Git. Some solutions have been created to
+help, but they haven&#8217;t helped much with some issues.</p>
 </div>
 <div class="paragraph">
-<p>These operations can become slow as the commit count grows. The merge
-base calculation shows up in many user-facing commands, such as <em>merge-base</em>
-or <em>status</em> and can take minutes to compute depending on history shape.</p>
+<p>Git currently supports multiple promisor remotes, which could help
+with some of these remaining issues, but it&#8217;s very hard to use them to
+help, because a number of important features are missing.</p>
 </div>
 <div class="paragraph">
-<p>There are two main costs here:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Decompressing and parsing commits.</p>
-</li>
-<li>
-<p>Walking the entire graph to satisfy topological order constraints.</p>
-</li>
-</ol>
+<p>The goal of the effort described in this document is to add these
+important features.</p>
 </div>
 <div class="paragraph">
-<p>The commit-graph file is a supplemental data structure that accelerates
-commit graph walks. If a user downgrades or disables the <em>core.commitGraph</em>
-config setting, then the existing object database is sufficient. The file is stored
-as "commit-graph" either in the .git/objects/info directory or in the info
-directory of an alternate.</p>
+<p>We will call a "Large Object Promisor", or "LOP" in short, a promisor
+remote which is used to store only large blobs and which is separate
+from the main remote that should store the other Git objects and the
+rest of the repos.</p>
 </div>
 <div class="paragraph">
-<p>The commit-graph file stores the commit graph structure along with some
-extra metadata to speed up graph walks. By listing commit OIDs in
-lexicographic order, we can identify an integer position for each commit
-and refer to the parents of a commit using those integer positions. We
-use binary search to find initial commits and then use the integer
-positions for fast lookups during the walk.</p>
+<p>By extension, we will also call "Large Object Promisor", or LOP, the
+effort described in this document to add a set of features to make it
+easier to handle large blobs/files in Git by using LOPs.</p>
 </div>
 <div class="paragraph">
-<p>A consumer may load the following info for a commit from the graph:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>The commit OID.</p>
-</li>
-<li>
-<p>The list of parents, along with their integer position.</p>
-</li>
-<li>
-<p>The commit date.</p>
-</li>
-<li>
-<p>The root tree OID.</p>
-</li>
-<li>
-<p>The generation number (see definition below).</p>
-</li>
-</ol>
+<p>This effort aims to especially improve things on the server side, and
+especially for large blobs that are already compressed in a binary
+format.</p>
 </div>
 <div class="paragraph">
-<p>Values 1-4 satisfy the requirements of parse_commit_gently().</p>
+<p>This effort aims to provide an alternative to Git LFS
+(<a href="https://git-lfs.com/" class="bare">https://git-lfs.com/</a>) and similar tools like git-annex
+(<a href="https://git-annex.branchable.com/" class="bare">https://git-annex.branchable.com/</a>) for handling large files, even
+though a complete alternative would very likely require other efforts
+especially on the client side, where it would likely help to implement
+a new object representation for large blobs as discussed in:</p>
 </div>
 <div class="paragraph">
-<p>There are two definitions of generation number:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Corrected committer dates (generation number v2)</p>
-</li>
-<li>
-<p>Topological levels (generation number v1)</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Define "corrected committer date" of a commit recursively as follows:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>A commit with no parents (a root commit) has corrected committer date
-equal to its committer date.</p>
-</li>
-<li>
-<p>A commit with at least one parent has corrected committer date equal to
-the maximum of its committer date and one more than the largest corrected
-committer date among its parents.</p>
-</li>
-<li>
-<p>As a special case, a root commit with timestamp zero has corrected commit
-date of 1, to be able to distinguish it from GENERATION_NUMBER_ZERO
-(that is, an uncomputed corrected commit date).</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Define the "topological level" of a commit recursively as follows:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>A commit with no parents (a root commit) has topological level of one.</p>
-</li>
-<li>
-<p>A commit with at least one parent has topological level one more than
-the largest topological level among its parents.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Equivalently, the topological level of a commit A is one more than the
-length of a longest path from A to a root commit. The recursive definition
-is easier to use for computation and observing the following property:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>If A and B are commits with generation numbers N and M, respectively,
-and N &lt;= M, then A cannot reach B. That is, we know without searching
-that B is not an ancestor of A because it is further from a root commit
-than A.</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Conversely, when checking if A is an ancestor of B, then we only need
-to walk commits until all commits on the walk boundary have generation
-number at most N. If we walk commits using a priority queue seeded by
-generation numbers, then we always expand the boundary commit with highest
-generation number and can easily detect the stopping condition.</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The property applies to both versions of generation number, that is both
-corrected committer dates and topological levels.</p>
-</div>
-<div class="paragraph">
-<p>This property can be used to significantly reduce the time it takes to
-walk commits and determine topological relationships. Without generation
-numbers, the general heuristic is the following:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>If A and B are commits with commit time X and Y, respectively, and
-X &lt; Y, then A _probably_ cannot reach B.</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>In absence of corrected commit dates (for example, old versions of Git or
-mixed generation graph chains),
-this heuristic is currently used whenever the computation is allowed to
-violate topological relationships due to clock skew (such as "git log"
-with default order), but is not used when the topological order is
-required (such as merge base calculations, "git log --graph").</p>
-</div>
-<div class="paragraph">
-<p>In practice, we expect some commits to be created recently and not stored
-in the commit-graph. We can treat these commits as having "infinite"
-generation number and walk until reaching commits with known generation
-number.</p>
-</div>
-<div class="paragraph">
-<p>We use the macro GENERATION_NUMBER_INFINITY to mark commits not
-in the commit-graph file. If a commit-graph file was written by a version
-of Git that did not compute generation numbers, then those commits will
-have generation number represented by the macro GENERATION_NUMBER_ZERO = 0.</p>
-</div>
-<div class="paragraph">
-<p>Since the commit-graph file is closed under reachability, we can guarantee
-the following weaker condition on all commits:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>If A and B are commits with generation numbers N and M, respectively,
-and N &lt; M, then A cannot reach B.</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note how the strict inequality differs from the inequality when we have
-fully-computed generation numbers. Using strict inequality may result in
-walking a few extra commits, but the simplicity in dealing with commits
-with generation number *_INFINITY or *_ZERO is valuable.</p>
-</div>
-<div class="paragraph">
-<p>We use the macro GENERATION_NUMBER_V1_MAX = 0x3FFFFFFF for commits whose
-topological levels (generation number v1) are computed to be at least
-this value. We limit at this value since it is the largest value that
-can be stored in the commit-graph file using the 30 bits available
-to topological levels. This presents another case where a commit can
-have generation number equal to that of a parent.</p>
+<p><a href="https://lore.kernel.org/git/xmqqbkdometi.fsf@gitster.g/" class="bare">https://lore.kernel.org/git/xmqqbkdometi.fsf@gitster.g/</a></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_design_details">Design Details</h2>
+<h2 id="_non_goals">Non goals</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>The commit-graph file is stored in a file named <em>commit-graph</em> in the
-.git/objects/info directory. This could be stored in the info directory
-of an alternate.</p>
+<p>We will not discuss those client side improvements here, as they
+would require changes in different parts of Git than this effort.</p>
+<div class="paragraph">
+<p>So we don&#8217;t pretend to fully replace Git LFS with only this effort,
+but we nevertheless believe that it can significantly improve the
+current situation on the server side, and that other separate
+efforts could also improve the situation on the client side.</p>
+</div>
 </li>
 <li>
-<p>The core.commitGraph config setting must be on to consume graph files.</p>
+<p>In the same way, we are not going to discuss all the possible ways
+to implement a LOP or their underlying object storage, or to
+optimize how LOP works.</p>
+<div class="paragraph">
+<p>Our opinion is that the simplest solution for now is for LOPs to use
+object storage through a remote helper (see section II.2 below for
+more details) to store their objects. So we consider that this is the
+default implementation. If there are improvements on top of this,
+that&#8217;s great, but our opinion is that such improvements are not
+necessary for LOPs to already be useful. Such improvements are likely
+a different technical topic, and can be taken care of separately
+anyway.</p>
+</div>
+<div class="paragraph">
+<p>So in particular we are not going to discuss pluggable ODBs or other
+object database backends that could chunk large blobs, dedup the
+chunks and store them efficiently. Sure, that would be a nice
+improvement to store large blobs on the server side, but we believe
+it can just be a separate effort as it&#8217;s also not technically very
+related to this effort.</p>
+</div>
+<div class="paragraph">
+<p>We are also not going to discuss data transfer improvements between
+LOPs and clients or servers. Sure, there might be some easy and very
+effective optimizations there (as we know that objects on LOPs are
+very likely incompressible and not deltifying well), but this can be
+dealt with separately in a separate effort.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In other words, the goal of this document is not to talk about all the
+possible ways to optimize how Git could handle large blobs, but to
+describe how a LOP based solution can already work well and alleviate
+a number of current issues in the context of Git clients and servers
+sharing Git objects.</p>
+</div>
+<div class="paragraph">
+<p>Even if LOPs are used not very efficiently, they can still be useful
+and worth using in some cases, as we will see in more details
+later in this document:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>they can make it simpler for clients to use promisor remotes and
+therefore avoid fetching a lot of large blobs they might not need
+locally,</p>
 </li>
 <li>
-<p>The file format includes parameters for the object ID hash function,
-so a future change of hash algorithm does not require a change in format.</p>
-</li>
-<li>
-<p>Commit grafts and replace objects can change the shape of the commit
-history. The latter can also be enabled/disabled on the fly using
-<code>--no-replace-objects</code>. This leads to difficulty storing both possible
-interpretations of a commit id, especially when computing generation
-numbers. The commit-graph will not be read or written when
-replace-objects or grafts are present.</p>
-</li>
-<li>
-<p>Shallow clones create grafts of commits by dropping their parents. This
-leads the commit-graph to think those commits have generation number 1.
-If and when those commits are made unshallow, those generation numbers
-become invalid. Since shallow clones are intended to restrict the commit
-history to a very small set of commits, the commit-graph feature is less
-helpful for these clones, anyway. The commit-graph will not be read or
-written when shallow commits are present.</p>
+<p>they can make it significantly cheaper or easier for servers to
+host a significant part of the current repository content, and
+even more to host content with larger blobs or more large blobs
+than currently.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_commit_graphs_chains">Commit-Graphs Chains</h2>
+<h2 id="_i_issues_with_the_current_situation">I Issues with the current situation</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Some statistics made on GitLab repos have shown that more than 75%
+of the disk space is used by blobs that are larger than 1MB and
+often in a binary format.</p>
+</li>
+<li>
+<p>So even if users could use Git LFS or similar tools to store a lot
+of large blobs out of their repos, it&#8217;s a fact that in practice they
+don&#8217;t do it as much as they probably should.</p>
+</li>
+<li>
+<p>On the server side ideally, the server should be able to decide for
+itself how it stores things. It should not depend on users deciding
+to use tools like Git LFS on some blobs or not.</p>
+</li>
+<li>
+<p>It&#8217;s much more expensive to store large blobs that don&#8217;t delta
+compress well on regular fast seeking drives (like SSDs) than on
+object storage (like Amazon S3 or GCP Buckets). Using fast drives
+for regular Git repos makes sense though, as serving regular Git
+content (blobs containing text or code) needs drives where seeking
+is fast, but the content is relatively small. On the other hand,
+object storage for Git LFS blobs makes sense as seeking speed is not
+as important when dealing with large files, while costs are more
+important. So the fact that users don&#8217;t use Git LFS or similar tools
+for a significant number of large blobs has likely some bad
+consequences on the cost of repo storage for most Git hosting
+platforms.</p>
+</li>
+<li>
+<p>Having large blobs handled in the same way as other blobs and Git
+objects in Git repos instead of on object storage also has a cost in
+increased memory and CPU usage, and therefore decreased performance,
+when creating packfiles. (This is because Git tries to use delta
+compression or zlib compression which is unlikely to work well on
+already compressed binary content.) So it&#8217;s not just a storage cost
+increase.</p>
+</li>
+<li>
+<p>When a large blob has been committed into a repo, it might not be
+possible to remove this blob from the repo without rewriting
+history, even if the user then decides to use Git LFS or a similar
+tool to handle it.</p>
+</li>
+<li>
+<p>In fact Git LFS and similar tools are not very flexible in letting
+users change their minds about the blobs they should handle or not.</p>
+</li>
+<li>
+<p>Even when users are using Git LFS or similar tools, they are often
+complaining that these tools require significant effort to set up,
+learn and use correctly.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ii_main_features_of_the_large_object_promisors_solution">II Main features of the "Large Object Promisors" solution</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Typically, repos grow with near-constant velocity (commits per day). Over time,
-the number of commits added by a fetch operation is much smaller than the
-number of commits in the full history. By creating a "chain" of commit-graphs,
-we enable fast writes of new commit data without rewriting the entire commit
-history&#8201;&#8212;&#8201;at least, most of the time.</p>
+<p>The main features below should give a rough overview of how the
+solution may work. Details about needed elements can be found in
+following sections.</p>
+</div>
+<div class="paragraph">
+<p>Even if each feature below is very useful for the full solution, it is
+very likely to be also useful on its own in some cases where the full
+solution is not required. However, we&#8217;ll focus primarily on the big
+picture here.</p>
+</div>
+<div class="paragraph">
+<p>Also each feature doesn&#8217;t need to be implemented entirely in Git
+itself. Some could be scripts, hooks or helpers that are not part of
+the Git repo. It would be helpful if those could be shared and
+improved on collaboratively though. So we want to encourage sharing
+them.</p>
 </div>
 <div class="sect2">
-<h3 id="_file_layout">File Layout</h3>
+<h3 id="_1_large_blobs_are_stored_on_lops">1) Large blobs are stored on LOPs</h3>
 <div class="paragraph">
-<p>A commit-graph chain uses multiple files, and we use a fixed naming convention
-to organize these files. Each commit-graph file has a name
-<code>$OBJDIR/info/commit-graphs/graph-</code>{hash}.<code>graph</code> where {hash} is the hex-
-valued hash stored in the footer of that file (which is a hash of the file&#8217;s
-contents before that hash). For a chain of commit-graph files, a plain-text
-file at <code>$OBJDIR/info/commit-graphs/commit-graph-chain</code> contains the
-hashes for the files in order from "lowest" to "highest".</p>
+<p>Large blobs should be stored on special promisor remotes that we will
+call "Large Object Promisors" or LOPs. These LOPs should be additional
+remotes dedicated to contain large blobs especially those in binary
+format. They should be used along with main remotes that contain the
+other objects.</p>
 </div>
+<div class="sect3">
+<h4 id="_note_1">Note 1</h4>
 <div class="paragraph">
-<p>For example, if the <code>commit-graph-chain</code> file contains the lines</p>
+<p>To clarify, a LOP is a normal promisor remote, except that:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>        {hash0}
-        {hash1}
-        {hash2}</pre>
+<div class="ulist">
+<ul>
+<li>
+<p>it should store only large blobs,</p>
+</li>
+<li>
+<p>it should be separate from the main remote, so that the main remote
+can focus on serving other objects and the rest of the repos (see
+feature 4) below) and can use the LOP as a promisor remote for
+itself.</p>
+</li>
+</ul>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_note_2">Note 2</h4>
 <div class="paragraph">
-<p>then the commit-graph chain looks like the following diagram:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>+-----------------------+
-|  graph-{hash2}.graph  |
-+-----------------------+
-  |
-+-----------------------+
-|                       |
-|  graph-{hash1}.graph  |
-|                       |
-+-----------------------+
-  |
-+-----------------------+
-|                       |
-|                       |
-|                       |
-|  graph-{hash0}.graph  |
-|                       |
-|                       |
-|                       |
-+-----------------------+</pre>
+<p>Git already makes it possible for a main remote to also be a promisor
+remote storing both regular objects and large blobs for a client that
+clones from it with a filter on blob size. But here we explicitly want
+to avoid that.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_rationale">Rationale</h4>
 <div class="paragraph">
-<p>Let X0 be the number of commits in <code>graph-</code>{hash0}.<code>graph</code>, X1 be the number of
-commits in <code>graph-</code>{hash1}.<code>graph</code>, and X2 be the number of commits in
-<code>graph-</code>{hash2}.<code>graph</code>. If a commit appears in position i in <code>graph-</code>{hash2}.<code>graph</code>,
-then we interpret this as being the commit in position (X0 + X1 + i), and that
-will be used as its "graph position". The commits in <code>graph-</code>{hash2}.<code>graph</code> use these
-positions to refer to their parents, which may be in <code>graph-</code>{hash1}.<code>graph</code> or
-<code>graph-</code>{hash0}.<code>graph</code>. We can navigate to an arbitrary commit in position j by checking
-its containment in the intervals [0, X0), [X0, X0 + X1), [X0 + X1, X0 + X1<br/>
-X2).</p>
+<p>LOPs aim to be good at handling large blobs while main remotes are
+already good at handling other objects.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implementation">Implementation</h4>
+<div class="paragraph">
+<p>Git already has support for multiple promisor remotes, see
+<a href="partial-clone.html#using-many-promisor-remotes">the partial clone documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>Each commit-graph file (except the base, <code>graph-</code>{hash0}.<code>graph</code>) contains data
-specifying the hashes of all files in the lower layers. In the above example,
-<code>graph-</code>{hash1}.<code>graph</code> contains {hash0} while <code>graph-</code>{hash2}.<code>graph</code> contains
-{hash0} and {hash1}.</p>
+<p>Also, Git already has support for partial clone using a filter on the
+size of the blobs (with <code>git</code> <code>clone</code> <code>--filter=blob:limit=</code><em>&lt;size&gt;</em>).  Most
+of the other main features below are based on these existing features
+and are about making them easy and efficient to use for the purpose of
+better handling large blobs.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_merging_commit_graph_files">Merging commit-graph files</h3>
-<div class="paragraph">
-<p>If we only added a new commit-graph file on every write, we would run into a
-linear search problem through many commit-graph files.  Instead, we use a merge
-strategy to decide when the stack should collapse some number of levels.</p>
-</div>
-<div class="paragraph">
-<p>The diagram below shows such a collapse. As a set of new commits are added, it
-is determined by the merge strategy that the files should collapse to
-<code>graph-</code>{hash1}. Thus, the new commits, the commits in <code>graph-</code>{hash2} and
-the commits in <code>graph-</code>{hash1} should be combined into a new <code>graph-</code>{hash3}
-file.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>                            +---------------------+
-                            |                     |
-                            |    (new commits)    |
-                            |                     |
-                            +---------------------+
-                            |                     |
- +-----------------------+  +---------------------+
- |  graph-{hash2}        |-&gt;|                     |
- +-----------------------+  +---------------------+
-          |                 |                     |
- +-----------------------+  +---------------------+
- |                       |  |                     |
- |  graph-{hash1}        |-&gt;|                     |
- |                       |  |                     |
- +-----------------------+  +---------------------+
-          |                  tmp_graphXXX
- +-----------------------+
- |                       |
- |                       |
- |                       |
- |  graph-{hash0}        |
- |                       |
- |                       |
- |                       |
- +-----------------------+</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>During this process, the commits to write are combined, sorted and we write the
-contents to a temporary file, all while holding a <code>commit-graph-chain.lock</code>
-lock-file.  When the file is flushed, we rename it to <code>graph-</code>{hash3}
-according to the computed {hash3}. Finally, we write the new chain data to
-<code>commit-graph-chain.lock</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>        {hash3}
-        {hash0}</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>We then close the lock-file.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_merge_strategy">Merge Strategy</h3>
+<h3 id="_2_lops_can_use_object_storage">2) LOPs can use object storage</h3>
 <div class="paragraph">
-<p>When writing a set of commits that do not exist in the commit-graph stack of
-height N, we default to creating a new file at level N + 1. We then decide to
-merge with the Nth level if one of two conditions hold:</p>
+<p>LOPs can be implemented using object storage, like an Amazon S3 or GCP
+Bucket or MinIO (which is open source under the GNU AGPLv3 license) to
+actually store the large blobs, and can be accessed through a Git
+remote helper (see <a href="../gitremote-helpers.html">gitremote-helpers(7)</a>) which makes the
+underlying object storage appear like a remote to Git.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="sect3">
+<h4 id="_note">Note</h4>
+<div class="paragraph">
+<p>A LOP can be a promisor remote accessed using a remote helper by
+both some clients and the main remote.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rationale_2">Rationale</h4>
+<div class="paragraph">
+<p>This looks like the simplest way to create LOPs that can cheaply
+handle many large blobs.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implementation_2">Implementation</h4>
+<div class="paragraph">
+<p>Remote helpers are quite easy to write as shell scripts, but it might
+be more efficient and maintainable to write them using other languages
+like Go.</p>
+</div>
+<div class="paragraph">
+<p>Some already exist under open source licenses, for example:</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
-<p><code>--size-multiple=</code><em>&lt;X&gt;</em> is specified or X = 2, and the number of commits in
-level N is less than X times the number of commits in level N + 1.</p>
+<p><a href="https://github.com/awslabs/git-remote-s3" class="bare">https://github.com/awslabs/git-remote-s3</a></p>
 </li>
 <li>
-<p><code>--max-commits=</code><em>&lt;C&gt;</em> is specified with non-zero C and the number of commits
-in level N + 1 is more than C commits.</p>
+<p><a href="https://gitlab.com/eric.p.ju/git-remote-gs" class="bare">https://gitlab.com/eric.p.ju/git-remote-gs</a></p>
 </li>
-</ol>
+</ul>
 </div>
 <div class="paragraph">
-<p>This decision cascades down the levels: when we merge a level we create a new
-set of commits that then compares to the next level.</p>
+<p>Other ways to implement LOPs are certainly possible, but the goal of
+this document is not to discuss how to best implement a LOP or its
+underlying object storage (see the "0) Non goals" section above).</p>
 </div>
-<div class="paragraph">
-<p>The first condition bounds the number of levels to be logarithmic in the total
-number of commits.  The second condition bounds the total number of commits in
-a <code>graph-</code>{hashN} file and not in the <code>commit-graph</code> file, preventing
-significant performance issues when the stack merges and another process only
-partially reads the previous stack.</p>
-</div>
-<div class="paragraph">
-<p>The merge strategy values (2 for the size multiple, 64,000 for the maximum
-number of commits) could be extracted into config settings for full
-flexibility.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_handling_mixed_generation_number_chains">Handling Mixed Generation Number Chains</h3>
+<h3 id="_3_lop_object_storage_can_be_git_lfs_storage">3) LOP object storage can be Git LFS storage</h3>
 <div class="paragraph">
-<p>With the introduction of generation number v2 and generation data chunk, the
-following scenario is possible:</p>
+<p>The underlying object storage that a LOP uses could also serve as
+storage for large files handled by Git LFS.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>"New" Git writes a commit-graph with the corrected commit dates.</p>
-</li>
-<li>
-<p>"Old" Git writes a split commit-graph on top without corrected commit dates.</p>
-</li>
-</ol>
-</div>
+<div class="sect3">
+<h4 id="_rationale_3">Rationale</h4>
 <div class="paragraph">
-<p>A naive approach of using the newest available generation number from
-each layer would lead to violated expectations: the lower layer would
-use corrected commit dates which are much larger than the topological
-levels of the higher layer. For this reason, Git inspects the topmost
-layer to see if the layer is missing corrected commit dates. In such a case
-Git only uses topological level for generation numbers.</p>
+<p>This would simplify the server side if it wants to both use a LOP and
+act as a Git LFS server.</p>
 </div>
-<div class="paragraph">
-<p>When writing a new layer in split commit-graph, we write corrected commit
-dates if the topmost layer has corrected commit dates written. This
-guarantees that if a layer has corrected commit dates, all lower layers
-must have corrected commit dates as well.</p>
-</div>
-<div class="paragraph">
-<p>When merging layers, we do not consider whether the merged layers had corrected
-commit dates. Instead, the new layer will have corrected commit dates if the
-layer below the new layer has corrected commit dates.</p>
-</div>
-<div class="paragraph">
-<p>While writing or merging layers, if the new layer is the only layer, it will
-have corrected commit dates when written by compatible versions of Git. Thus,
-rewriting split commit-graph as a single file (<code>--split=replace</code>) creates a
-single layer with corrected commit dates.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_deleting_graph_hash_files">Deleting graph-{hash} files</h3>
+<h3 id="_4_a_main_remote_can_offload_to_a_lop_with_a_configurable_threshold">4) A main remote can offload to a LOP with a configurable threshold</h3>
 <div class="paragraph">
-<p>After a new tip file is written, some <code>graph-</code>{hash} files may no longer
-be part of a chain. It is important to remove these files from disk, eventually.
-The main reason to delay removal is that another process could read the
-<code>commit-graph-chain</code> file before it is rewritten, but then look for the
-<code>graph-</code>{hash} files after they are deleted.</p>
+<p>On the server side, a main remote should have a way to offload to a
+LOP all its blobs with a size over a configurable threshold.</p>
 </div>
+<div class="sect3">
+<h4 id="_rationale_4">Rationale</h4>
 <div class="paragraph">
-<p>To allow holding old split commit-graphs for a while after they are unreferenced,
-we update the modified times of the files when they become unreferenced. Then,
-we scan the <code>$OBJDIR/info/commit-graphs/</code> directory for <code>graph-</code>{hash}
-files whose modified times are older than a given expiry window. This window
-defaults to zero, but can be changed using command-line arguments or a config
-setting.</p>
+<p>This makes it easy to set things up and to clean things up. For
+example, an admin could use this to manually convert a repo not using
+LOPs to a repo using a LOP. On a repo already using a LOP but where
+some users would sometimes push large blobs, a cron job could use this
+to regularly make sure the large blobs are moved to the LOP.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implementation_3">Implementation</h4>
+<div class="paragraph">
+<p>Using something based on <code>git</code> <code>repack</code> <code>--filter=..</code>. to separate the
+blobs we want to offload from the other Git objects could be a good
+idea. The missing part is to connect to the LOP, check if the blobs we
+want to offload are already there and if not send them.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_chains_across_multiple_object_directories">Chains across multiple object directories</h3>
+<h3 id="_5_a_main_remote_should_try_to_remain_clean_from_large_blobs">5) A main remote should try to remain clean from large blobs</h3>
 <div class="paragraph">
-<p>In a repo with alternates, we look for the <code>commit-graph-chain</code> file starting
-in the local object directory and then in each alternate. The first file that
-exists defines our chain. As we look for the <code>graph-</code>{hash} files for
-each {hash} in the chain file, we follow the same pattern for the host
-directories.</p>
+<p>A main remote should try to avoid containing a lot of oversize
+blobs. For that purpose, it should offload as needed to a LOP and it
+should have ways to prevent oversize blobs to be fetched, and also
+perhaps pushed, into it.</p>
+</div>
+<div class="sect3">
+<h4 id="_rationale_5">Rationale</h4>
+<div class="paragraph">
+<p>A main remote containing many oversize blobs would defeat the purpose
+of LOPs.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implementation_4">Implementation</h4>
+<div class="paragraph">
+<p>The way to offload to a LOP discussed in 4) above can be used to
+regularly offload oversize blobs. About preventing oversize blobs from
+being fetched into the repo see 6) below. About preventing oversize
+blob pushes, a pre-receive hook could be used.</p>
 </div>
 <div class="paragraph">
-<p>This allows commit-graphs to be split across multiple forks in a fork network.
-The typical case is a large "base" repo with many smaller forks.</p>
+<p>Also there are different scenarios in which large blobs could get
+fetched into the main remote, for example:</p>
 </div>
-<div class="paragraph">
-<p>As the base repo advances, it will likely update and merge its commit-graph
-chain more frequently than the forks. If a fork updates their commit-graph after
-the base repo, then it should "reparent" the commit-graph chain onto the new
-chain in the base repo. When reading each <code>graph-</code>{hash} file, we track
-the object directory containing it. During a write of a new commit-graph file,
-we check for any changes in the source object directory and read the
-<code>commit-graph-chain</code> file for that source and create a new file based on those
-files. During this "reparent" operation, we necessarily need to collapse all
-levels in the fork, as all of the files are invalid against the new base file.</p>
-</div>
-<div class="paragraph">
-<p>It is crucial to be careful when cleaning up "unreferenced" <code>graph-</code>{hash}.<code>graph</code>
-files in this scenario. It falls to the user to define the proper settings for
-their custom environment:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p>When merging levels in the base repo, the unreferenced files may still be
-referenced by chains from fork repos.</p>
+<p>A client that doesn&#8217;t implement the "promisor-remote" protocol
+(described in 6) below) clones from the main remote.</p>
 </li>
 <li>
-<p>The expiry time should be set to a length of time such that every fork has
-time to recompute their commit-graph chain to "reparent" onto the new base
-file(s).</p>
+<p>The main remote gets a request for information about a large blob
+and is not able to get that information without fetching the blob
+from the LOP.</p>
 </li>
-<li>
-<p>If the commit-graph chain is updated in the base, the fork will not have
-access to the new chain until its chain is updated to reference those files.
-(This may change in the future [5].)</p>
-</li>
-</ol>
+</ul>
+</div>
+<div class="paragraph">
+<p>It might not be possible to completely prevent all these scenarios
+from happening. So the goal here should be to implement features that
+make the fetching of large blobs less likely. For example adding a
+<code>remote-object-info</code> command in the <code>git</code> <code>cat-file</code> <code>--batch</code> protocol
+and its variants might make it possible for a main repo to respond to
+some requests about large blobs without fetching them.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_6_a_protocol_negotiation_should_happen_when_a_client_clones">6) A protocol negotiation should happen when a client clones</h3>
+<div class="paragraph">
+<p>When a client clones from a main repo, there should be a protocol
+negotiation so that the server can advertise one or more LOPs and so
+that the client and the server can discuss if the client could
+directly use a LOP the server is advertising. If the client and the
+server can agree on that, then the client would be able to get the
+large blobs directly from the LOP and the server would not need to
+fetch those blobs from the LOP to be able to serve the client.</p>
+</div>
+<div class="sect3">
+<h4 id="_note_3">Note</h4>
+<div class="paragraph">
+<p>For fetches instead of clones, a protocol negotiation might not always
+happen, see the "What about fetches?" FAQ entry below for details.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rationale_6">Rationale</h4>
+<div class="paragraph">
+<p>Security, configurability and efficiency of setting things up.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implementation_5">Implementation</h4>
+<div class="paragraph">
+<p>A "promisor-remote" protocol v2 capability looks like a good way to
+implement this. The way the client and server use this capability
+could be controlled by configuration variables.</p>
+</div>
+<div class="paragraph">
+<p>Information that the server could send to the client through that
+protocol could be things like: LOP name, LOP URL, filter-spec (for
+example <code>blob:limit=</code><em>&lt;size&gt;</em>) or just size limit that should be used as
+a filter when cloning, token to be used with the LOP, etc.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_7_a_client_can_offload_to_a_lop">7) A client can offload to a LOP</h3>
+<div class="paragraph">
+<p>When a client is using a LOP that is also a LOP of its main remote,
+the client should be able to offload some large blobs it has fetched,
+but might not need anymore, to the LOP.</p>
+</div>
+<div class="sect3">
+<h4 id="_note_4">Note</h4>
+<div class="paragraph">
+<p>It might depend on the context if it should be OK or not for clients
+to offload large blobs they have created, instead of fetched, directly
+to the LOP without the main remote checking them in some ways
+(possibly using hooks or other tools).</p>
+</div>
+<div class="paragraph">
+<p>This should be discussed and refined when we get closer to
+implementing this feature.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rationale_7">Rationale</h4>
+<div class="paragraph">
+<p>On the client, the easiest way to deal with unneeded large blobs is to
+offload them.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implementation_6">Implementation</h4>
+<div class="paragraph">
+<p>This is very similar to what 4) above is about, except on the client
+side instead of the server side. So a good solution to 4) could likely
+be adapted to work on the client side too.</p>
+</div>
+<div class="paragraph">
+<p>There might be some security issues here, as there is no negotiation,
+but they might be mitigated if the client can reuse a token it got
+when cloning (see 6) above). Also if the large blobs were fetched from
+a LOP, it is likely, and can easily be confirmed, that the LOP still
+has them, so that they can just be removed from the client.</p>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_related_links">Related Links</h2>
+<h2 id="_iii_benefits_of_using_lops">III Benefits of using LOPs</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>[0] <a href="https://bugs.chromium.org/p/git/issues/detail?id=8" class="bare">https://bugs.chromium.org/p/git/issues/detail?id=8</a>
-    Chromium work item for: Serialized Commit Graph</p>
+<p>Many benefits are related to the issues discussed in "I) Issues with
+the current situation" above:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>No need to rewrite history when deciding which blobs are worth
+handling separately than other objects, or when moving or removing
+the threshold.</p>
+</li>
+<li>
+<p>If the protocol between client and server is developed and secured
+enough, then many details might be setup on the server side only and
+all the clients could then easily get all the configuration
+information and use it to set themselves up mostly automatically.</p>
+</li>
+<li>
+<p>Storage costs benefits on the server side.</p>
+</li>
+<li>
+<p>Reduced memory and CPU needs on main remotes on the server side.</p>
+</li>
+<li>
+<p>Reduced storage needs on the client side.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_iv_faq">IV FAQ</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_about_using_multiple_lops_on_the_server_and_client_side">What about using multiple LOPs on the server and client side?</h3>
+<div class="paragraph">
+<p>That could perhaps be useful in some cases, but for now it&#8217;s more
+likely that in most cases a single LOP will be advertised by the
+server and should be used by the client.</p>
 </div>
 <div class="paragraph">
-<p>[1] <a href="https://lore.kernel.org/git/20110713070517.GC18566@sigill.intra.peff.net/" class="bare">https://lore.kernel.org/git/20110713070517.GC18566@sigill.intra.peff.net/</a>
-    An abandoned patch that introduced generation numbers.</p>
+<p>A case where it could be useful for a server to advertise multiple
+LOPs is if a LOP is better for some users while a different LOP is
+better for other users. For example some clients might have a better
+connection to a LOP than others.</p>
 </div>
 <div class="paragraph">
-<p>[2] <a href="https://lore.kernel.org/git/20170908033403.q7e6dj7benasrjes@sigill.intra.peff.net/" class="bare">https://lore.kernel.org/git/20170908033403.q7e6dj7benasrjes@sigill.intra.peff.net/</a>
-    Discussion about generation numbers on commits and how they interact
-    with fsck.</p>
+<p>In those cases it&#8217;s the responsibility of the server to have some
+documentation to help clients. It could say for example something like
+"Users in this part of the world might want to pick only LOP A as it
+is likely to be better connected to them, while users in other parts
+of the world should pick only LOP B for the same reason."</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_when_should_we_trust_or_not_trust_the_lops_advertised_by_the_server">When should we trust or not trust the LOPs advertised by the server?</h3>
+<div class="paragraph">
+<p>In some contexts, like in corporate setup where the server and all the
+clients are parts of an internal network in a company where admins
+have all the rights on every system, it&#8217;s OK, and perhaps even a good
+thing, if the clients fully trust the server, as it can help ensure
+that all the clients are on the same page.</p>
 </div>
 <div class="paragraph">
-<p>[3] <a href="https://lore.kernel.org/git/20170908034739.4op3w4f2ma5s65ku@sigill.intra.peff.net/" class="bare">https://lore.kernel.org/git/20170908034739.4op3w4f2ma5s65ku@sigill.intra.peff.net/</a>
-    More discussion about generation numbers and not storing them inside
-    commit objects. A valuable quote:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>"I think we should be moving more in the direction of keeping
- repo-local caches for optimizations. Reachability bitmaps have been
- a big performance win. I think we should be doing the same with our
- properties of commits. Not just generation numbers, but making it
- cheap to access the graph structure without zlib-inflating whole
- commit objects (i.e., packv4 or something like the "metapacks" I
- proposed a few years ago)."</pre>
-</div>
+<p>There are also contexts in which clients trust a code hosting platform
+serving them some repos, but might not fully trust other users
+managing or contributing to some of these repos. For example, the code
+hosting platform could have hooks in place to check that any object it
+receives doesn&#8217;t contain malware or otherwise bad content. In this
+case it might be OK for the client to use a main remote and its LOP if
+they are both hosted by the code hosting platform, but not if the LOP
+is hosted elsewhere (where the content is not checked).</p>
 </div>
 <div class="paragraph">
-<p>[4] <a href="https://lore.kernel.org/git/20180108154822.54829-1-git@jeffhostetler.com/T/#u" class="bare">https://lore.kernel.org/git/20180108154822.54829-1-git@jeffhostetler.com/T/#u</a>
-    A patch to remove the ahead-behind calculation from <em>status</em>.</p>
+<p>In other contexts, a client should just not trust a server.</p>
 </div>
 <div class="paragraph">
-<p>[5] <a href="https://lore.kernel.org/git/f27db281-abad-5043-6d71-cbb083b1c877@gmail.com/" class="bare">https://lore.kernel.org/git/f27db281-abad-5043-6d71-cbb083b1c877@gmail.com/</a>
-    A discussion of a "two-dimensional graph position" that can allow reading
-    multiple commit-graph chains at the same time.</p>
+<p>So there should be different ways to configure how the client should
+behave when a server advertises a LOP to it at clone time.</p>
+</div>
+<div class="paragraph">
+<p>As the basic elements that a server can advertise about a LOP are a
+LOP name and a LOP URL, the client should base its decision about
+accepting a LOP on these elements.</p>
+</div>
+<div class="paragraph">
+<p>One simple way to be very strict in the LOP it accepts is for example
+for the client to check that the LOP is already configured on the
+client with the same name and URL as what the server advertises.</p>
+</div>
+<div class="paragraph">
+<p>In general default and "safe" settings should require that the LOP are
+configured on the client separately from the "promisor-remote"
+protocol and that the client accepts a LOP only when information about
+it from the protocol matches what has been already configured
+separately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_about_lop_names">What about LOP names?</h3>
+<div class="paragraph">
+<p>In some contexts, for example if the clients sometimes fetch from each
+other, it can be a good idea for all the clients to use the same names
+for all the remotes they use, including LOPs.</p>
+</div>
+<div class="paragraph">
+<p>In other contexts, each client might want to be able to give the name
+it wants to each remote, including each LOP, it interacts with.</p>
+</div>
+<div class="paragraph">
+<p>So there should be different ways to configure how the client accepts
+or not the LOP name the server advertises.</p>
+</div>
+<div class="paragraph">
+<p>If a default or "safe" setting is used, then as such a setting should
+require that the LOP be configured separately, then the name would be
+configured separately and there is no risk that the server could
+dictate a name to a client.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_could_the_main_remote_be_bogged_down_by_old_or_paranoid_clients">Could the main remote be bogged down by old or paranoid clients?</h3>
+<div class="paragraph">
+<p>Yes, it could happen if there are too many clients that are either
+unwilling to trust the main remote or that just don&#8217;t implement the
+"promisor-remote" protocol because they are too old or not fully
+compatible with the <em>git</em> client.</p>
+</div>
+<div class="paragraph">
+<p>When serving such a client, the main remote has no other choice than
+to first fetch from its LOP, to then be able to provide to the client
+everything it requested. So the main remote, even if it has cleanup
+mechanisms (see section II.4 above), would be burdened at least
+temporarily with the large blobs it had to fetch from its LOP.</p>
+</div>
+<div class="paragraph">
+<p>Not behaving like this would be breaking backward compatibility, and
+could be seen as segregating clients. For example, it might be
+possible to implement a special mode that allows the server to just
+reject clients that don&#8217;t implement the "promisor-remote" protocol or
+aren&#8217;t willing to trust the main remote. This mode might be useful in
+a special context like a corporate environment. There is no plan to
+implement such a mode though, and this should be discussed separately
+later anyway.</p>
+</div>
+<div class="paragraph">
+<p>A better way to proceed is probably for the main remote to show a
+message telling clients that don&#8217;t implement the protocol or are
+unwilling to accept the advertised LOP(s) that they would get faster
+clone and fetches by upgrading client software or properly setting
+them up to accept LOP(s).</p>
+</div>
+<div class="paragraph">
+<p>Waiting for clients to upgrade, monitoring these upgrades and limiting
+the use of LOPs to repos that are not very frequently accessed might
+be other good ways to make sure that some benefits are still reaped
+from LOPs. Over time, as more and more clients upgrade and benefit
+from LOPs, using them in more and more frequently accessed repos will
+become worth it.</p>
+</div>
+<div class="paragraph">
+<p>Corporate environments, where it might be easier to make sure that all
+the clients are up-to-date and properly configured, could hopefully
+benefit more and earlier from using LOPs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_about_fetches">What about fetches?</h3>
+<div class="paragraph">
+<p>There are different kinds of fetches. A regular fetch happens when
+some refs have been updated on the server and the client wants the ref
+updates and possibly the new objects added with them. A "backfill" or
+"lazy" fetch, on the contrary, happens when the client needs to use
+some objects it already knows about but doesn&#8217;t have because they are
+on a promisor remote.</p>
+</div>
+<div class="sect3">
+<h4 id="_regular_fetch">Regular fetch</h4>
+<div class="paragraph">
+<p>In a regular fetch, the client will contact the main remote and a
+protocol negotiation will happen between them. It&#8217;s a good thing that
+a protocol negotiation happens every time, as the configuration on the
+client or the main remote could have changed since the previous
+protocol negotiation. In this case, the new protocol negotiation
+should ensure that the new fetch will happen in a way that satisfies
+the new configuration of both the client and the server.</p>
+</div>
+<div class="paragraph">
+<p>In most cases though, the configurations on the client and the main
+remote will not have changed between 2 fetches or between the initial
+clone and a subsequent fetch. This means that the result of a new
+protocol negotiation will be the same as the previous result, so the
+new fetch will happen in the same way as the previous clone or fetch,
+using, or not using, the same LOP(s) as last time.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_backfill_or_lazy_fetch">"Backfill" or "lazy" fetch</h4>
+<div class="paragraph">
+<p>When there is a backfill fetch, the client doesn&#8217;t necessarily contact
+the main remote first. It will try to fetch from its promisor remotes
+in the order they appear in the config file, except that a remote
+configured using the <code>extensions.partialClone</code> config variable will be
+tried last. See
+<a href="partial-clone.html#using-many-promisor-remotes">the partial clone documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>This is not new with this effort. In fact this is how multiple remotes
+have already been working for around 5 years.</p>
+</div>
+<div class="paragraph">
+<p>When using LOPs, having the main remote configured using
+<code>extensions.partialClone</code>, so it&#8217;s tried last, makes sense, as missing
+objects should only be large blobs that are on LOPs.</p>
+</div>
+<div class="paragraph">
+<p>This means that a protocol negotiation will likely not happen as the
+missing objects will be fetched from the LOPs, and then there will be
+nothing left to fetch from the main remote.</p>
+</div>
+<div class="paragraph">
+<p>To secure that, it could be a good idea for LOPs to require a token
+from the client when it fetches from them. The client could get the
+token when performing a protocol negotiation with the main remote (see
+section II.6 above).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v_future_improvements">V Future improvements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is expected that at the beginning using LOPs will be mostly worth
+it either in a corporate context where the Git version that clients
+use can easily be controlled, or on repos that are infrequently
+accessed. (See the "Could the main remote be bogged down by old or
+paranoid clients?" section in the FAQ above.)</p>
+</div>
+<div class="paragraph">
+<p>Over time, as more and more clients upgrade to a version that
+implements the "promisor-remote" protocol v2 capability described
+above in section II.6), it will be worth it to use LOPs more widely.</p>
+</div>
+<div class="paragraph">
+<p>A lot of improvements may also help using LOPs more widely. Some of
+these improvements are part of the scope of this document like the
+following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Implementing a "remote-object-info" command in the
+<code>git</code> <code>cat-file</code> <code>--batch</code> protocol and its variants to allow main
+remotes to respond to requests about large blobs without fetching
+them. (Eric Ju has started working on this based on previous work
+by Calvin Wan.)</p>
+</li>
+<li>
+<p>Creating better cleanup and offload mechanisms for main remotes
+and clients to prevent accumulation of large blobs.</p>
+</li>
+<li>
+<p>Developing more sophisticated protocol negotiation capabilities
+between clients and servers for handling LOPs, for example adding
+a filter-spec (e.g., blob:limit=&lt;size&gt;) or size limit for
+filtering when cloning, or adding a token for LOP authentication.</p>
+</li>
+<li>
+<p>Improving security measures for LOP access, particularly around
+token handling and authentication.</p>
+</li>
+<li>
+<p>Developing standardized ways to configure and manage multiple LOPs
+across different environments. Especially in the case where
+different LOPs serve the same content to clients in different
+geographical locations, there is a need for replication or
+synchronization between LOPs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Some improvements, including some that have been mentioned in the "0)
+Non Goals" section of this document, are out of the scope of this
+document:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Implementing a new object representation for large blobs on the
+client side.</p>
+</li>
+<li>
+<p>Developing pluggable ODBs or other object database backends that
+could chunk large blobs, dedup the chunks and store them
+efficiently.</p>
+</li>
+<li>
+<p>Optimizing data transfer between LOPs and clients/servers,
+particularly for incompressible and non-deltifying content.</p>
+</li>
+<li>
+<p>Creating improved client side tools for managing large objects
+more effectively, for example tools for migrating from Git LFS or
+git-annex, or tools to find which objects could be offloaded and
+how much disk space could be reclaimed by offloading them.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Some improvements could be seen as part of the scope of this document,
+but might already have their own separate projects from the Git
+project, like:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Improving existing remote helpers to access object storage or
+developing new ones.</p>
+</li>
+<li>
+<p>Improving existing object storage solutions or developing new
+ones.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Even though all the above improvements may help, this document and the
+LOP effort should try to focus, at least first, on a relatively small
+number of improvements mostly those that are in its current scope.</p>
+</div>
+<div class="paragraph">
+<p>For example introducing pluggable ODBs and a new object database
+backend is likely a multi-year effort on its own that can happen
+separately in parallel. It has different technical requirements,
+touches other part of the Git code base and should have its own design
+document(s).</p>
 </div>
 </div>
 </div>
