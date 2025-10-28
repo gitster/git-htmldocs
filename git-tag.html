@@ -444,7 +444,7 @@ pre>code {
 <h1>git-tag(1) Manual Page</h1>
 <h2 id="_name">NAME</h2>
 <div class="sectionbody">
-<p>git-tag - Create, list, delete or verify a tag object signed with GPG</p>
+<p>git-tag - Create, list, delete or verify tags</p>
 </div>
 </div>
 <div id="content">
@@ -489,16 +489,18 @@ and <code>-a</code>, <code>-s</code>, and <code>-u</code> <em>&lt;key-id&gt;</em
 (i.e., a lightweight tag) is created.</p>
 </div>
 <div class="paragraph">
-<p>A GnuPG signed tag object will be created when <code>-s</code> or <code>-u</code>
-<em>&lt;key-id&gt;</em> is used.  When <code>-u</code> <em>&lt;key-id&gt;</em> is not used, the
-committer identity for the current user is used to find the
-GnuPG key for signing. 	The configuration variable <code>gpg.program</code>
-is used to specify custom GnuPG binary.</p>
+<p>A cryptographically signed tag object will be created when <code>-s</code> or
+<code>-u</code> <em>&lt;key-id&gt;</em> is used. The signing backend (GPG, X.509, SSH, etc.) is
+controlled by the <code>gpg.format</code> configuration variable, defaulting to
+OpenPGP. When <code>-u</code> <em>&lt;key-id&gt;</em> is not used, the committer identity for
+the current user is used to find the key for signing. The
+configuration variable <code>gpg.program</code> is used to specify a custom
+signing binary.</p>
 </div>
 <div class="paragraph">
 <p>Tag objects (created with <code>-a</code>, <code>-s</code>, or <code>-u</code>) are called "annotated"
 tags; they contain a creation date, the tagger name and e-mail, a
-tagging message, and an optional GnuPG signature. Whereas a
+tagging message, and an optional cryptographic signature. Whereas a
 "lightweight" tag is simply a name for an object (usually a commit
 object).</p>
 </div>
@@ -523,10 +525,12 @@ lightweight tags by default.</p>
 <dt class="hdlist1"><code>-s</code></dt>
 <dt class="hdlist1"><code>--sign</code></dt>
 <dd>
-<p>Make a GPG-signed tag, using the default e-mail address&#8217;s key.
-The default behavior of tag GPG-signing is controlled by <code>tag.gpgSign</code>
-configuration variable if it exists, or disabled otherwise.
-See <a href="git-config.html">git-config(1)</a>.</p>
+<p>Make a cryptographically signed tag, using the default signing
+key. The signing backend used depends on the <code>gpg.format</code>
+configuration variable. The default key is determined by the
+backend. For GPG, it&#8217;s based on the committer&#8217;s email address,
+while for SSH it may be a specific key file or agent
+identity. See <a href="git-config.html">git-config(1)</a>.</p>
 </dd>
 <dt class="hdlist1"><code>--no-sign</code></dt>
 <dd>
@@ -536,7 +540,10 @@ set to force each and every tag to be signed.</p>
 <dt class="hdlist1"><code>-u</code> <em>&lt;key-id&gt;</em></dt>
 <dt class="hdlist1"><code>--local-user=</code><em>&lt;key-id&gt;</em></dt>
 <dd>
-<p>Make a GPG-signed tag, using the given key.</p>
+<p>Make a cryptographically signed tag using the given key. The
+format of the &lt;key-id&gt; and the backend used depend on the
+<code>gpg.format</code> configuration variable. See
+<a href="git-config.html">git-config(1)</a>.</p>
 </dd>
 <dt class="hdlist1"><code>-f</code></dt>
 <dt class="hdlist1"><code>--force</code></dt>
@@ -551,7 +558,7 @@ set to force each and every tag to be signed.</p>
 <dt class="hdlist1"><code>-v</code></dt>
 <dt class="hdlist1"><code>--verify</code></dt>
 <dd>
-<p>Verify the GPG signature of the given tag names.</p>
+<p>Verify the cryptographic signature of the given tags.</p>
 </dd>
 <dt class="hdlist1"><code>-n</code><em>&lt;num&gt;</em></dt>
 <dd>
@@ -731,13 +738,27 @@ it in the repository configuration as follows:</p>
 <div class="listingblock">
 <div class="content">
 <pre>[user]
-    signingKey = &lt;gpg-key-id&gt;</pre>
+    signingKey = &lt;key-id&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
+<p>The signing backend can be chosen via the <code>gpg.format</code> configuration
+variable, which defaults to <code>openpgp</code>. See <a href="git-config.html">git-config(1)</a>
+for a list of other supported formats.</p>
+</div>
+<div class="paragraph">
+<p>The path to the program used for each signing backend can be specified
+with the <code>gpg.</code><em>&lt;format&gt;</em><code>.program</code> configuration variable. For the
+<code>openpgp</code> backend, <code>gpg.program</code> can be used as a synonym for
+<code>gpg.openpgp.program</code>. See <a href="git-config.html">git-config(1)</a> for details.</p>
+</div>
+<div class="paragraph">
 <p><code>pager.tag</code> is only respected when listing tags, i.e., when <code>-l</code> is
-used or implied. The default is to use a pager.
-See <a href="git-config.html">git-config(1)</a>.</p>
+used or implied. The default is to use a pager.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="git-config.html">git-config(1)</a> for more details and other configuration
+variables.</p>
 </div>
 </div>
 </div>
@@ -1049,7 +1070,7 @@ commits and from none of the <code>--no-merged</code> commits are shown.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-14 14:37:27 -0700
+Last updated 2025-10-28 12:16:15 -0700
 </div>
 </div>
 </body>

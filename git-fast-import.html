@@ -523,6 +523,12 @@ remote-helpers that use the <code>import</code> capability, as they are
 already trusted to run their own code.</p>
 </div>
 </dd>
+<dt class="hdlist1">--signed-tags=(verbatim|warn-verbatim|warn-strip|strip|abort)</dt>
+<dd>
+<p>Specify how to handle signed tags.  Behaves in the same way
+as the same option in <a href="git-fast-export.html">git-fast-export(1)</a>, except that
+default is <em>verbatim</em> (instead of <em>abort</em>).</p>
+</dd>
 <dt class="hdlist1">--signed-commits=(verbatim|warn-verbatim|warn-strip|strip|abort)</dt>
 <dd>
 <p>Specify how to handle signed commits.  Behaves in the same way
@@ -2613,7 +2619,7 @@ not set, the value of <code>transfer.unpackLimit</code> is used instead.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-02 14:07:14 -0700
+Last updated 2025-10-28 12:16:15 -0700
 </div>
 </div>
 </body>
