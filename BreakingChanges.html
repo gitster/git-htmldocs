@@ -871,6 +871,30 @@ be removed in Git 3.0.</p>
 <p>cf. &lt;xmqqa59i45wc.fsf@gitster.g&gt;</p>
 </div>
 </li>
+<li>
+<p>Support for <code>core.preferSymlinkRefs=true</code> has been deprecated and will be
+removed in Git 3.0. Writing symbolic refs as symbolic links will be phased
+out in favor of using plain files using the textual representation of
+symbolic refs.</p>
+<div class="paragraph">
+<p>Symbolic references were initially always stored as a symbolic link. This was
+changed in 9b143c6e15 (Teach update-ref about a symbolic ref stored in a
+textfile., 2005-09-25), where a new textual symref format was introduced to
+store those symbolic refs in a plain file. In 9f0bb90d16
+(core.prefersymlinkrefs: use symlinks for .git/HEAD, 2006-05-02), the Git
+project switched the default to use the textual symrefs in favor of symbolic
+links.</p>
+</div>
+<div class="paragraph">
+<p>The migration away from symbolic links has happened almost 20 years ago by now,
+and there is no known reason why one should prefer them nowadays. Furthermore,
+symbolic links are not supported on some platforms.</p>
+</div>
+<div class="paragraph">
+<p>Note that only the writing side for such symbolic links is deprecated. Reading
+such symbolic links is still supported for now.</p>
+</div>
+</li>
 </ul>
 </div>
 </div>
@@ -909,7 +933,7 @@ almost no users of any of the commands anymore.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-08 13:52:53 -0700
+Last updated 2025-10-30 13:01:01 -0700
 </div>
 </div>
 </body>

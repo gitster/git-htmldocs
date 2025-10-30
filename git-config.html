@@ -2956,6 +2956,18 @@ the corrected commit dates will not be written or read. Defaults to
 <p>Specifies the default value for the <code>--max-new-filters</code> option of <code>git</code>
 <code>commit-graph</code> <code>write</code> (c.f., <a href="git-commit-graph.html">git-commit-graph(1)</a>).</p>
 </dd>
+<dt class="hdlist1">commitGraph.changedPaths</dt>
+<dd>
+<p>If true, then <code>git</code> <code>commit-graph</code> <code>write</code> will compute and write
+changed-path Bloom filters by default, equivalent to passing
+<code>--changed-paths</code>. If false or unset, changed-paths Bloom filters will
+be written during <code>git</code> <code>commit-graph</code> <code>write</code> only if the filters already
+exist in the current commit-graph file. This matches the default
+behavior of <code>git</code> <code>commit-graph</code> <code>write</code> without any <code>--</code>[<code>no-</code>]<code>changed-paths</code>
+option. To rewrite a commit-graph file without any filters, use the
+<code>--no-changed-paths</code> option. Command-line option <code>--</code>[<code>no-</code>]<code>changed-paths</code>
+always takes precedence over this configuration. Defaults to unset.</p>
+</dd>
 <dt class="hdlist1">commitGraph.readChangedPaths</dt>
 <dd>
 <p>Deprecated. Equivalent to commitGraph.changedPathsVersion=-1 if true, and
@@ -3338,6 +3350,10 @@ CIFS/Microsoft Windows.</p>
 and other symbolic reference files, use symbolic links.
 This is sometimes needed to work with old scripts that
 expect HEAD to be a symbolic link.</p>
+<div class="paragraph">
+<p>This configuration is deprecated and will be removed in Git 3.0. Symbolic refs
+will always be written as textual symrefs.</p>
+</div>
 </dd>
 <dt class="hdlist1">core.alternateRefsCommand</dt>
 <dd>
