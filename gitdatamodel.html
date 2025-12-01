@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="generator" content="Asciidoctor 2.0.23"/>
-<title>git-repo(1)</title>
+<title>gitdatamodel(7)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"/>
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -441,19 +441,18 @@ pre>code {
 </head>
 <body class="manpage">
 <div id="header">
-<h1>git-repo(1) Manual Page</h1>
+<h1>gitdatamodel(7) Manual Page</h1>
 <h2 id="_name">NAME</h2>
 <div class="sectionbody">
-<p>git-repo - Retrieve information about the repository</p>
+<p>gitdatamodel - Git's core data model</p>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
-<div class="verseblock">
-<pre class="content"><code>git</code> <code>repo</code> <code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>)] [<code>-z</code>] [<code>--all</code> | <em>&lt;key&gt;</em>&#8230;&#8203;]
-<code>git</code> <code>repo</code> <code>structure</code> [<code>--format=</code>(<code>table</code>|<code>keyvalue</code>|<code>nul</code>)]</pre>
+<div class="paragraph">
+<p>gitdatamodel</p>
 </div>
 </div>
 </div>
@@ -461,176 +460,518 @@ pre>code {
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Retrieve information about the repository.</p>
+<p>It&#8217;s not necessary to understand Git&#8217;s data model to use Git, but it&#8217;s
+very helpful when reading Git&#8217;s documentation so that you know what it
+means when the documentation says "object", "reference" or "index".</p>
 </div>
 <div class="paragraph">
-<p>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</p>
+<p>Git&#8217;s core operations use 4 kinds of data:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#objects">Objects</a>: commits, trees, blobs, and tag objects</p>
+</li>
+<li>
+<p><a href="#references">References</a>: branches, tags,
+remote-tracking branches, etc</p>
+</li>
+<li>
+<p><a href="#index">The index</a>, also known as the staging area</p>
+</li>
+<li>
+<p><a href="#reflogs">Reflogs</a>: logs of changes to references ("ref log")</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_commands">COMMANDS</h2>
-<div class="sectionbody">
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>)] [<code>-z</code>] [<code>--all</code> | <em>&lt;key&gt;</em>...]</dt>
-<dd>
-<p>Retrieve metadata-related information about the current repository. Only
-the requested data will be returned based on their keys (see "INFO KEYS"
-section below).</p>
-<div class="paragraph">
-<p>The values are returned in the same order in which their respective keys were
-requested. The <code>--all</code> flag requests the values for all the available keys.</p>
-</div>
-<div class="paragraph">
-<p>The output format can be chosen through the flag <code>--format</code>. Two formats are
-supported:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>keyvalue</code></dt>
-<dd>
-<p>output key-value pairs one per line using the <code>=</code> character as
-the delimiter between the key and the value. Values containing "unusual"
-characters are quoted as explained for the configuration variable
-<code>core.quotePath</code> (see <a href="git-config.html">git-config(1)</a>). This is the default.</p>
-</dd>
-<dt class="hdlist1"><code>nul</code></dt>
-<dd>
-<p>similar to <code>keyvalue</code>, but using a newline character as the delimiter
-between the key and the value and using a NUL character after each value.
-This format is better suited for being parsed by another applications than
-<code>keyvalue</code>. Unlike in the <code>keyvalue</code> format, the values are never quoted.</p>
-<div class="paragraph">
-<p><code>-z</code> is an alias for <code>--format=nul</code>.</p>
-</div>
-</dd>
-</dl>
-</div>
-</dd>
-<dt class="hdlist1"><code>structure</code> [<code>--format=</code>(<code>table</code>|<code>keyvalue</code>|<code>nul</code>)]</dt>
-<dd>
-<p>Retrieve statistics about the current repository structure. The
-following kinds of information are reported:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Reference counts categorized by type</p>
-</li>
-<li>
-<p>Reachable object counts categorized by type</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The output format can be chosen through the flag <code>--format</code>. Three formats are
-supported:</p>
-</div>
-<div class="paragraph">
-<p>+</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>table</code></dt>
-<dd>
-<p>Outputs repository stats in a human-friendly table. This format may
-change and is not intended for machine parsing. This is the default
-format.</p>
-</dd>
-<dt class="hdlist1"><code>keyvalue</code></dt>
-<dd>
-<p>Each line of output contains a key-value pair for a repository stat.
-The <em>=</em> character is used to delimit between the key and the value.
-Values containing "unusual" characters are quoted as explained for the
-configuration variable <code>core.quotePath</code> (see <a href="git-config.html">git-config(1)</a>).</p>
-</dd>
-<dt class="hdlist1"><code>nul</code></dt>
-<dd>
-<p>Similar to <code>keyvalue</code>, but uses a NUL character to delimit between
-key-value pairs instead of a newline. Also uses a newline character as
-the delimiter between the key and value instead of <em>=</em>. Unlike the
-<code>keyvalue</code> format, values containing "unusual" characters are never
-quoted.</p>
-</dd>
-</dl>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_info_keys">INFO KEYS</h2>
+<h2 id="objects">OBJECTS</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In order to obtain a set of values from <code>git</code> <code>repo</code> <code>info</code>, you should provide
-the keys that identify them. Here&#8217;s a list of the available keys and the
-values that they return:</p>
+<p>All of the commits and files in a Git repository are stored as "Git objects".
+Git objects never change after they&#8217;re created, and every object has an ID,
+like <code>1b61de420a21a2f1aaef93e38ecd0e45e8bc9f0a</code>.</p>
 </div>
-<div class="dlist">
+<div class="paragraph">
+<p>This means that if you have an object&#8217;s ID, you can always recover its
+exact contents as long as the object hasn&#8217;t been deleted.</p>
+</div>
+<div class="paragraph">
+<p>Every object has:</p>
+</div>
+<div id="object-id" class="olist arabic">
+<ol class="arabic">
+<li>
+<p>an <strong>ID</strong> (aka "object name"), which is a cryptographic hash of its
+type and contents.
+It&#8217;s fast to look up a Git object using its ID.
+This is usually represented in hexadecimal, like
+<code>1b61de420a21a2f1aaef93e38ecd0e45e8bc9f0a</code>.</p>
+</li>
+<li>
+<p>a <strong>type</strong>. There are 4 types of objects:
+<a href="#commit">commits</a>, <a href="#tree">trees</a>, <a href="#blob">blobs</a>,
+and <a href="#tag-object">tag objects</a>.</p>
+</li>
+<li>
+<p><strong>contents</strong>. The structure of the contents depends on the type.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s how each type of object is structured:</p>
+</div>
+<div id="commit" class="dlist">
 <dl>
-<dt class="hdlist1"><code>layout.bare</code></dt>
+<dt class="hdlist1">commit</dt>
 <dd>
-<p><code>true</code> if this is a bare repository, otherwise <code>false</code>.</p>
-</dd>
-<dt class="hdlist1"><code>layout.shallow</code></dt>
-<dd>
-<p><code>true</code> if this is a shallow repository, otherwise <code>false</code>.</p>
-</dd>
-<dt class="hdlist1"><code>object.format</code></dt>
-<dd>
-<p>The object format (hash algorithm) used in the repository.</p>
-</dd>
-<dt class="hdlist1"><code>references.format</code></dt>
-<dd>
-<p>The reference storage format. The valid values are:</p>
-<div class="ulist">
-<ul>
+<p>A commit contains these required fields
+(though there are other optional fields):</p>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><code>files</code> for loose files with packed-refs. This is the default.</p>
+<p>The full directory structure of all the files in that version of the
+repository and each file&#8217;s contents, stored as the <strong><a href="#tree">tree</a></strong> ID
+of the commit&#8217;s top-level directory</p>
 </li>
 <li>
-<p><code>reftable</code> for the reftable format. This format is experimental and its
-internals are subject to change.</p>
+<p>Its <strong>parent commit ID(s)</strong>. The first commit in a repository has 0 parents,
+regular commits have 1 parent, merge commits have 2 or more parents</p>
 </li>
-</ul>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_examples">EXAMPLES</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
 <li>
-<p>Retrieves the reference format of the current repository:</p>
+<p>An <strong>author</strong> and the time the commit was authored</p>
+</li>
+<li>
+<p>A <strong>committer</strong> and the time the commit was committed</p>
+</li>
+<li>
+<p>A <strong>commit message</strong></p>
+<div class="paragraph">
+<p>Here&#8217;s how an example commit is stored:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre>git repo info references.format</pre>
+<pre>tree 1b61de420a21a2f1aaef93e38ecd0e45e8bc9f0a
+parent 4ccb6d7b8869a86aae2e84c56523f8705b50c647
+author Maya &lt;maya@example.com&gt; 1759173425 -0400
+committer Maya &lt;maya@example.com&gt; 1759173425 -0400
+
+Add README</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Like all other objects, commits can never be changed after they&#8217;re created.
+For example, "amending" a commit with <code>git</code> <code>commit</code> <code>--amend</code> creates a new
+commit with the same parent.</p>
+</div>
+<div class="paragraph">
+<p>Git does not store the diff for a commit: when you ask Git to show
+the commit with <a href="git-show.html">git-show(1)</a>, it calculates the diff from its
+parent on the fly.</p>
+</div>
+</li>
+</ol>
+</div>
+</dd>
+</dl>
+</div>
+<div id="tree" class="dlist">
+<dl>
+<dt class="hdlist1">tree</dt>
+<dd>
+<p>A tree is how Git represents a directory.
+It can contain files or other trees (which are subdirectories).
+It lists, for each item in the tree:</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <strong>filename</strong>, for example <code>hello.py</code></p>
+</li>
+<li>
+<p>The <strong>file type</strong>, which must be one of these five types:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>regular file</strong></p>
+</li>
+<li>
+<p><strong>executable file</strong></p>
+</li>
+<li>
+<p><strong>symbolic link</strong></p>
+</li>
+<li>
+<p><strong>directory</strong></p>
+</li>
+<li>
+<p><strong>gitlink</strong> (for use with submodules)</p>
+</li>
+</ul>
 </div>
 </li>
 <li>
-<p>Retrieves whether the current repository is bare and whether it is shallow
-using the <code>nul</code> format:</p>
+<p>The <a href="#object-id"><strong>object ID</strong></a> with the contents of the file, directory,
+or gitlink.</p>
+<div class="paragraph">
+<p>For example, this is how a tree containing one directory (<code>src</code>) and one file
+(<code>README.md</code>) is stored:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre>git repo info --format=nul layout.bare layout.shallow</pre>
+<pre>100644 blob 8728a858d9d21a8c78488c8b4e70e531b659141f README.md
+040000 tree 89b1d2e0495f66d6929f4ff76ff1bb07fc41947d src</pre>
 </div>
 </div>
 </li>
-</ul>
+</ol>
+</div>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+In the output above, Git displays the file type of each tree entry
+using a format that&#8217;s loosely modelled on Unix file modes (<code>100644</code> is
+"regular file", <code>100755</code> is "executable file", <code>120000</code> is "symbolic
+link", <code>040000</code> is "directory", and <code>160000</code> is "gitlink"). It also
+displays the object&#8217;s type: <code>blob</code> for files and symlinks, <code>tree</code> for
+directories, and <code>commit</code> for gitlinks.
+</td>
+</tr>
+</table>
+</div>
+<div id="blob" class="dlist">
+<dl>
+<dt class="hdlist1">blob</dt>
+<dd>
+<p>A blob object contains a file&#8217;s contents.</p>
+<div class="paragraph">
+<p>When you make a commit, Git stores the full contents of each file that
+you changed as a blob.
+For example, if you have a commit that changes 2 files in a repository
+with 1000 files, that commit will create 2 new blobs, and use the
+previous blob ID for the other 998 files.
+This means that commits can use relatively little disk space even in a
+very large repository.</p>
+</div>
+</dd>
+</dl>
+</div>
+<div id="tag-object" class="dlist">
+<dl>
+<dt class="hdlist1">tag object</dt>
+<dd>
+<p>Tag objects contain these required fields
+(though there are other optional fields):</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <strong>ID</strong> of the object it references</p>
+</li>
+<li>
+<p>The <strong>type</strong> of the object it references</p>
+</li>
+<li>
+<p>The <strong>tagger</strong> and tag date</p>
+</li>
+<li>
+<p>A <strong>tag message</strong>, similar to a commit message</p>
+</li>
+</ol>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s how an example tag object is stored:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>object 750b4ead9c87ceb3ddb7a390e6c7074521797fb3
+type commit
+tag v1.0.0
+tagger Maya &lt;maya@example.com&gt; 1759927359 -0400
+
+Release version 1.0.0</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+All of the examples in this section were generated with
+<code>git</code> <code>cat-file</code> <code>-p</code> <em>&lt;object-id&gt;</em>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_see_also">SEE ALSO</h2>
+<h2 id="references">REFERENCES</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="git-rev-parse.html">git-rev-parse(1)</a></p>
+<p>References are a way to give a name to a commit.
+It&#8217;s easier to remember "the changes I&#8217;m working on are on the <code>turtle</code>
+branch" than "the changes are in commit bb69721404348e".
+Git often uses "ref" as shorthand for "reference".</p>
+</div>
+<div class="paragraph">
+<p>References can either refer to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>An object ID, usually a <a href="#commit">commit</a> ID</p>
+</li>
+<li>
+<p>Another reference. This is called a "symbolic reference"</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>References are stored in a hierarchy, and Git handles references
+differently based on where they are in the hierarchy.
+Most references are under <code>refs/</code>. Here are the main types:</p>
+</div>
+<div id="branch" class="dlist">
+<dl>
+<dt class="hdlist1">branches: <code>refs/heads/</code><em>&lt;name&gt;</em></dt>
+<dd>
+<p>A branch refers to a commit ID.
+That commit is the latest commit on the branch.</p>
+<div class="paragraph">
+<p>To get the history of commits on a branch, Git will start at the commit
+ID the branch references, and then look at the commit&#8217;s parent(s),
+the parent&#8217;s parent, etc.</p>
+</div>
+</dd>
+</dl>
+</div>
+<div id="tag" class="dlist">
+<dl>
+<dt class="hdlist1">tags: <code>refs/tags/</code><em>&lt;name&gt;</em></dt>
+<dd>
+<p>A tag refers to a commit ID, tag object ID, or other object ID.
+There are two types of tags:</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>"Annotated tags", which reference a <a href="#tag-object">tag object</a> ID
+which contains a tag message</p>
+</li>
+<li>
+<p>"Lightweight tags", which reference a commit, blob, or tree ID
+directly</p>
+<div class="paragraph">
+<p>Even though branches and tags both refer to a commit ID, Git
+treats them very differently.
+Branches are expected to change over time: when you make a commit, Git
+will update your <a href="#HEAD">current branch</a> to point to the new commit.
+Tags are usually not changed after they&#8217;re created.</p>
+</div>
+</li>
+</ol>
+</div>
+</dd>
+</dl>
+</div>
+<div id="HEAD" class="dlist">
+<dl>
+<dt class="hdlist1">HEAD: <code>HEAD</code></dt>
+<dd>
+<p><code>HEAD</code> is where Git stores your current <a href="#branch">branch</a>,
+if there is a current branch. <code>HEAD</code> can either be:</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A symbolic reference to your current branch, for example <code>ref:</code>
+<code>refs/heads/main</code> if your current branch is <code>main</code>.</p>
+</li>
+<li>
+<p>A direct reference to a commit ID. In this case there is no current branch.
+This is called "detached HEAD state", see the DETACHED HEAD section
+of <a href="git-checkout.html">git-checkout(1)</a> for more.</p>
+</li>
+</ol>
+</div>
+</dd>
+</dl>
+</div>
+<div id="remote-tracking-branch" class="dlist">
+<dl>
+<dt class="hdlist1">remote-tracking branches: <code>refs/remotes/</code><em>&lt;remote&gt;</em><code>/</code><em>&lt;branch&gt;</em></dt>
+<dd>
+<p>A remote-tracking branch refers to a commit ID.
+It&#8217;s how Git stores the last-known state of a branch in a remote
+repository. <code>git</code> <code>fetch</code> updates remote-tracking branches. When
+<code>git</code> <code>status</code> says "you&#8217;re up to date with origin/main", it&#8217;s looking at
+this.</p>
+<div class="paragraph">
+<p><code>refs/remotes/</code><em>&lt;remote&gt;</em><code>/HEAD</code> is a symbolic reference to the remote&#8217;s
+default branch. This is the branch that <code>git</code> <code>clone</code> checks out by default.</p>
+</div>
+</dd>
+</dl>
+</div>
+<div id="other-refs" class="dlist">
+<dl>
+<dt class="hdlist1">Other references</dt>
+<dd>
+<p>Git tools may create references anywhere under <code>refs/</code>.
+For example, <a href="git-stash.html">git-stash(1)</a>, <a href="git-bisect.html">git-bisect(1)</a>,
+and <a href="git-notes.html">git-notes(1)</a> all create their own references
+in <code>refs/stash</code>, <code>refs/bisect</code>, etc.
+Third-party Git tools may also create their own references.</p>
+<div class="paragraph">
+<p>Git may also create references other than <code>HEAD</code> at the base of the
+hierarchy, like <code>ORIG_HEAD</code>.</p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Git may delete objects that aren&#8217;t "reachable" from any reference
+or <a href="#reflogs">reflog</a>.
+An object is "reachable" if we can find it by following tags to whatever
+they tag, commits to their parents or trees, and trees to the trees or
+blobs that they contain.
+For example, if you amend a commit with <code>git</code> <code>commit</code> <code>--amend</code>,
+there will no longer be a branch that points at the old commit.
+The old commit is recorded in the current branch&#8217;s <a href="#reflogs">reflog</a>,
+so it is still "reachable", but when the reflog entry expires it may
+become unreachable and get deleted.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>the old commit will usually not be reachable, so it may be deleted eventually.
+Reachable objects will never be deleted.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="index">THE INDEX</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The index, also known as the "staging area", is a list of files and
+the contents of each file, stored as a <a href="#blob">blob</a>.
+You can add files to the index or update the contents of a file in the
+index with <a href="git-add.html">git-add(1)</a>. This is called "staging" the file for commit.</p>
+</div>
+<div class="paragraph">
+<p>Unlike a <a href="#tree">tree</a>, the index is a flat list of files.
+When you commit, Git converts the list of files in the index to a
+directory <a href="#tree">tree</a> and uses that tree in the new <a href="#commit">commit</a>.</p>
+</div>
+<div class="paragraph">
+<p>Each index entry has 4 fields:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <strong>file type</strong>, which must be one of:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>regular file</strong></p>
+</li>
+<li>
+<p><strong>executable file</strong></p>
+</li>
+<li>
+<p><strong>symbolic link</strong></p>
+</li>
+<li>
+<p><strong>gitlink</strong> (for use with submodules)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>The <strong><a href="#blob">blob</a></strong> ID of the file,
+or (rarely) the <strong><a href="#commit">commit</a></strong> ID of the submodule</p>
+</li>
+<li>
+<p>The <strong>stage number</strong>, either 0, 1, 2, or 3. This is normally 0, but if
+there&#8217;s a merge conflict there can be multiple versions of the same
+filename in the index.</p>
+</li>
+<li>
+<p>The <strong>file path</strong>, for example <code>src/hello.py</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>It&#8217;s extremely uncommon to look at the index directly: normally you&#8217;d
+run <code>git</code> <code>status</code> to see a list of changes between the index and <a href="#HEAD">HEAD</a>.
+But you can use <code>git</code> <code>ls-files</code> <code>--stage</code> to see the index.
+Here&#8217;s the output of <code>git</code> <code>ls-files</code> <code>--stage</code> in a repository with 2 files:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>100644 8728a858d9d21a8c78488c8b4e70e531b659141f 0 README.md
+100644 665c637a360874ce43bf74018768a96d2d4d219a 0 src/hello.py</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reflogs">REFLOGS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Every time a branch, remote-tracking branch, or HEAD is updated, Git
+updates a log called a "reflog" for that <a href="#references">reference</a>.
+This means that if you make a mistake and "lose" a commit, you can
+generally recover the commit ID by running <code>git</code> <code>reflog</code> <em>&lt;reference&gt;</em>.</p>
+</div>
+<div class="paragraph">
+<p>A reflog is a list of log entries. Each entry has:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <strong>commit ID</strong></p>
+</li>
+<li>
+<p><strong>Timestamp</strong> when the change was made</p>
+</li>
+<li>
+<p><strong>Log message</strong>, for example <code>pull:</code> <code>Fast-forward</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Reflogs only log changes made in your local repository.
+They are not shared with remotes.</p>
+</div>
+<div class="paragraph">
+<p>You can view a reflog with <code>git</code> <code>reflog</code> <em>&lt;reference&gt;</em>.
+For example, here&#8217;s the reflog for a <code>main</code> branch which has changed twice:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ git reflog main --date=iso --no-decorate
+750b4ea main@{2025-09-29 15:17:05 -0400}: commit: Add README
+4ccb6d7 main@{2025-09-29 15:16:48 -0400}: commit (initial): Initial commit</pre>
+</div>
 </div>
 </div>
 </div>
