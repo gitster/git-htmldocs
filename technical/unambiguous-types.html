@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="generator" content="Asciidoctor 2.0.23"/>
-<title>git-am(1)</title>
+<title>Unambiguous types</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"/>
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -433,456 +433,392 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
-<style>
-pre>code {
-   display: inline;
-}
-</style>
 </head>
-<body class="manpage">
+<body class="article">
 <div id="header">
-<h1>git-am(1) Manual Page</h1>
-<h2 id="_name">NAME</h2>
-<div class="sectionbody">
-<p>git-am - Apply a series of patches from a mailbox</p>
-</div>
+<h1>Unambiguous types</h1>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_synopsis">SYNOPSIS</h2>
-<div class="sectionbody">
-<div class="verseblock">
-<pre class="content"><em>git am</em> [--signoff] [--keep] [--[no-]keep-cr] [--[no-]utf8] [--no-verify]
-         [--[no-]3way] [--interactive] [--committer-date-is-author-date]
-         [--ignore-date] [--ignore-space-change | --ignore-whitespace]
-         [--whitespace=&lt;action&gt;] [-C&lt;n&gt;] [-p&lt;n&gt;] [--directory=&lt;dir&gt;]
-         [--exclude=&lt;path&gt;] [--include=&lt;path&gt;] [--reject] [-q | --quiet]
-         [--[no-]scissors] [-S[&lt;keyid&gt;]] [--patch-format=&lt;format&gt;]
-         [--quoted-cr=&lt;action&gt;]
-         [--empty=(stop|drop|keep)]
-         [(&lt;mbox&gt; | &lt;Maildir&gt;)&#8230;&#8203;]
-<em>git am</em> (--continue | --skip | --abort | --quit | --retry | --show-current-patch[=(diff|raw)] | --allow-empty)</pre>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_description">DESCRIPTION</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Splits mail messages in a mailbox into commit log messages,
-authorship information, and patches, and applies them to the
-current branch. You could think of it as a reverse operation
-of <a href="git-format-patch.html">git-format-patch(1)</a> run on a branch with a straight
-history without merges.</p>
+<p>Most of these mappings are obvious, but there are some nuances and gotchas with
+Rust FFI (Foreign Function Interface).</p>
+</div>
+<div class="paragraph">
+<p>This document defines clear, one-to-one mappings between primitive types in C,
+Rust (and possible other languages in the future). Its purpose is to eliminate
+ambiguity in type widths, signedness, and binary representation across
+platforms and languages.</p>
+</div>
+<div class="paragraph">
+<p>For Git, the only header required to use these unambiguous types in C is
+<code>git-compat-util.h</code>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_options">OPTIONS</h2>
+<h2 id="_boolean_types">Boolean types</h2>
 <div class="sectionbody">
-<div class="dlist">
-<dl>
-<dt class="hdlist1">(&lt;mbox&gt;|&lt;Maildir&gt;)&#8230;&#8203;</dt>
-<dd>
-<p>The list of mailbox files to read patches from. If you do not
-supply this argument, the command reads from the standard input.
-If you supply directories, they will be treated as Maildirs.</p>
-</dd>
-<dt class="hdlist1">-s</dt>
-<dt class="hdlist1">--signoff</dt>
-<dd>
-<p>Add a <code>Signed-off-by</code> trailer to the commit message, using
-the committer identity of yourself.
-See the signoff option in <a href="git-commit.html">git-commit(1)</a> for more information.</p>
-</dd>
-<dt class="hdlist1">-k</dt>
-<dt class="hdlist1">--keep</dt>
-<dd>
-<p>Pass <code>-k</code> flag to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
-</dd>
-<dt class="hdlist1">--keep-non-patch</dt>
-<dd>
-<p>Pass <code>-b</code> flag to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
-</dd>
-<dt class="hdlist1">--keep-cr</dt>
-<dt class="hdlist1">--no-keep-cr</dt>
-<dd>
-<p>With <code>--keep-cr</code>, call <em>git mailsplit</em> (see <a href="git-mailsplit.html">git-mailsplit(1)</a>)
-with the same option, to prevent it from stripping CR at the end of
-lines. <code>am.keepcr</code> configuration variable can be used to specify the
-default behaviour.  <code>--no-keep-cr</code> is useful to override <code>am.keepcr</code>.</p>
-</dd>
-<dt class="hdlist1">-c</dt>
-<dt class="hdlist1">--scissors</dt>
-<dd>
-<p>Remove everything in body before a scissors line (see
-<a href="git-mailinfo.html">git-mailinfo(1)</a>). Can be activated by default using
-the <code>mailinfo.scissors</code> configuration variable.</p>
-</dd>
-<dt class="hdlist1">--no-scissors</dt>
-<dd>
-<p>Ignore scissors lines (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
-</dd>
-<dt class="hdlist1">--quoted-cr=&lt;action&gt;</dt>
-<dd>
-<p>This flag will be passed down to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
-</dd>
-<dt class="hdlist1">--empty=(drop|keep|stop)</dt>
-<dd>
-<p>How to handle an e-mail message lacking a patch:</p>
-<div class="openblock">
-<div class="content">
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>drop</code></dt>
-<dd>
-<p>The e-mail message will be skipped.</p>
-</dd>
-<dt class="hdlist1"><code>keep</code></dt>
-<dd>
-<p>An empty commit will be created, with the contents of the e-mail
-message as its log.</p>
-</dd>
-<dt class="hdlist1"><code>stop</code></dt>
-<dd>
-<p>The command will fail, stopping in the middle of the current <code>am</code>
-session. This is the default behavior.</p>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-</dd>
-<dt class="hdlist1">-m</dt>
-<dt class="hdlist1">--message-id</dt>
-<dd>
-<p>Pass the <code>-m</code> flag to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>),
-so that the Message-ID header is added to the commit message.
-The <code>am.messageid</code> configuration variable can be used to specify
-the default behaviour.</p>
-</dd>
-<dt class="hdlist1">--no-message-id</dt>
-<dd>
-<p>Do not add the Message-ID header to the commit message.
-<code>no-message-id</code> is useful to override <code>am.messageid</code>.</p>
-</dd>
-<dt class="hdlist1">-q</dt>
-<dt class="hdlist1">--quiet</dt>
-<dd>
-<p>Be quiet. Only print error messages.</p>
-</dd>
-<dt class="hdlist1">-u</dt>
-<dt class="hdlist1">--utf8</dt>
-<dd>
-<p>Pass <code>-u</code> flag to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).
-The proposed commit log message taken from the e-mail
-is re-coded into UTF-8 encoding (configuration variable
-<code>i18n.commitEncoding</code> can be used to specify the project&#8217;s
-preferred encoding if it is not UTF-8).</p>
-<div class="paragraph">
-<p>This was optional in prior versions of git, but now it is the
-default.   You can use <code>--no-utf8</code> to override this.</p>
-</div>
-</dd>
-<dt class="hdlist1">--no-utf8</dt>
-<dd>
-<p>Pass <code>-n</code> flag to <em>git mailinfo</em> (see
-<a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
-</dd>
-<dt class="hdlist1">-3</dt>
-<dt class="hdlist1">--3way</dt>
-<dt class="hdlist1">--no-3way</dt>
-<dd>
-<p>When the patch does not apply cleanly, fall back on
-3-way merge if the patch records the identity of blobs
-it is supposed to apply to and we have those blobs
-available locally. <code>--no-3way</code> can be used to override
-am.threeWay configuration variable. For more information,
-see am.threeWay in <a href="git-config.html">git-config(1)</a>.</p>
-</dd>
-<dt class="hdlist1"><code>--rerere-autoupdate</code></dt>
-<dt class="hdlist1"><code>--no-rerere-autoupdate</code></dt>
-<dd>
-<p>After the rerere mechanism reuses a recorded resolution on
-the current conflict to update the files in the working
-tree, allow it to also update the index with the result of
-resolution.  <code>--no-rerere-autoupdate</code> is a good way to
-double-check what <code>rerere</code> did and catch potential
-mismerges, before committing the result to the index with a
-separate <code>git</code> <code>add</code>.</p>
-</dd>
-<dt class="hdlist1">--ignore-space-change</dt>
-<dt class="hdlist1">--ignore-whitespace</dt>
-<dt class="hdlist1">--whitespace=&lt;action&gt;</dt>
-<dt class="hdlist1">-C&lt;n&gt;</dt>
-<dt class="hdlist1">-p&lt;n&gt;</dt>
-<dt class="hdlist1">--directory=&lt;dir&gt;</dt>
-<dt class="hdlist1">--exclude=&lt;path&gt;</dt>
-<dt class="hdlist1">--include=&lt;path&gt;</dt>
-<dt class="hdlist1">--reject</dt>
-<dd>
-<p>These flags are passed to the <em>git apply</em> (see <a href="git-apply.html">git-apply(1)</a>)
-program that applies
-the patch.</p>
-<div class="paragraph">
-<p>Valid &lt;action&gt; for the <code>--whitespace</code> option are:
-<code>nowarn</code>, <code>warn</code>, <code>fix</code>, <code>error</code>, and <code>error-all</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1">--patch-format</dt>
-<dd>
-<p>By default the command will try to detect the patch format
-automatically. This option allows the user to bypass the automatic
-detection and specify the patch format that the patch(es) should be
-interpreted as. Valid formats are mbox, mboxrd,
-stgit, stgit-series, and hg.</p>
-</dd>
-<dt class="hdlist1">-i</dt>
-<dt class="hdlist1">--interactive</dt>
-<dd>
-<p>Run interactively.</p>
-</dd>
-<dt class="hdlist1">-n</dt>
-<dt class="hdlist1">--no-verify</dt>
-<dd>
-<p>By default, the pre-applypatch and applypatch-msg hooks are run.
-When any of <code>--no-verify</code> or <code>-n</code> is given, these are bypassed.
-See also <a href="githooks.html">githooks(5)</a>.</p>
-</dd>
-<dt class="hdlist1">--committer-date-is-author-date</dt>
-<dd>
-<p>By default the command records the date from the e-mail
-message as the commit author date, and uses the time of
-commit creation as the committer date. This allows the
-user to lie about the committer date by using the same
-value as the author date.</p>
-<div class="admonitionblock warning">
-<table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;"/>
+<col style="width: 50%;"/>
+</colgroup>
+<thead>
 <tr>
-<td class="icon">
-<div class="title">Warning</div>
-</td>
-<td class="content">
-The history walking machinery assumes that commits have
-non-decreasing commit timestamps. You should consider if you really need
-to use this option. Then you should only use this option to override the
-committer date when applying commits on top of a base which commit is
-older (in terms of the commit date) than the oldest patch you are
-applying.
-</td>
+<th class="tableblock halign-left valign-top">C Type</th>
+<th class="tableblock halign-left valign-top">Rust Type</th>
 </tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bool<sup>1</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bool</p></td>
+</tr>
+</tbody>
 </table>
 </div>
-</dd>
-<dt class="hdlist1">--ignore-date</dt>
-<dd>
-<p>By default the command records the date from the e-mail
-message as the commit author date, and uses the time of
-commit creation as the committer date. This allows the
-user to lie about the author date by using the same
-value as the committer date.</p>
-</dd>
-<dt class="hdlist1">--skip</dt>
-<dd>
-<p>Skip the current patch.  This is only meaningful when
-restarting an aborted patch.</p>
-</dd>
-<dt class="hdlist1">-S[&lt;keyid&gt;]</dt>
-<dt class="hdlist1">--gpg-sign[=&lt;keyid&gt;]</dt>
-<dt class="hdlist1">--no-gpg-sign</dt>
-<dd>
-<p>GPG-sign commits. The <code>keyid</code> argument is optional and
-defaults to the committer identity; if specified, it must be
-stuck to the option without a space. <code>--no-gpg-sign</code> is useful to
-countermand both <code>commit.gpgSign</code> configuration variable, and
-earlier <code>--gpg-sign</code>.</p>
-</dd>
-<dt class="hdlist1">--continue</dt>
-<dt class="hdlist1">-r</dt>
-<dt class="hdlist1">--resolved</dt>
-<dd>
-<p>After a patch failure (e.g. attempting to apply
-conflicting patch), the user has applied it by hand and
-the index file stores the result of the application.
-Make a commit using the authorship and commit log
-extracted from the e-mail message and the current index
-file, and continue.</p>
-</dd>
-<dt class="hdlist1">--resolvemsg=&lt;msg&gt;</dt>
-<dd>
-<p>When a patch failure occurs, &lt;msg&gt; will be printed
-to the screen before exiting.  This overrides the
-standard message informing you to use <code>--continue</code>
-or <code>--skip</code> to handle the failure.  This is solely
-for internal use between <em>git rebase</em> and <em>git am</em>.</p>
-</dd>
-<dt class="hdlist1">--abort</dt>
-<dd>
-<p>Restore the original branch and abort the patching operation.
-Revert the contents of files involved in the am operation to their
-pre-am state.</p>
-</dd>
-<dt class="hdlist1">--quit</dt>
-<dd>
-<p>Abort the patching operation but keep HEAD and the index
-untouched.</p>
-</dd>
-<dt class="hdlist1">--retry</dt>
-<dd>
-<p>Try to apply the last conflicting patch again. This is generally
-only useful for passing extra options to the retry attempt
-(e.g., <code>--3way</code>), since otherwise you&#8217;ll just see the same
-failure again.</p>
-</dd>
-<dt class="hdlist1">--show-current-patch[=(diff|raw)]</dt>
-<dd>
-<p>Show the message at which <code>git</code> <code>am</code> has stopped due to
-conflicts.  If <code>raw</code> is specified, show the raw contents of
-the e-mail message; if <code>diff</code>, show the diff portion only.
-Defaults to <code>raw</code>.</p>
-</dd>
-<dt class="hdlist1">--allow-empty</dt>
-<dd>
-<p>After a patch failure on an input e-mail message lacking a patch,
-create an empty commit with the contents of the e-mail message
-as its log message.</p>
-</dd>
-</dl>
+</div>
+<div class="sect1">
+<h2 id="_integer_types">Integer types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In C, &lt;stdint.<code>h</code>&gt; (or an equivalent) must be included.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;"/>
+<col style="width: 50%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">C Type</th>
+<th class="tableblock halign-left valign-top">Rust Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint8_t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">u8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint16_t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">u16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint32_t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">u32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint64_t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">u64</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int8_t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">i8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int16_t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">i16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int32_t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">i32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int64_t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">i64</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_floating_point_types">Floating-point types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Rust requires IEEE-754 semantics.
+In C, that is typically true, but not guaranteed by the standard.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;"/>
+<col style="width: 50%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">C Type</th>
+<th class="tableblock halign-left valign-top">Rust Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float<sup>2</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">f32</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">double<sup>2</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">f64</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_size_types">Size types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These types represent pointer-sized integers and are typically defined in
+&lt;stddef.<code>h</code>&gt; or an equivalent header.</p>
+</div>
+<div class="paragraph">
+<p>Size types should be used any time pointer arithmetic is performed e.g.
+indexing an array, describing the number of elements in memory, etc&#8230;&#8203;</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;"/>
+<col style="width: 50%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">C Type</th>
+<th class="tableblock halign-left valign-top">Rust Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size_t<sup>3</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">usize</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ptrdiff_t<sup>3</sup></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">isize</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_character_types">Character types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is where C and Rust don&#8217;t have a clean one-to-one mapping.</p>
+</div>
+<div class="paragraph">
+<p>A C <code>char</code> and a Rust <code>u8</code> share the same bit width, so any C struct containing
+a <code>char</code> will have the same size as the corresponding Rust struct using <code>u8</code>.
+In that sense, such structs are safe to pass over the FFI boundary, because
+their fields will be laid out identically. However, beyond bit width, C <code>char</code>
+has additional semantics and platform-dependent behavior that can cause
+problems, as discussed below.</p>
+</div>
+<div class="paragraph">
+<p>The C language leaves the signedness of <code>char</code> implementation defined. Because
+our developer build enables -Wsign-compare, comparison of a value of <code>char</code>
+type with either signed or unsigned integers may trigger warnings from the
+compiler.</p>
+</div>
+<div class="paragraph">
+<p>Note: Rust&#8217;s <code>char</code> type is an unsigned 32-bit integer that is used to describe
+Unicode code points.</p>
+</div>
+<div class="sect2">
+<h3 id="_notes">Notes</h3>
+<div class="paragraph">
+<p><sup>1</sup> This is only true if stdbool.h (or equivalent) is used.<br/>
+<sup>2</sup> C does not enforce IEEE-754 compatibility, but Rust expects it. If the
+platform/arch for C does not follow IEEE-754 then this equivalence does not
+hold. Also, it&#8217;s assumed that <code>float</code> is 32 bits and <code>double</code> is 64, but
+there may be a strange platform/arch where even this isn&#8217;t true.<br/>
+<sup>3</sup> C also defines uintptr_t, ssize_t and intptr_t, but these types are
+discouraged for FFI purposes. For functions like <code>read</code>() and <code>write</code>() ssize_t
+should be cast to a different, and unambiguous, type before being passed over
+the FFI boundary.<br/></p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_discussion">DISCUSSION</h2>
+<h2 id="_problems_with_stdffic_types_in_rust">Problems with std::ffi::c_* types in Rust</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The commit author name is taken from the "From: " line of the
-message, and commit author date is taken from the "Date: " line
-of the message.  The "Subject: " line is used as the title of
-the commit, after stripping common prefix "[PATCH &lt;anything&gt;]".
-The "Subject: " line is supposed to concisely describe what the
-commit is about in one line of text.</p>
+<p>TL;DR: In practice, Rust&#8217;s <code>c_*</code> types aren&#8217;t guaranteed to match C types for
+all possible C compilers, platforms, or architectures, because Rust only
+ensures correctness of C types on officially supported targets. These
+definitions have changed over time to match more targets which means that the
+c_* definitions will differ based on which Rust version Git chooses to use.</p>
 </div>
 <div class="paragraph">
-<p>"From: ", "Date: ", and "Subject: " lines starting the body override the
-respective commit author name and title values taken from the headers.</p>
-</div>
-<div class="paragraph">
-<p>The commit message is formed by the title taken from the
-"Subject: ", a blank line and the body of the message up to
-where the patch begins.  Excess whitespace at the end of each
-line is automatically stripped.</p>
-</div>
-<div class="paragraph">
-<p>The patch is expected to be inline, directly following the
-message.  Any line that is of the form:</p>
+<p>Current list of safe, Rust side, FFI types in Git:<br/></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>three-dashes and end-of-line, or</p>
+<p><code>c_void</code></p>
 </li>
 <li>
-<p>a line that begins with "diff -", or</p>
+<p><code>CStr</code></p>
 </li>
 <li>
-<p>a line that begins with "Index: "</p>
+<p><code>CString</code></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>is taken as the beginning of a patch, and the commit log message
-is terminated before the first occurrence of such a line.</p>
+<p>Even then, they should be used sparingly, and only where the semantics match
+exactly.</p>
 </div>
 <div class="paragraph">
-<p>When initially invoking <code>git</code> <code>am</code>, you give it the names of the mailboxes
-to process.  Upon seeing the first patch that does not apply, it
-aborts in the middle.  You can recover from this in one of two ways:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>skip the current patch by re-running the command with the <code>--skip</code>
-option.</p>
-</li>
-<li>
-<p>hand resolve the conflict in the working directory, and update
-the index file to bring it into a state that the patch should
-have produced.  Then run the command with the <code>--continue</code> option.</p>
-</li>
-</ol>
+<p>The std::os::raw::c_* directly inherits the problems of core::ffi, which
+changes over time and seems to make a best guess at the correct definition for
+a given platform/target. This probably isn&#8217;t a problem for all other platforms
+that Rust supports currently, but can anyone say that Rust got it right for all
+C compilers of all platforms/targets?</p>
 </div>
 <div class="paragraph">
-<p>The command refuses to process new mailboxes until the current
-operation is finished, so if you decide to start over from scratch,
-run <code>git</code> <code>am</code> <code>--abort</code> before running the command with mailbox
-names.</p>
+<p>To give an example: c_long is defined in
+<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>
+<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup></p>
+</div>
+<div class="sect2">
+<h3 id="_rust_version_1_63_0">Rust version 1.63.0</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>mod c_long_definition {
+    cfg_if! {
+        if #[cfg(all(target_pointer_width = "64", not(windows)))] {
+            pub type c_long = i64;
+            pub type NonZero_c_long = crate::num::NonZeroI64;
+            pub type c_ulong = u64;
+            pub type NonZero_c_ulong = crate::num::NonZeroU64;
+        } else {
+            // The minimal size of `long` in the C standard is 32 bits
+            pub type c_long = i32;
+            pub type NonZero_c_long = crate::num::NonZeroI32;
+            pub type c_ulong = u32;
+            pub type NonZero_c_ulong = crate::num::NonZeroU32;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rust_version_1_89_0">Rust version 1.89.0</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>mod c_long_definition {
+    crate::cfg_select! {
+        any(
+            all(target_pointer_width = "64", not(windows)),
+            // wasm32 Linux ABI uses 64-bit long
+            all(target_arch = "wasm32", target_os = "linux")
+        ) =&gt; {
+            pub(super) type c_long = i64;
+            pub(super) type c_ulong = u64;
+        }
+        _ =&gt; {
+            // The minimal size of `long` in the C standard is 32 bits
+            pub(super) type c_long = i32;
+            pub(super) type c_ulong = u32;
+        }
+    }
+}</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Before any patches are applied, ORIG_HEAD is set to the tip of the
-current branch.  This is useful if you have problems with multiple
-commits, like running <em>git am</em> on the wrong branch or an error in the
-commits that is more easily fixed by changing the mailbox (e.g.
-errors in the "From:" lines).</p>
+<p>Even for the cases where C types are correctly mapped to Rust types via
+std::ffi::c_* there are still problems. Let&#8217;s take c_char for example. On some
+platforms it&#8217;s u8 on others it&#8217;s i8.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_subtraction_underflow_in_debug_mode">Subtraction underflow in debug mode</h3>
+<div class="paragraph">
+<p>The following code will panic in debug on platforms that define c_char as u8,
+but won&#8217;t if it&#8217;s an i8.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>let mut x: std::ffi::c_char = 0;
+x -= 1;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inconsistent_shift_behavior">Inconsistent shift behavior</h3>
+<div class="paragraph">
+<p><code>x</code> will be 0xC0 for platforms that use i8, but will be 0x40 where it&#8217;s u8.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>let mut x: std::ffi::c_char = 0x80;
+x &gt;&gt;= 1;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_equality_fails_to_compile_on_some_platforms">Equality fails to compile on some platforms</h3>
+<div class="paragraph">
+<p>The following will not compile on platforms that define c_char as i8, but will
+if it&#8217;s u8. You can cast x e.g. <code>assert_eq</code>!(<code>x</code> <code>as</code> <code>u8,</code> <code>b</code>'a');, but then you get
+a warning on platforms that use u8 and a clean compilation where i8 is used.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>let mut x: std::ffi::c_char = 0x61;
+assert_eq!(x, b'a');</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hooks">HOOKS</h2>
+<h2 id="_enum_types">Enum types</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This command can run <code>applypatch-msg</code>, <code>pre-applypatch</code>,
-and <code>post-applypatch</code> hooks.  See <a href="githooks.html">githooks(5)</a> for more
-information.</p>
+<p>Rust enum types should not be used as FFI types. Rust enum types are more like
+C union types than C enum&#8217;s. For something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>#[repr(C, u8)]
+enum Fruit {
+    Apple,
+    Banana,
+    Cherry,
+}</code></pre>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_configuration">CONFIGURATION</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>Everything below this line in this section is selectively included
-from the <a href="git-config.html">git-config(1)</a> documentation. The content is the same
-as what&#8217;s found there:</p>
+<p>It&#8217;s easy enough to make sure the Rust enum matches what C would expect, but a
+more complex type like.</p>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">am.keepcr</dt>
-<dd>
-<p>If true, git-am will call git-mailsplit for patches in mbox format
-with parameter <code>--keep-cr</code>. In this case git-mailsplit will
-not remove <code>\r</code> from lines ending with <code>\r\n</code>. Can be overridden
-by giving <code>--no-keep-cr</code> from the command line.
-See <a href="git-am.html">git-am(1)</a>, <a href="git-mailsplit.html">git-mailsplit(1)</a>.</p>
-</dd>
-<dt class="hdlist1">am.threeWay</dt>
-<dd>
-<p>By default, <code>git</code> <code>am</code> will fail if the patch does not apply cleanly. When
-set to true, this setting tells <code>git</code> <code>am</code> to fall back on 3-way merge if
-the patch records the identity of blobs it is supposed to apply to and
-we have those blobs available locally (equivalent to giving the <code>--3way</code>
-option from the command line). Defaults to <code>false</code>.
-See <a href="git-am.html">git-am(1)</a>.</p>
-</dd>
-</dl>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>enum HashResult {
+    SHA1([u8; 20]),
+    SHA256([u8; 32]),
+}</code></pre>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_see_also">SEE ALSO</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p><a href="git-apply.html">git-apply(1)</a>,
-<a href="git-format-patch.html">git-format-patch(1)</a>.</p>
+<p>The Rust compiler has to add a discriminant to the enum to distinguish between
+the variants. The width, location, and values for that discriminant is up to
+the Rust compiler and is not ABI stable.</p>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_git">GIT</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Part of the <a href="git.html">git(1)</a> suite</p>
 </div>
+<div id="footnotes">
+<hr/>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. <a href="https://doc.rust-lang.org/1.63.0/src/core/ffi/mod.rs.html#175-189">c_long in 1.63.0</a>
 </div>
+<div class="footnote" id="_footnotedef_2">
+<a href="#_footnoteref_2">2</a>. <a href="https://doc.rust-lang.org/1.89.0/src/core/ffi/primitives.rs.html#135-151">c_long in 1.89.0</a>
 </div>
 </div>
 <div id="footer">
