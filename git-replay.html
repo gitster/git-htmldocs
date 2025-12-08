@@ -452,7 +452,7 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content">(EXPERIMENTAL!) <em>git replay</em> ([--contained] --onto &lt;newbase&gt; | --advance &lt;branch&gt;) [--ref-action[=&lt;mode&gt;]] &lt;revision-range&gt;&#8230;&#8203;</pre>
+<pre class="content">(EXPERIMENTAL!) <em>git replay</em> ([--contained] --onto &lt;newbase&gt; | --advance &lt;branch&gt;) [--ref-action[=&lt;mode&gt;]] &lt;revision-range&gt;</pre>
 </div>
 </div>
 </div>
@@ -460,7 +460,7 @@ pre>code {
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Takes ranges of commits and replays them onto a new location. Leaves
+<p>Takes a range of commits and replays them onto a new location. Leaves
 the working tree and the index untouched. By default, updates the
 relevant references using an atomic transaction (all refs update or
 none). Use <code>--ref-action=print</code> to avoid automatic ref updates and
@@ -522,11 +522,10 @@ traditional behavior where output can be piped to <code>git</code> <code>update-
 </dd>
 <dt class="hdlist1">&lt;revision-range&gt;</dt>
 <dd>
-<p>Range of commits to replay. More than one &lt;revision-range&gt; can
-be passed, but in <code>--advance</code> <em>&lt;branch&gt;</em> mode, they should have
-a single tip, so that it&#8217;s clear where &lt;branch&gt; should point
-to. See "Specifying Ranges" in <a href="git-rev-parse.html">git-rev-parse(1)</a> and the
-"Commit Limiting" options below.</p>
+<p>Range of commits to replay; see "Specifying Ranges" in
+<a href="git-rev-parse.html">git-rev-parse(1)</a>. In <code>--advance</code> <em>&lt;branch&gt;</em> mode, the
+range should have a single tip, so that it&#8217;s clear to which tip the
+advanced &lt;branch&gt; should point.</p>
 </dd>
 </dl>
 </div>
@@ -1957,7 +1956,7 @@ that they have in common, but that does not need to be the case.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-11-24 16:03:54 -0800
+Last updated 2025-12-09 07:59:24 +0900
 </div>
 </div>
 </body>
