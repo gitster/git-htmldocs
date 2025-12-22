@@ -465,7 +465,7 @@ the working tree and the index untouched. By default, updates the
 relevant references using an atomic transaction (all refs update or
 none). Use <code>--ref-action=print</code> to avoid automatic ref updates and
 instead get update commands that can be piped to <code>git</code> <code>update-ref</code> <code>--stdin</code>
-(see the OUTPUT section below).</p>
+(see the <a href="#output">OUTPUT</a> section below).</p>
 </div>
 <div class="paragraph">
 <p>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</p>
@@ -496,6 +496,11 @@ branch name.</p>
 point at the tip of the resulting history. This is different from <code>--onto</code>,
 which uses the target only as a starting point without updating it.</p>
 </div>
+</dd>
+<dt class="hdlist1">--contained</dt>
+<dd>
+<p>Update all branches that point at commits in
+&lt;revision-range&gt;. Requires <code>--onto</code>.</p>
 </dd>
 <dt class="hdlist1">--ref-action[=&lt;mode&gt;]</dt>
 <dd>
@@ -1841,7 +1846,7 @@ is the string that will be shown instead of the default one.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_output">OUTPUT</h2>
+<h2 id="output">OUTPUT</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>By default, or with <code>--ref-action=update</code>, this command produces no output on
@@ -1864,10 +1869,14 @@ the shape of the history being replayed.  When using <code>--advance</code>, the
 number of refs updated is always one, but for <code>--onto</code>, it can be one
 or more (rebasing multiple branches simultaneously is supported).</p>
 </div>
+<div class="paragraph">
+<p>There is no stderr output on conflicts; see the <a href="#exit-status">EXIT
+STATUS</a> section below.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exit_status">EXIT STATUS</h2>
+<h2 id="exit-status">EXIT STATUS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For a successful, non-conflicted replay, the exit status is 0.  When
@@ -1956,7 +1965,7 @@ that they have in common, but that does not need to be the case.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-12-09 07:59:24 +0900
+Last updated 2025-12-22 22:14:22 +0900
 </div>
 </div>
 </body>
