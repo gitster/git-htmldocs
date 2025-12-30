@@ -3591,10 +3591,9 @@ command-line argument and write the password on its STDOUT.</p>
 </dd>
 <dt class="hdlist1">core.attributesFile</dt>
 <dd>
-<p>In addition to .<code>gitattributes</code> (per-directory) and
-.<code>git/info/attributes</code>, Git looks into this file for attributes
-(see <a href="gitattributes.html">gitattributes(5)</a>). Path expansions are made the same
-way as for <code>core.excludesFile</code>. Its default value is
+<p>Specifies the pathname to the file that contains attributes (see
+<a href="gitattributes.html">gitattributes(5)</a>), in addition to .<code>gitattributes</code> (per-directory)
+and .<code>git/info/attributes</code>. Its default value is
 <code>$XDG_CONFIG_HOME/git/attributes</code>. If <code>$XDG_CONFIG_HOME</code> is either not
 set or empty, <code>$HOME/.config/git/attributes</code> is used instead.</p>
 </dd>
