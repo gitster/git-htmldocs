@@ -592,7 +592,13 @@ with linked worktrees if you move the main worktree manually.)</p>
 </dd>
 <dt class="hdlist1"><code>prune</code></dt>
 <dd>
-<p>Prune worktree information in <code>$GIT_DIR/worktrees</code>.</p>
+<p>Remove worktree information in <code>$GIT_DIR/worktrees</code> for worktrees
+whose working trees are missing.  Useful after manually removing
+a working tree that is no longer needed (but use "git worktree
+remove" next time you want to do so).  Also, if you <em>moved</em> a
+working tree elsewhere causing the worktree information to become
+dangling, see "git worktree repair" to reconnect the worktree to
+the new working tree location.</p>
 </dd>
 <dt class="hdlist1"><code>remove</code></dt>
 <dd>
@@ -761,7 +767,7 @@ character.</p>
 </dd>
 <dt class="hdlist1"><code>--expire</code> <em>&lt;time&gt;</em></dt>
 <dd>
-<p>With <code>prune</code>, only expire unused worktrees older than <em>&lt;time&gt;</em>.</p>
+<p>With <code>prune</code>, only prune missing worktrees if older than <em>&lt;time&gt;</em>.</p>
 <div class="paragraph">
 <p>With <code>list</code>, annotate missing worktrees as prunable if they are older than
 <em>&lt;time&gt;</em>.</p>
@@ -1138,7 +1144,7 @@ checkouts of a superproject.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-12-28 03:32:00 -0800
+Last updated 2026-02-09 21:22:43 -0800
 </div>
 </div>
 </body>

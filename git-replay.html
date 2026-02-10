@@ -530,7 +530,9 @@ traditional behavior where output can be piped to <code>git</code> <code>update-
 <p>Range of commits to replay; see "Specifying Ranges" in
 <a href="git-rev-parse.html">git-rev-parse(1)</a>. In <code>--advance</code> <em>&lt;branch&gt;</em> mode, the
 range should have a single tip, so that it&#8217;s clear to which tip the
-advanced &lt;branch&gt; should point.</p>
+advanced &lt;branch&gt; should point. Any commits in the range whose
+changes are already present in the branch the commits are being
+replayed onto will be dropped.</p>
 </dd>
 </dl>
 </div>
@@ -1672,7 +1674,7 @@ that they have in common, but that does not need to be the case.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-01-23 18:14:23 -0800
+Last updated 2026-02-09 21:22:43 -0800
 </div>
 </div>
 </body>

@@ -4635,6 +4635,49 @@ relative paths. Automatically set if a worktree has been created or
 repaired with either the <code>--relative-paths</code> option or with the
 <code>worktree.useRelativePaths</code> config set to <code>true</code>.</p>
 </dd>
+<dt class="hdlist1">submodulePathConfig</dt>
+<dd>
+<p>This extension is for the minority of users who:</p>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Encounter errors like <code>refusing</code> <code>to</code> <code>create</code> <code>...</code> <code>in</code> <code>another</code> <code>submodule</code>'s <code>git</code> <code>dir</code>
+due to a number of reasons, like case-insensitive filesystem conflicts when
+creating modules named <code>foo</code> and <code>Foo</code>.</p>
+</li>
+<li>
+<p>Require more flexible submodule layouts, for example due to nested names like
+<code>foo</code>, <code>foo/bar</code> and <code>foo/baz</code> not supported by the default gitdir mechanism
+which uses .<code>git/modules/</code><em>&lt;plain-name&gt;</em> locations, causing further conflicts.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>When <code>extensions.submodulePathConfig</code> is enabled, the <code>submodule.</code><em>&lt;name&gt;</em><code>.gitdir</code>
+config becomes the single source of truth for all submodule gitdir paths and is
+automatically set for all new submodules both during clone and init operations.</p>
+</div>
+<div class="paragraph">
+<p>Git will error out if a module does not have a corresponding
+<code>submodule.</code><em>&lt;name&gt;</em><code>.gitdir</code> set.</p>
+</div>
+<div class="paragraph">
+<p>Existing (pre-extension) submodules need to be migrated by adding the missing
+config entries. This can be done manually, e.g. for each submodule:
+<code>git</code> <code>config</code> <code>submodule.</code><em>&lt;name&gt;</em><code>.gitdir</code> <code>.git/modules/</code><em>&lt;name&gt;</em>, or via the
+<code>git</code> <code>submodule--helper</code> <code>migrate-gitdir-configs</code> command which iterates over all
+submodules and attempts to migrate them.</p>
+</div>
+<div class="paragraph">
+<p>The extension can be enabled automatically for new repositories by setting
+<code>init.defaultSubmodulePathConfig</code> to <code>true</code>, for example by running
+<code>git</code> <code>config</code> <code>--global</code> <code>init.defaultSubmodulePathConfig</code> <code>true</code>.</p>
+</div>
+</dd>
 <dt class="hdlist1">worktreeConfig</dt>
 <dd>
 <p>If enabled, then worktrees will load config settings from the
@@ -6514,6 +6557,13 @@ this config.</p>
 See <code>--ref-format=</code> in <a href="git-init.html">git-init(1)</a>. Both the command line
 option and the <code>GIT_DEFAULT_REF_FORMAT</code> environment variable take
 precedence over this config.</p>
+</dd>
+<dt class="hdlist1">init.defaultSubmodulePathConfig</dt>
+<dd>
+<p>A boolean that specifies if <code>git</code> <code>init</code> and <code>git</code> <code>clone</code> should
+automatically set <code>extensions.submodulePathConfig</code> to <code>true</code>. This
+allows all new repositories to automatically use the submodule path
+extension. Defaults to <code>false</code> when unset.</p>
 </dd>
 <dt class="hdlist1">instaweb.browser</dt>
 <dd>
@@ -9244,6 +9294,14 @@ affected by this setting.</p>
 commands.  This config option takes precedence over the
 submodule.active config option. See <a href="gitsubmodules.html">gitsubmodules(7)</a> for
 details.</p>
+</dd>
+<dt class="hdlist1">submodule.&lt;name&gt;.gitdir</dt>
+<dd>
+<p>This sets the gitdir path for submodule &lt;name&gt;. This configuration is
+respected when <code>extensions.submodulePathConfig</code> is enabled, otherwise it
+has no effect. When enabled, this config becomes the single source of
+truth for submodule gitdir paths and Git will error if it is missing.
+See <a href="git-config.html">git-config(1)</a> for details.</p>
 </dd>
 <dt class="hdlist1">submodule.active</dt>
 <dd>

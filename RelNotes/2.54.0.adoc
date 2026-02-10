@@ -1,0 +1,60 @@
+Git v2.54 Release Notes
+=======================
+
+UI, Workflows & Features
+------------------------
+
+ * "git add -p" and friends note what the current status of the hunk
+   being shown is.
+
+ * "git history" history rewriting (experimental) command has been
+   added.
+
+
+ * "git replay" is taught to drop commits that become empty (not the
+   ones that are empty in the original).
+
+ * The help text and the documentation for the "--expire" option of
+   "git worktree [list|prune]" have been improved.
+
+
+
+Performance, Internal Implementation, Development Support etc.
+--------------------------------------------------------------
+
+ * Avoid local submodule repository directory paths overlapping with
+   each other by encoding submodule names before using them as path
+   components.
+
+ * The string_list API gains a new helper, string_list_sort_u(), and
+   new unit tests to extend coverage.
+
+ * Improve set-up time of a perf test.
+
+
+Fixes since v2.53
+-----------------
+
+ * HTTP transport failed to authenticate in some code paths, which has
+   been corrected.
+   (merge ed0f7a62f7 ap/http-probe-rpc-use-auth later to maint).
+
+ * The computation of column width made by "git diff --stat" was
+   confused when pathnames contain non-ASCII characters.
+   (merge 04f5d95ef7 lp/diff-stat-utf8-display-width-fix later to maint).
+
+ * The "-z" and "--max-depth" documentation (and implementation of
+   "-z") in the "git last-modified" command have been updated.
+   (merge 9dcc09bed1 tc/last-modified-options-cleanup later to maint).
+
+ * A handful of code paths that started using batched ref update API
+   (after Git 2.51 or so) lost detailed error output, which have been
+   corrected.
+   (merge eff9299eac kn/ref-batch-output-error-reporting-fix later to maint).
+
+ * Other code cleanup, docfix, build fix, etc.
+   (merge d79fff4a11 jk/remote-tracking-ref-leakfix later to maint).
+   (merge 7a747f972d dd/t5403-modernise later to maint).
+   (merge 81021871ea sp/myfirstcontribution-include-update later to maint).
+   (merge 49223593fd ac/sparse-checkout-string-list-cleanup later to maint).
+   (merge a824421d36 sp/t5500-cleanup later to maint).

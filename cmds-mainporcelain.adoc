@@ -58,6 +58,9 @@ linkgit:git-grep[1]::
 linkgit:git-gui[1]::
 	A portable graphical interface to Git.
 
+linkgit:git-history[1]::
+	EXPERIMENTAL: Rewrite history.
+
 linkgit:git-init[1]::
 	Create an empty Git repository or reinitialize an existing one.
 

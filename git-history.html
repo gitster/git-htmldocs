@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="generator" content="Asciidoctor 2.0.23"/>
-<title>git-last-modified(1)</title>
+<title>git-history(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"/>
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -441,10 +441,10 @@ pre>code {
 </head>
 <body class="manpage">
 <div id="header">
-<h1>git-last-modified(1) Manual Page</h1>
+<h1>git-history(1) Manual Page</h1>
 <h2 id="_name">NAME</h2>
 <div class="sectionbody">
-<p>git-last-modified - EXPERIMENTAL: Show when files were last modified</p>
+<p>git-history - EXPERIMENTAL: Rewrite history</p>
 </div>
 </div>
 <div id="content">
@@ -452,8 +452,7 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><code>git</code> <code>last-modified</code> [<code>--recursive</code>] [<code>--show-trees</code>] [<code>--max-depth=</code><em>&lt;depth&gt;</em>] [<code>-z</code>]
-		  [<em>&lt;revision-range&gt;</em>] [[<code>--</code>] <em>&lt;pathspec&gt;</em>&#8230;&#8203;]</pre>
+<pre class="content"><code>git</code> <code>history</code> <code>reword</code> <em>&lt;commit&gt;</em> [<code>--ref-action=</code>(<code>branches</code>|<code>head</code>|<code>print</code>)]</pre>
 </div>
 </div>
 </div>
@@ -461,11 +460,74 @@ pre>code {
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Shows which commit last modified each of the relevant files and subdirectories.
-A commit renaming a path, or changing it&#8217;s mode is also taken into account.</p>
+<p>Rewrite history by rearranging or modifying specific commits in the
+history.</p>
 </div>
 <div class="paragraph">
 <p>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</p>
+</div>
+<div class="paragraph">
+<p>This command is related to <a href="git-rebase.html">git-rebase(1)</a> in that both commands can be
+used to rewrite history. There are a couple of major differences though:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="git-history.html">git-history(1)</a> can work in a bare repository as it does not need to
+touch either the index or the worktree.</p>
+</li>
+<li>
+<p><a href="git-history.html">git-history(1)</a> does not execute any <a href="githooks.html">githooks(5)</a> at the
+current point in time. This may change in the future.</p>
+</li>
+<li>
+<p><a href="git-history.html">git-history(1)</a> by default updates all branches that are descendants
+of the original commit to point to the rewritten commit.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Overall, <a href="git-history.html">git-history(1)</a> aims to provide a more opinionated way to modify
+your commit history that is simpler to use compared to <a href="git-rebase.html">git-rebase(1)</a> in
+general.</p>
+</div>
+<div class="paragraph">
+<p>Use <a href="git-rebase.html">git-rebase(1)</a> if you want to reapply a range of commits onto a
+different base, or interactive rebases if you want to edit a range of commits
+at once.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_limitations">LIMITATIONS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This command does not (yet) work with histories that contain merges. You
+should use <a href="git-rebase.html">git-rebase(1)</a> with the <code>--rebase-merges</code> flag instead.</p>
+</div>
+<div class="paragraph">
+<p>Furthermore, the command does not support operations that can result in merge
+conflicts. This limitation is by design as history rewrites are not intended to
+be stateful operations. The limitation can be lifted once (if) Git learns about
+first-class conflicts.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_commands">COMMANDS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following commands are available to rewrite history in different ways:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>reword</code> <em>&lt;commit&gt;</em></dt>
+<dd>
+<p>Rewrite the commit message of the specified commit. All the other
+details of this commit remain unchanged. This command will spawn an
+editor with the current message of that commit.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
@@ -474,76 +536,16 @@ A commit renaming a path, or changing it&#8217;s mode is also taken into account
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>-r</code></dt>
-<dt class="hdlist1"><code>--recursive</code></dt>
+<dt class="hdlist1"><code>--ref-action=</code>(<code>branches</code>|<code>head</code>|<code>print</code>)</dt>
 <dd>
-<p>Recursively traverse into all subtrees. By default, the command only
-shows tree entries matching the <em>&lt;pathspec&gt;</em>. With this option, it
-descends into subtrees and displays all entries within them.
-Equivalent to <code>--max-depth=-1</code>.</p>
-</dd>
-<dt class="hdlist1"><code>-t</code></dt>
-<dt class="hdlist1"><code>--show-trees</code></dt>
-<dd>
-<p>Show tree entries even when recursing into them.</p>
-</dd>
-<dt class="hdlist1"><code>--max-depth=</code><em>&lt;depth&gt;</em></dt>
-<dd>
-<p>For each pathspec given on the command line, traverse at most <em>&lt;depth&gt;</em>
-levels into subtrees. A negative value means no limit.
-The default is 0, which shows all paths matching the pathspec
-without descending into subtrees.</p>
-</dd>
-<dt class="hdlist1"><code>-z</code></dt>
-<dd>
-<p>Terminate each line with a <em>NUL</em> character rather than a newline.</p>
-</dd>
-<dt class="hdlist1"><em>&lt;revision-range&gt;</em></dt>
-<dd>
-<p>Only traverse commits in the specified revision range. When no
-<em>&lt;revision-range&gt;</em> is specified, it defaults to <code>HEAD</code> (i.e. the whole
-history leading to the current commit). For a complete list of ways to
-spell <em>&lt;revision-range&gt;</em>, see the <em>Specifying Ranges</em> section of
-<a href="gitrevisions.html">gitrevisions(7)</a>.</p>
-</dd>
-<dt class="hdlist1">[<code>--</code>] <em>&lt;pathspec&gt;</em>...</dt>
-<dd>
-<p>Show the commit that last modified each path matching <em>&lt;pathspec&gt;</em>.
-If no <em>&lt;pathspec&gt;</em> is given, all files and subdirectories are included.
-See <a href="gitglossary.html">gitglossary(7)</a> for details on pathspec syntax.</p>
+<p>Control which references will be updated by the command, if any. With
+<code>branches</code>, all local branches that point to commits which are
+descendants of the original commit will be rewritten. With <code>head</code>, only
+the current <code>HEAD</code> reference will be rewritten. With <code>print</code>, all
+updates as they would be performed with <code>branches</code> are printed in a
+format that can be consumed by <a href="git-update-ref.html">git-update-ref(1)</a>.</p>
 </dd>
 </dl>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_output">OUTPUT</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The output is in the format:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre> &lt;oid&gt; TAB &lt;path&gt; LF</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If a path contains any special characters, the path is C-style quoted. To
-avoid quoting, pass option <code>-z</code> to terminate each line with a NUL.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre> &lt;oid&gt; TAB &lt;path&gt; NUL</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_see_also">SEE ALSO</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><a href="git-blame.html">git-blame(1)</a>,
-<a href="git-log.html">git-log(1)</a>.</p>
 </div>
 </div>
 </div>

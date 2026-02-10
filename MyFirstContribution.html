@@ -878,7 +878,8 @@ for you, try <code>cd</code> <code>Documentation/</code> &amp;&amp; <code>..</co
 helpful. So what other context can we get?</p>
 </div>
 <div class="paragraph">
-<p>Add a line to #include "config.<code>h</code>" and #include "repository.<code>h</code>".
+<p>Add a line to #include "config.<code>h</code>", #include "repository.<code>h</code>" and
+#include "environment.<code>h</code>".
 Then, add the following bits to the function body:
 function body:</p>
 </div>
@@ -1006,7 +1007,8 @@ require a full format object to be passed.</p>
 <div class="listingblock">
 <div class="content">
 <pre>#include "commit.h"
-#include "pretty.h"</pre>
+#include "pretty.h"
+#include "strbuf.h"</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1091,8 +1093,8 @@ git-psuh - Delight users' typo with a shy horse
 
 SYNOPSIS
 --------
-[verse]
-'git-psuh [&lt;arg&gt;...]'
+[synopsis]
+git psuh [&lt;arg&gt;...]
 
 DESCRIPTION
 -----------
@@ -1384,9 +1386,10 @@ $ prove -j$(nproc) --shuffle t[0-9]*.sh</pre>
 </td>
 <td class="content">
 You can also do this with <code>make</code> <code>test</code> or use any testing harness which can
-speak TAP. <code>prove</code> can run concurrently. <code>shuffle</code> randomizes the order the
-tests are run in, which makes them resilient against unwanted inter-test
-dependencies. <code>prove</code> also makes the output nicer.
+speak TAP. <code>prove</code> can run concurrently. <code>-j$</code>(<code>nproc</code>) runs tests using all
+available CPUs in parallel, but the job count can be adjusted as needed.
+<code>shuffle</code> randomizes the order the tests are run in, which makes them resilient
+against unwanted inter-test dependencies. <code>prove</code> also makes the output nicer.
 </td>
 </tr>
 </table>
@@ -2288,7 +2291,7 @@ should generate your diffs from <em>&lt;topic&gt;</em><code>..</code><em>&lt;myb
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-11-04 11:37:22 -0800
+Last updated 2026-02-09 21:22:43 -0800
 </div>
 </div>
 </body>
