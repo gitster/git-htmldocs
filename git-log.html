@@ -2021,101 +2021,68 @@ config option to either another format name, or a
 <a href="git-config.html">git-config(1)</a>). Here are the details of the
 built-in formats:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>oneline</code></p>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;hash&gt; &lt;title-line&gt;</pre>
-</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>oneline</code></dt>
+<dd>
+<div class="verseblock">
+<pre class="content"><em>&lt;hash&gt;</em> <em>&lt;title-line&gt;</em></pre>
 </div>
 <div class="paragraph">
 <p>This is designed to be as compact as possible.</p>
 </div>
-</li>
-<li>
-<p><code>short</code></p>
-<div class="literalblock">
-<div class="content">
-<pre>commit &lt;hash&gt;
-Author: &lt;author&gt;</pre>
+</dd>
+<dt class="hdlist1"><code>short</code></dt>
+<dd>
+<div class="verseblock">
+<pre class="content"><code>commit</code> <em>&lt;hash&gt;</em>
+<code>Author:</code> <em>&lt;author&gt;</em>
+
+    <em>&lt;title-line&gt;</em></pre>
 </div>
+</dd>
+<dt class="hdlist1"><code>medium</code></dt>
+<dd>
+<div class="verseblock">
+<pre class="content"><code>commit</code> <em>&lt;hash&gt;</em>
+<code>Author:</code> <em>&lt;author&gt;</em>
+<code>Date:</code>   <em>&lt;author-date&gt;</em>
+
+    <em>&lt;title-line&gt;</em>
+
+    <em>&lt;full-commit-message&gt;</em></pre>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;title-line&gt;</pre>
+</dd>
+<dt class="hdlist1"><code>full</code></dt>
+<dd>
+<div class="verseblock">
+<pre class="content"><code>commit</code> <em>&lt;hash&gt;</em>
+<code>Author:</code> <em>&lt;author&gt;</em>
+<code>Commit:</code> <em>&lt;committer&gt;</em>
+
+    <em>&lt;title-line&gt;</em>
+
+    <em>&lt;full-commit-message&gt;</em></pre>
 </div>
+</dd>
+<dt class="hdlist1"><code>fuller</code></dt>
+<dd>
+<div class="verseblock">
+<pre class="content"><code>commit</code> <em>&lt;hash&gt;</em>
+<code>Author:</code>     <em>&lt;author&gt;</em>
+<code>AuthorDate:</code> <em>&lt;author-date&gt;</em>
+<code>Commit:</code>     <em>&lt;committer&gt;</em>
+<code>CommitDate:</code> <em>&lt;committer-date&gt;</em>
+
+     <em>&lt;title-line&gt;</em>
+
+     <em>&lt;full-commit-message&gt;</em></pre>
 </div>
-</li>
-<li>
-<p><code>medium</code></p>
-<div class="literalblock">
-<div class="content">
-<pre>commit &lt;hash&gt;
-Author: &lt;author&gt;
-Date:   &lt;author-date&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;title-line&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;full-commit-message&gt;</pre>
-</div>
-</div>
-</li>
-<li>
-<p><code>full</code></p>
-<div class="literalblock">
-<div class="content">
-<pre>commit &lt;hash&gt;
-Author: &lt;author&gt;
-Commit: &lt;committer&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;title-line&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;full-commit-message&gt;</pre>
-</div>
-</div>
-</li>
-<li>
-<p><code>fuller</code></p>
-<div class="literalblock">
-<div class="content">
-<pre>commit &lt;hash&gt;
-Author:     &lt;author&gt;
-AuthorDate: &lt;author-date&gt;
-Commit:     &lt;committer&gt;
-CommitDate: &lt;committer-date&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;title-line&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;full-commit-message&gt;</pre>
-</div>
-</div>
-</li>
-<li>
-<p><code>reference</code></p>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;abbrev-hash&gt; (&lt;title-line&gt;, &lt;short-author-date&gt;)</pre>
-</div>
+</dd>
+<dt class="hdlist1"><code>reference</code></dt>
+<dd>
+<div class="verseblock">
+<pre class="content"><em>&lt;abbrev-hash&gt;</em> (<em>&lt;title-line&gt;</em><code>,</code> <em>&lt;short-author-date&gt;</em>)</pre>
 </div>
 <div class="paragraph">
 <p>This format is used to refer to another commit in a commit message and
@@ -2125,34 +2092,26 @@ is explicitly specified.  As with any <code>format:</code> with format
 placeholders, its output is not affected by other options like
 <code>--decorate</code> and <code>--walk-reflogs</code>.</p>
 </div>
-</li>
-<li>
-<p><code>email</code></p>
-<div class="literalblock">
-<div class="content">
-<pre>From &lt;hash&gt; &lt;date&gt;
-From: &lt;author&gt;
-Date: &lt;author-date&gt;
-Subject: [PATCH] &lt;title-line&gt;</pre>
+</dd>
+<dt class="hdlist1"><code>email</code></dt>
+<dd>
+<div class="verseblock">
+<pre class="content"><code>From</code> <em>&lt;hash&gt;</em> <em>&lt;date&gt;</em>
+<code>From:</code> <em>&lt;author&gt;</em>
+<code>Date:</code> <em>&lt;author-date&gt;</em>
+<code>Subject:</code> [<code>PATCH</code>] <em>&lt;title-line&gt;</em>
+
+<em>&lt;full-commit-message&gt;</em></pre>
 </div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>&lt;full-commit-message&gt;</pre>
-</div>
-</div>
-</li>
-<li>
-<p><code>mboxrd</code></p>
-<div class="paragraph">
+</dd>
+<dt class="hdlist1"><code>mboxrd</code></dt>
+<dd>
 <p>Like <code>email</code>, but lines in the commit message starting with "From "
 (preceded by zero or more "&gt;") are quoted with "&gt;" so they aren&#8217;t
 confused as starting a new commit.</p>
-</div>
-</li>
-<li>
-<p><code>raw</code></p>
-<div class="paragraph">
+</dd>
+<dt class="hdlist1"><code>raw</code></dt>
+<dd>
 <p>The <code>raw</code> format shows the entire commit exactly as
 stored in the commit object.  Notably, the hashes are
 displayed in full, regardless of whether <code>--abbrev</code> or
@@ -2162,16 +2121,13 @@ simplification into account. Note that this format affects the way
 commits are displayed, but not the way the diff is shown e.g. with
 <code>git</code> <code>log</code> <code>--raw</code>. To get full object names in a raw diff format,
 use <code>--no-abbrev</code>.</p>
-</div>
-</li>
-<li>
-<p><code>format:</code><em>&lt;format-string&gt;</em></p>
-<div class="paragraph">
+</dd>
+<dt class="hdlist1"><code>format:</code><em>&lt;format-string&gt;</em></dt>
+<dd>
 <p>The <code>format:</code><em>&lt;format-string&gt;</em> format allows you to specify which information
 you want to show. It works a little bit like printf format,
 with the notable exception that you get a newline with <code>%n</code>
 instead of <code>\n</code>.</p>
-</div>
 <div class="paragraph">
 <p>E.g, <em>format:"The author of %h was %an, %ar%nThe title was &gt;&gt;%s&lt;&lt;%n"</em>
 would show something like this:</p>
@@ -2189,6 +2145,8 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 <ul>
 <li>
 <p>Placeholders that expand to a single literal character:</p>
+<div class="openblock">
+<div class="content">
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>%n</code></dt>
@@ -2207,9 +2165,13 @@ byte with the hexadecimal digits' value (we will call this
 </dd>
 </dl>
 </div>
+</div>
+</div>
 </li>
 <li>
 <p>Placeholders that affect formatting of later placeholders:</p>
+<div class="openblock">
+<div class="content">
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>%Cred</code></dt>
@@ -2304,9 +2266,13 @@ respectively, but padding both sides
 </dd>
 </dl>
 </div>
+</div>
+</div>
 </li>
 <li>
 <p>Placeholders that expand to information extracted from the commit:</p>
+<div class="openblock">
+<div class="content">
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><code>%H</code></dt>
@@ -2467,41 +2433,41 @@ or <a href="git-blame.html">git-blame(1)</a>)</p>
 colon and zero or more comma-separated options. Option values may contain
 literal formatting codes. These must be used for commas (<code>%x2C</code>) and closing
 parentheses (<code>%x29</code>), due to their role in the option syntax.</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>prefix=</code><em>&lt;value&gt;</em>: Shown before the list of ref names.  Defaults to "&#160;(".</p>
-</li>
-<li>
-<p><code>suffix=</code><em>&lt;value&gt;</em>: Shown after the list of ref names.  Defaults to ")".</p>
-</li>
-<li>
-<p><code>separator=</code><em>&lt;value&gt;</em>: Shown between ref names.  Defaults to "<code>,</code>&#160;".</p>
-</li>
-<li>
-<p><code>pointer=</code><em>&lt;value&gt;</em>: Shown between HEAD and the branch it points to, if any.
-Defaults to "&#160;<code>-</code>&gt;&#160;".</p>
-</li>
-<li>
-<p><code>tag=</code><em>&lt;value&gt;</em>: Shown before tag names. Defaults to "<code>tag:</code>&#160;".</p>
-</li>
-</ul>
-</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>prefix=</code><em>&lt;value&gt;</em></dt>
+<dd>
+<p>Shown before the list of ref names.  Defaults to "&#160;(".</p>
+</dd>
+<dt class="hdlist1"><code>suffix=</code><em>&lt;value&gt;</em></dt>
+<dd>
+<p>Shown after the list of ref names.  Defaults to ")".</p>
+</dd>
+<dt class="hdlist1"><code>separator=</code><em>&lt;value&gt;</em></dt>
+<dd>
+<p>Shown between ref names.  Defaults to "<code>,</code>&#160;".</p>
+</dd>
+<dt class="hdlist1"><code>pointer=</code><em>&lt;value&gt;</em></dt>
+<dd>
+<p>Shown between HEAD and the branch it points to, if any.
+Defaults to "&#160;&#8594;&#160;".</p>
+</dd>
+<dt class="hdlist1"><code>tag=</code><em>&lt;value&gt;</em></dt>
+<dd>
+<p>Shown before tag names. Defaults to "<code>tag:</code>&#160;".</p>
 </dd>
 </dl>
 </div>
-</li>
-</ul>
-</div>
-<div class="openblock">
-<div class="content">
 <div class="paragraph">
 <p>For example, to produce decorations with no wrapping
 or tag annotations, and spaces as separators:</p>
 </div>
-<div class="paragraph">
-<p><code>%</code>(<code>decorate:prefix=,suffix=,tag=,separator=</code> )</p>
+</dd>
+</dl>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre>    %(decorate:prefix=,suffix=,tag=,separator= )</pre>
 </div>
 </div>
 <div class="dlist">
@@ -2512,27 +2478,31 @@ or tag annotations, and spaces as separators:</p>
 undescribable commits.  The <code>describe</code> string may be followed by a colon and
 zero or more comma-separated options.  Descriptions can be inconsistent when
 tags are added or removed at the same time.</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>tags</code>[<code>=</code><em>&lt;bool-value&gt;</em>]: Instead of only considering annotated tags,
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>tags</code>[<code>=</code><em>&lt;bool-value&gt;</em>]</dt>
+<dd>
+<p>Instead of only considering annotated tags,
 consider lightweight tags as well.</p>
-</li>
-<li>
-<p><code>abbrev=</code><em>&lt;number&gt;</em>: Instead of using the default number of hexadecimal digits
+</dd>
+<dt class="hdlist1"><code>abbrev=</code><em>&lt;number&gt;</em></dt>
+<dd>
+<p>Instead of using the default number of hexadecimal digits
 (which will vary according to the number of objects in the repository with a
-default of 7) of the abbreviated object name, use &lt;number&gt; digits, or as many
+default of 7) of the abbreviated object name, use <em>&lt;number&gt;</em> digits, or as many
 digits as needed to form a unique object name.</p>
-</li>
-<li>
-<p><code>match=</code><em>&lt;pattern&gt;</em>: Only consider tags matching the given
+</dd>
+<dt class="hdlist1"><code>match=</code><em>&lt;pattern&gt;</em></dt>
+<dd>
+<p>Only consider tags matching the given
 <code>glob</code>(<code>7</code>) <em>&lt;pattern&gt;</em>, excluding the <code>refs/tags/</code> prefix.</p>
-</li>
-<li>
-<p><code>exclude=</code><em>&lt;pattern&gt;</em>: Do not consider tags matching the given
+</dd>
+<dt class="hdlist1"><code>exclude=</code><em>&lt;pattern&gt;</em></dt>
+<dd>
+<p>Do not consider tags matching the given
 <code>glob</code>(<code>7</code>) <em>&lt;pattern&gt;</em>, excluding the <code>refs/tags/</code> prefix.</p>
-</li>
-</ul>
+</dd>
+</dl>
 </div>
 </dd>
 <dt class="hdlist1"><code>%S</code></dt>
@@ -2642,10 +2612,11 @@ portion is shortened for human readability (so
 <a href="git-interpret-trailers.html">git-interpret-trailers(1)</a>. The <code>trailers</code> string may be followed by
 a colon and zero or more comma-separated options. If any option is provided
 multiple times, the last occurrence wins.</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>key=</code><em>&lt;key&gt;</em>: only show trailers with specified &lt;key&gt;. Matching is done
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>key=</code><em>&lt;key&gt;</em></dt>
+<dd>
+<p>only show trailers with specified &lt;key&gt;. Matching is done
 case-insensitively and trailing colon is optional. If option is
 given multiple times trailer lines matching any of the keys are
 shown. This option automatically enables the <code>only</code> option so that
@@ -2653,43 +2624,46 @@ non-trailer lines in the trailer block are hidden. If that is not
 desired it can be disabled with <code>only=false</code>.  E.g.,
 <code>%</code>(<code>trailers:key=Reviewed-by</code>) shows trailer lines with key
 <code>Reviewed-by</code>.</p>
-</li>
-<li>
-<p><code>only</code>[<code>=</code><em>&lt;bool&gt;</em>]: select whether non-trailer lines from the trailer
+</dd>
+<dt class="hdlist1"><code>only</code>[<code>=</code><em>&lt;bool&gt;</em>]</dt>
+<dd>
+<p>select whether non-trailer lines from the trailer
 block should be included.</p>
-</li>
-<li>
-<p><code>separator=</code><em>&lt;sep&gt;</em>: specify the separator inserted between trailer
+</dd>
+<dt class="hdlist1"><code>separator=</code><em>&lt;sep&gt;</em></dt>
+<dd>
+<p>specify the separator inserted between trailer
 lines. Defaults to a line feed character. The string &lt;sep&gt; may contain
 the literal formatting codes described above. To use comma as
 separator one must use <code>%x2C</code> as it would otherwise be parsed as
 next option. E.g., <code>%</code>(<code>trailers:key=Ticket,separator=%x2C</code> )
-shows all trailer lines whose key is "Ticket" separated by a comma
+shows all trailer lines whose key is <code>Ticket</code> separated by a comma
 and a space.</p>
-</li>
-<li>
-<p><code>unfold</code>[<code>=</code><em>&lt;bool&gt;</em>]: make it behave as if interpret-trailer&#8217;s <code>--unfold</code>
+</dd>
+<dt class="hdlist1"><code>unfold</code>[<code>=</code><em>&lt;bool&gt;</em>]</dt>
+<dd>
+<p>make it behave as if interpret-trailer&#8217;s <code>--unfold</code>
 option was given. E.g.,
 <code>%</code>(<code>trailers:only,unfold=true</code>) unfolds and shows all trailer lines.</p>
-</li>
-<li>
-<p><code>keyonly</code>[<code>=</code><em>&lt;bool&gt;</em>]: only show the key part of the trailer.</p>
-</li>
-<li>
-<p><code>valueonly</code>[<code>=</code><em>&lt;bool&gt;</em>]: only show the value part of the trailer.</p>
-</li>
-<li>
-<p><code>key_value_separator=</code><em>&lt;sep&gt;</em>: specify the separator inserted between
+</dd>
+<dt class="hdlist1"><code>keyonly</code>[<code>=</code><em>&lt;bool&gt;</em>]</dt>
+<dd>
+<p>only show the key part of the trailer.</p>
+</dd>
+<dt class="hdlist1"><code>valueonly</code>[<code>=</code><em>&lt;bool&gt;</em>]</dt>
+<dd>
+<p>only show the value part of the trailer.</p>
+</dd>
+<dt class="hdlist1"><code>key_value_separator=</code><em>&lt;sep&gt;</em></dt>
+<dd>
+<p>specify the separator inserted between
 the key and value of each trailer. Defaults to ": ". Otherwise it
 shares the same semantics as <code>separator=</code><em>&lt;sep&gt;</em> above.</p>
-</li>
-</ul>
-</div>
 </dd>
 </dl>
 </div>
-</li>
-</ul>
+</dd>
+</dl>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2729,11 +2703,14 @@ placeholder expands to an empty string.</p>
 is inserted immediately before the expansion if and only if the
 placeholder expands to a non-empty string.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>tformat:</code></p>
-<div class="paragraph">
+</div>
+</div>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1"><code>tformat:</code></dt>
+<dd>
 <p>The <code>tformat:</code> format works exactly like <code>format:</code>, except that it
 provides "terminator" semantics instead of "separator" semantics. In
 other words, each commit has the message terminator character (usually a
@@ -2741,7 +2718,6 @@ newline) appended, rather than a separator placed between entries.
 This means that the final entry of a single-line format will be properly
 terminated with a new line, just as the "oneline" format does.
 For example:</p>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre>$ git log -2 --pretty=format:%h 4da45bef \
@@ -2766,8 +2742,8 @@ equivalent:</p>
 $ git log -2 --pretty=%h 4da45bef</pre>
 </div>
 </div>
-</li>
-</ul>
+</dd>
+</dl>
 </div>
 </div>
 </div>

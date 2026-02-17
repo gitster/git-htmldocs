@@ -452,18 +452,18 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><em>git submodule</em> [--quiet] [--cached]
-<em>git submodule</em> [--quiet] add [&lt;options&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
-<em>git submodule</em> [--quiet] status [--cached] [--recursive] [--] [&lt;path&gt;&#8230;&#8203;]
-<em>git submodule</em> [--quiet] init [--] [&lt;path&gt;&#8230;&#8203;]
-<em>git submodule</em> [--quiet] deinit [-f|--force] (--all|[--] &lt;path&gt;&#8230;&#8203;)
-<em>git submodule</em> [--quiet] update [&lt;options&gt;] [--] [&lt;path&gt;&#8230;&#8203;]
-<em>git submodule</em> [--quiet] set-branch [&lt;options&gt;] [--] &lt;path&gt;
-<em>git submodule</em> [--quiet] set-url [--] &lt;path&gt; &lt;newurl&gt;
-<em>git submodule</em> [--quiet] summary [&lt;options&gt;] [--] [&lt;path&gt;&#8230;&#8203;]
-<em>git submodule</em> [--quiet] foreach [--recursive] &lt;command&gt;
-<em>git submodule</em> [--quiet] sync [--recursive] [--] [&lt;path&gt;&#8230;&#8203;]
-<em>git submodule</em> [--quiet] absorbgitdirs [--] [&lt;path&gt;&#8230;&#8203;]</pre>
+<pre class="content"><code>git</code> <code>submodule</code> [<code>--quiet</code>] [<code>--cached</code>]
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>add</code> [<em>&lt;options&gt;</em>] [<code>--</code>] <em>&lt;repository&gt;</em> [<em>&lt;path&gt;</em>]
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>status</code> [<code>--cached</code>] [<code>--recursive</code>] [<code>--</code>] [<em>&lt;path&gt;</em>&#8230;&#8203;]
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>init</code> [<code>--</code>] [<em>&lt;path&gt;</em>&#8230;&#8203;]
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>deinit</code> [<code>-f</code>|<code>--force</code>] (<code>--all</code>|[<code>--</code>] <em>&lt;path&gt;</em><code>...</code>)
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>update</code> [<em>&lt;options&gt;</em>] [<code>--</code>] [<em>&lt;path&gt;</em>&#8230;&#8203;]
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>set-branch</code> [<em>&lt;options&gt;</em>] [<code>--</code>] <em>&lt;path&gt;</em>
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>set-url</code> [<code>--</code>] <em>&lt;path&gt;</em> <em>&lt;newurl&gt;</em>
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>summary</code> [<em>&lt;options&gt;</em>] [<code>--</code>] [<em>&lt;path&gt;</em>&#8230;&#8203;]
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>foreach</code> [<code>--recursive</code>] <em>&lt;command&gt;</em>
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>sync</code> [<code>--recursive</code>] [<code>--</code>] [<em>&lt;path&gt;</em>&#8230;&#8203;]
+<code>git</code> <code>submodule</code> [<code>--quiet</code>] <code>absorbgitdirs</code> [<code>--</code>] [<em>&lt;path&gt;</em>&#8230;&#8203;]</pre>
 </div>
 </div>
 </div>
@@ -487,17 +487,17 @@ subcommands are available to perform operations on the submodules.</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">add [-b &lt;branch&gt;] [-f|--force] [--name &lt;name&gt;] [--reference &lt;repository&gt;] [--ref-format &lt;format&gt;] [--depth &lt;depth&gt;] [--] &lt;repository&gt; [&lt;path&gt;]</dt>
+<dt class="hdlist1"><code>add</code> [<code>-b</code> <em>&lt;branch&gt;</em>] [<code>-f</code> | <code>--force</code>] [<code>--name</code> <em>&lt;name&gt;</em>] [<code>--reference</code> <em>&lt;repository&gt;</em>] [<code>--ref-format</code> <em>&lt;format&gt;</em>] [<code>--depth</code> <em>&lt;depth&gt;</em>] [<code>--</code>] <em>&lt;repository&gt;</em> [<em>&lt;path&gt;</em>]</dt>
 <dd>
 <p>Add the given repository as a submodule at the given path
 to the changeset to be committed next to the current
 project: the current project is termed the "superproject".</p>
 <div class="paragraph">
-<p>&lt;repository&gt; is the URL of the new submodule&#8217;s origin repository.
-This may be either an absolute URL, or (if it begins with ./
-or ../), the location relative to the superproject&#8217;s default remote
-repository (Please note that to specify a repository <em>foo.git</em>
-which is located right next to a superproject <em>bar.git</em>, you&#8217;ll
+<p><em>&lt;repository&gt;</em> is the URL of the new submodule&#8217;s <code>origin</code> repository.
+This may be either an absolute URL, or (if it begins with .<code>/</code>
+or <code>..</code><code>/</code>), the location relative to the superproject&#8217;s default remote
+repository (Please note that to specify a repository <code>foo.git</code>
+which is located right next to a superproject <code>bar.git</code>, you&#8217;ll
 have to use <code>..</code><code>/foo.git</code> instead of .<code>/foo.git</code> - as one might expect
 when following the rules for relative URLs - because the evaluation
 of relative URLs in Git is identical to that of relative directories).</p>
@@ -505,19 +505,19 @@ of relative URLs in Git is identical to that of relative directories).</p>
 <div class="paragraph">
 <p>The default remote is the remote of the remote-tracking branch
 of the current branch. If no such remote-tracking branch exists or
-the HEAD is detached, "origin" is assumed to be the default remote.
+the <code>HEAD</code> is detached, <code>origin</code> is assumed to be the default remote.
 If the superproject doesn&#8217;t have a default remote configured
 the superproject is its own authoritative upstream and the current
 working directory is used instead.</p>
 </div>
 <div class="paragraph">
-<p>The optional argument &lt;path&gt; is the relative location for the cloned
-submodule to exist in the superproject. If &lt;path&gt; is not given, the
-canonical part of the source repository is used ("repo" for
-"/path/to/repo.git" and "foo" for "host.xz:foo/.git"). If &lt;path&gt;
+<p>The optional argument <em>&lt;path&gt;</em> is the relative location for the cloned
+submodule to exist in the superproject. If <em>&lt;path&gt;</em> is not given, the
+canonical part of the source repository is used (<code>repo</code> for
+<code>/path/to/repo.git</code> and <code>foo</code> for <code>host.xz:foo/.git</code>). If <em>&lt;path&gt;</em>
 exists and is already a valid Git repository, then it is staged
-for commit without cloning. The &lt;path&gt; is also used as the submodule&#8217;s
-logical name in its configuration entries unless <code>--name</code> is used
+for commit without cloning. The <em>&lt;path&gt;</em> is also used as the submodule&#8217;s
+logical name in its configuration entries unless <code>--name</code> <em>&lt;name&gt;</em> is used
 to specify a logical name.</p>
 </div>
 <div class="paragraph">
@@ -534,11 +534,11 @@ URL in .<code>gitmodules</code>.</p>
 cloned submodules will be set accordingly.</p>
 </div>
 </dd>
-<dt class="hdlist1">status [--cached] [--recursive] [--] [&lt;path&gt;&#8230;&#8203;]</dt>
+<dt class="hdlist1"><code>status</code> [<code>--cached</code>] [<code>--recursive</code>] [<code>--</code>] [<em>&lt;path&gt;</em>...]</dt>
 <dd>
 <p>Show the status of the submodules. This will print the SHA-1 of the
 currently checked out commit for each submodule, along with the
-submodule path and the output of <em>git describe</em> for the
+submodule path and the output of <a href="git-describe.html">git-describe(1)</a> for the
 SHA-1. Each SHA-1 will possibly be prefixed with <code>-</code> if the submodule is
 not initialized, <code>+</code> if the currently checked out submodule commit
 does not match the SHA-1 found in the index of the containing
@@ -553,12 +553,12 @@ submodules, and show their status as well.</p>
 </div>
 <div class="paragraph">
 <p>If you are only interested in changes of the currently initialized
-submodules with respect to the commit recorded in the index or the HEAD,
+submodules with respect to the commit recorded in the index or the <code>HEAD</code>,
 <a href="git-status.html">git-status(1)</a> and <a href="git-diff.html">git-diff(1)</a> will provide that information
 too (and can also report changes to a submodule&#8217;s work tree).</p>
 </div>
 </dd>
-<dt class="hdlist1">init [--] [&lt;path&gt;&#8230;&#8203;]</dt>
+<dt class="hdlist1"><code>init</code> [<code>--</code>] [<em>&lt;path&gt;</em>...]</dt>
 <dd>
 <p>Initialize the submodules recorded in the index (which were
 added and committed elsewhere) by setting <code>submodule.$name.url</code>
@@ -567,7 +567,7 @@ a template. If the URL is relative, it will be resolved using
 the default remote. If there is no default remote, the current
 repository will be assumed to be upstream.</p>
 <div class="paragraph">
-<p>Optional &lt;path&gt; arguments limit which submodules will be initialized.
+<p>Optional <em>&lt;path&gt;</em> arguments limit which submodules will be initialized.
 If no path is specified and submodule.active has been configured, submodules
 configured to be active will be initialized, otherwise all submodules are
 initialized.</p>
@@ -582,14 +582,14 @@ that is set to a custom command is <strong>not</strong> copied for security reas
 <p>You can then customize the submodule clone URLs in .<code>git/config</code>
 for your local setup and proceed to <code>git</code> <code>submodule</code> <code>update</code>;
 you can also just use <code>git</code> <code>submodule</code> <code>update</code> <code>--init</code> without
-the explicit <em>init</em> step if you do not intend to customize
+the explicit <code>init</code> step if you do not intend to customize
 any submodule locations.</p>
 </div>
 <div class="paragraph">
 <p>See the add subcommand for the definition of default remote.</p>
 </div>
 </dd>
-<dt class="hdlist1">deinit [-f|--force] (--all|[--] &lt;path&gt;&#8230;&#8203;)</dt>
+<dt class="hdlist1"><code>deinit</code> [<code>-f</code> | <code>--force</code>] (<code>--all</code>|[<code>--</code>] <em>&lt;path&gt;</em><code>...</code>)</dt>
 <dd>
 <p>Unregister the given submodules, i.e. remove the whole
 <code>submodule.$name</code> section from .git/config together with their work
@@ -611,7 +611,7 @@ that use <a href="git-rm.html">git-rm(1)</a> instead. See <a href="gitsubmodules
 options.</p>
 </div>
 </dd>
-<dt class="hdlist1">update [--init] [--remote] [-N|--no-fetch] [--[no-]recommend-shallow] [-f|--force] [--checkout|--rebase|--merge] [--reference &lt;repository&gt;] [--ref-format &lt;format&gt;] [--depth &lt;depth&gt;] [--recursive] [--jobs &lt;n&gt;] [--[no-]single-branch] [--filter &lt;filter-spec&gt;] [--] [&lt;path&gt;&#8230;&#8203;]</dt>
+<dt class="hdlist1"><code>update</code> [<code>--init</code>] [<code>--remote</code>] [<code>-N</code> | <code>--no-fetch</code>] [<code>--</code>[<code>no-</code>]<code>recommend-shallow</code>] [<code>-f</code> | <code>--force</code>] [<code>--checkout</code> | <code>--rebase</code> | <code>--merge</code>] [<code>--reference=</code><em>&lt;repository&gt;</em>] [<code>--ref-format=</code><em>&lt;format&gt;</em>] [<code>--depth=</code><em>&lt;depth&gt;</em>] [<code>--recursive</code>] [<code>--jobs</code> <em>&lt;n&gt;</em>] [<code>--</code>[<code>no-</code>]<code>single-branch</code>] [<code>--filter=</code><em>&lt;filter-spec&gt;</em>] [<code>--</code>] [<em>&lt;path&gt;</em>...]</dt>
 <dd>
 <div class="openblock">
 <div class="content">
@@ -622,18 +622,18 @@ in submodules and updating the working tree of
 the submodules. The "updating" can be done in several ways depending
 on command line options and the value of <code>submodule.</code><em>&lt;name&gt;</em><code>.update</code>
 configuration variable. The command line option takes precedence over
-the configuration variable. If neither is given, a <em>checkout</em> is performed.
+the configuration variable. If neither is given, a <code>checkout</code> is performed.
 (note: what is in .<code>gitmodules</code> file is irrelevant at this point;
 see <code>git</code> <code>submodule</code> <code>init</code> above for how .<code>gitmodules</code> is used).
-The <em>update</em> procedures supported both from the command line as well as
+The <code>update</code> procedures supported both from the command line as well as
 through the <code>submodule.</code><em>&lt;name&gt;</em><code>.update</code> configuration are:</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">checkout</dt>
+<dt class="hdlist1"><code>checkout</code></dt>
 <dd>
 <p>the commit recorded in the superproject will be
-checked out in the submodule on a detached HEAD.</p>
+checked out in the submodule on a detached <code>HEAD</code>.</p>
 <div class="paragraph">
 <p>If <code>--force</code> is specified, the submodule will be checked out (using
 <code>git</code> <code>checkout</code> <code>--force</code>), even if the commit specified
@@ -641,12 +641,12 @@ in the index of the containing repository already matches the commit
 checked out in the submodule.</p>
 </div>
 </dd>
-<dt class="hdlist1">rebase</dt>
+<dt class="hdlist1"><code>rebase</code></dt>
 <dd>
 <p>the current branch of the submodule will be rebased
 onto the commit recorded in the superproject.</p>
 </dd>
-<dt class="hdlist1">merge</dt>
+<dt class="hdlist1"><code>merge</code></dt>
 <dd>
 <p>the commit recorded in the superproject will be merged
 into the current branch in the submodule.</p>
@@ -658,17 +658,17 @@ into the current branch in the submodule.</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">custom command</dt>
+<dt class="hdlist1">!<em>&lt;custom-command&gt;</em></dt>
 <dd>
 <p>mechanism for running arbitrary commands with the
 commit ID as an argument. Specifically, if the
 <code>submodule.</code><em>&lt;name&gt;</em><code>.update</code> configuration variable is set to
-!custom <code>command</code>, the object name of the commit recorded in the
-superproject for the submodule is appended to the <code>custom</code> <code>command</code>
+!<em>&lt;custom-command&gt;</em>, the object name of the commit recorded in the
+superproject for the submodule is appended to the <em>&lt;custom-command&gt;</em>
 string and executed. Note that this mechanism is not supported in
 the .<code>gitmodules</code> file or on the command line.</p>
 </dd>
-<dt class="hdlist1">none</dt>
+<dt class="hdlist1"><code>none</code></dt>
 <dd>
 <p>the submodule is not updated. This update procedure is not
 allowed on the command line.</p>
@@ -696,23 +696,23 @@ specifications.</p>
 </div>
 </div>
 </dd>
-<dt class="hdlist1">set-branch (-b|--branch) &lt;branch&gt; [--] &lt;path&gt;</dt>
-<dt class="hdlist1">set-branch (-d|--default) [--] &lt;path&gt;</dt>
+<dt class="hdlist1"><code>set-branch</code> (<code>-b</code>|<code>--branch</code>) <em>&lt;branch&gt;</em> [<code>--</code>] <em>&lt;path&gt;</em></dt>
+<dt class="hdlist1"><code>set-branch</code> (<code>-d</code>|<code>--default</code>) [<code>--</code>] <em>&lt;path&gt;</em></dt>
 <dd>
-<p>Sets the default remote tracking branch for the submodule. The
+<p>Set the default remote tracking branch for the submodule. The
 <code>--branch</code> option allows the remote branch to be specified. The
-<code>--default</code> option removes the submodule.&lt;name&gt;.branch configuration
-key, which causes the tracking branch to default to the remote <em>HEAD</em>.</p>
+<code>--default</code> option removes the <code>submodule.</code><em>&lt;name&gt;</em><code>.branch</code> configuration
+key, which causes the tracking branch to default to the remote <code>HEAD</code>.</p>
 </dd>
-<dt class="hdlist1">set-url [--] &lt;path&gt; &lt;newurl&gt;</dt>
+<dt class="hdlist1"><code>set-url</code> [<code>--</code>] <em>&lt;path&gt;</em> <em>&lt;newurl&gt;</em></dt>
 <dd>
-<p>Sets the URL of the specified submodule to &lt;newurl&gt;. Then, it will
+<p>Set the URL of the specified submodule to <em>&lt;newurl&gt;</em>. Then, it will
 automatically synchronize the submodule&#8217;s new remote URL
 configuration.</p>
 </dd>
-<dt class="hdlist1">summary [--cached|--files] [(-n|--summary-limit) &lt;n&gt;] [commit] [--] [&lt;path&gt;&#8230;&#8203;]</dt>
+<dt class="hdlist1"><code>summary</code> [<code>--cached</code> | <code>--files</code>] [(<code>-n</code>|<code>--summary-limit</code>) <em>&lt;n&gt;</em>] [<code>commit</code>] [<code>--</code>] [<em>&lt;path&gt;</em>...]</dt>
 <dd>
-<p>Show commit summary between the given commit (defaults to HEAD) and
+<p>Show commit summary between the given commit (defaults to <code>HEAD</code>) and
 working tree/index. For a submodule in question, a series of commits
 in the submodule between the given super project commit and the
 index or working tree (switched by <code>--cached</code>) are shown. If the option
@@ -725,28 +725,53 @@ explicit commit).</p>
 information too.</p>
 </div>
 </dd>
-<dt class="hdlist1">foreach [--recursive] &lt;command&gt;</dt>
+<dt class="hdlist1"><code>foreach</code> [<code>--recursive</code>] <em>&lt;command&gt;</em></dt>
 <dd>
-<p>Evaluates an arbitrary shell command in each checked out submodule.
-The command has access to the variables $name, $sm_path, $displaypath,
-$sha1 and $toplevel:
-$name is the name of the relevant submodule section in .<code>gitmodules</code>,
-$sm_path is the path of the submodule as recorded in the immediate
-superproject, $displaypath contains the relative path from the
-current working directory to the submodules root directory,
-$sha1 is the commit as recorded in the immediate
-superproject, and $toplevel is the absolute path to the top-level
-of the immediate superproject.
-Note that to avoid conflicts with <em>$PATH</em> on Windows, the <em>$path</em>
-variable is now a deprecated synonym of <em>$sm_path</em> variable.
+<p>Evaluate an arbitrary shell <em>&lt;command&gt;</em> in each checked out submodule.
+The command has access to the variables <code>$name</code>, <code>$sm_path</code>, <code>$displaypath</code>,
+<code>$sha1</code> and <code>$toplevel</code>:</p>
+<div class="openblock">
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>$name</code></dt>
+<dd>
+<p>the name of the relevant submodule section in .<code>gitmodules</code></p>
+</dd>
+<dt class="hdlist1"><code>$sm_path</code></dt>
+<dd>
+<p>the path of the submodule as recorded in the immediate
+superproject</p>
+</dd>
+<dt class="hdlist1"><code>$displaypath</code></dt>
+<dd>
+<p>the relative path from the
+current working directory to the submodules root directory</p>
+</dd>
+<dt class="hdlist1"><code>$sha1</code></dt>
+<dd>
+<p>the commit as recorded in the immediate superproject</p>
+</dd>
+<dt class="hdlist1"><code>$toplevel</code></dt>
+<dd>
+<p>the absolute path to the top-level of the immediate superproject.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that to avoid conflicts with <code>$PATH</code> on Windows, the <code>$path</code>
+variable is now a deprecated synonym of <code>$sm_path</code> variable.
 Any submodules defined in the superproject but not checked out are
 ignored by this command. Unless given <code>--quiet</code>, foreach prints the name
 of each submodule before evaluating the command.
 If <code>--recursive</code> is given, submodules are traversed recursively (i.e.
 the given shell command is evaluated in nested submodules as well).
 A non-zero return from the command in any submodule causes
-the processing to terminate. This can be overridden by adding <em>|| :</em>
+the processing to terminate. This can be overridden by adding ||<code>:</code>
 to the end of the command.</p>
+</div>
 <div class="paragraph">
 <p>As an example, the command below will show the path and currently
 checked out commit for each submodule:</p>
@@ -757,30 +782,30 @@ checked out commit for each submodule:</p>
 </div>
 </div>
 </dd>
-<dt class="hdlist1">sync [--recursive] [--] [&lt;path&gt;&#8230;&#8203;]</dt>
+<dt class="hdlist1"><code>sync</code> [<code>--recursive</code>] [<code>--</code>] [<em>&lt;path&gt;</em>...]</dt>
 <dd>
-<p>Synchronizes submodules' remote URL configuration setting
+<p>Synchronize submodules' remote URL configuration setting
 to the value specified in .<code>gitmodules</code>. It will only affect those
-submodules which already have a URL entry in .git/config (that is the
+submodules which already have a URL entry in .<code>git/config</code> (that is the
 case when they are initialized or freshly added). This is useful when
 submodule URLs change upstream and you need to update your local
 repositories accordingly.</p>
 <div class="paragraph">
 <p><code>git</code> <code>submodule</code> <code>sync</code> synchronizes all submodules while
-<code>git</code> <code>submodule</code> <code>sync</code> <code>--</code> <code>A</code> synchronizes submodule "A" only.</p>
+<code>git</code> <code>submodule</code> <code>sync</code> <code>--</code> <code>A</code> synchronizes submodule <code>A</code> only.</p>
 </div>
 <div class="paragraph">
 <p>If <code>--recursive</code> is specified, this command will recurse into the
 registered submodules, and sync any nested submodules within.</p>
 </div>
 </dd>
-<dt class="hdlist1">absorbgitdirs</dt>
+<dt class="hdlist1"><code>absorbgitdirs</code></dt>
 <dd>
 <p>If a git directory of a submodule is inside the submodule,
 move the git directory of the submodule into its superproject&#8217;s
 <code>$GIT_DIR/modules</code> path and then connect the git directory and
 its working directory by setting the <code>core.worktree</code> and adding
-a .git file pointing to the git directory embedded in the
+a .<code>git</code> file pointing to the git directory embedded in the
 superprojects git directory.</p>
 <div class="paragraph">
 <p>A repository that was cloned independently and later added as a submodule or
@@ -800,81 +825,92 @@ embedded into the superprojects git directory.</p>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1">-q</dt>
-<dt class="hdlist1">--quiet</dt>
+<dt class="hdlist1"><code>-q</code></dt>
+<dt class="hdlist1"><code>--quiet</code></dt>
 <dd>
 <p>Only print error messages.</p>
 </dd>
-<dt class="hdlist1">--progress</dt>
+<dt class="hdlist1"><code>--progress</code></dt>
 <dd>
-<p>This option is only valid for add and update commands.
-Progress status is reported on the standard error stream
-by default when it is attached to a terminal, unless -q
+<p>Report progress status on the standard error stream
+by default when it is attached to a terminal, unless <code>-q</code>
 is specified. This flag forces progress status even if the
-standard error stream is not directed to a terminal.</p>
+standard error stream is not directed to a terminal. It is
+only valid for <code>add</code> and <code>update</code> commands.</p>
 </dd>
-<dt class="hdlist1">--all</dt>
+<dt class="hdlist1"><code>--all</code></dt>
 <dd>
-<p>This option is only valid for the deinit command. Unregister all
-submodules in the working tree.</p>
+<p>Unregister all submodules in the working tree. This option is only
+valid for the <code>deinit</code> command.</p>
 </dd>
-<dt class="hdlist1">-b &lt;branch&gt;</dt>
-<dt class="hdlist1">--branch &lt;branch&gt;</dt>
+<dt class="hdlist1"><code>-b</code><em>&lt;branch&gt;</em></dt>
+<dt class="hdlist1"><code>--branch=</code><em>&lt;branch&gt;</em></dt>
 <dd>
 <p>Branch of repository to add as submodule.
 The name of the branch is recorded as <code>submodule.</code><em>&lt;name&gt;</em><code>.branch</code> in
 .<code>gitmodules</code> for <code>update</code> <code>--remote</code>.  A special value of . is used to
 indicate that the name of the branch in the submodule should be the
 same name as the current branch in the current repository.  If the
-option is not specified, it defaults to the remote <em>HEAD</em>.</p>
+option is not specified, it defaults to the remote <code>HEAD</code>.</p>
 </dd>
-<dt class="hdlist1">-f</dt>
-<dt class="hdlist1">--force</dt>
+<dt class="hdlist1"><code>-f</code></dt>
+<dt class="hdlist1"><code>--force</code></dt>
 <dd>
-<p>This option is only valid for add, deinit and update commands.
-When running add, allow adding an otherwise ignored submodule path.
+<p>Force the command to proceed, even if it would otherwise fail.
+This option is only valid for <code>add</code>, <code>deinit</code> and <code>update</code> commands.</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>add</code></dt>
+<dd>
+<p>allow adding an otherwise ignored submodule path.
 This option is also used to bypass a check that the submodule&#8217;s name
-is not already in use. By default, <em>git submodule add</em> will fail if
+is not already in use. By default, <code>git</code> <code>submodule</code> <code>add</code> will fail if
 the proposed name (which is derived from the path) is already registered
-for another submodule in the repository. Using <em>--force</em> allows the command
+for another submodule in the repository. Using <code>--force</code> allows the command
 to proceed by automatically generating a unique name by appending a number
 to the conflicting name (e.g., if a submodule named <em>child</em> exists, it will
-try <em>child1</em>, and so on).
-When running deinit the submodule working trees will be removed even
-if they contain local changes.
-When running update (only effective with the checkout procedure),
+try <em>child1</em>, and so on).</p>
+</dd>
+<dt class="hdlist1"><code>deinit</code></dt>
+<dd>
+<p>the submodule working trees will be removed even
+if they contain local changes.</p>
+</dd>
+<dt class="hdlist1"><code>update</code></dt>
+<dd>
+<p>(only effective with the checkout procedure),
 throw away local changes in submodules when switching to a
 different commit; and always run a checkout operation in the
 submodule, even if the commit listed in the index of the
 containing repository matches the commit checked out in the
 submodule.</p>
 </dd>
-<dt class="hdlist1">--cached</dt>
-<dd>
-<p>This option is only valid for status and summary commands.  These
-commands typically use the commit found in the submodule HEAD, but
-with this option, the commit stored in the index is used instead.</p>
+</dl>
+</div>
 </dd>
-<dt class="hdlist1">--files</dt>
+<dt class="hdlist1"><code>--cached</code></dt>
 <dd>
-<p>This option is only valid for the summary command. This command
-compares the commit in the index with that in the submodule HEAD
-when this option is used.</p>
+<p>Use the index to determine the commit instead of the <code>HEAD</code>.
+This option is only valid for <code>status</code> and <code>summary</code> commands.</p>
 </dd>
-<dt class="hdlist1">-n</dt>
-<dt class="hdlist1">--summary-limit</dt>
+<dt class="hdlist1"><code>--files</code></dt>
 <dd>
-<p>This option is only valid for the summary command.
-Limit the summary size (number of commits shown in total).
+<p>Make the <code>summary</code> command compare the commit in the index with that in
+the submodule <code>HEAD</code>.</p>
+</dd>
+<dt class="hdlist1"><code>-n</code><em>&lt;n&gt;</em></dt>
+<dt class="hdlist1"><code>--summary-limit=</code><em>&lt;n&gt;</em></dt>
+<dd>
+<p>Limit the <code>summary</code> size (number of commits shown in total) to <em>&lt;n&gt;</em>.
 Giving 0 will disable the summary; a negative number means unlimited
 (the default). This limit only applies to modified submodules. The
 size is always limited to 1 for added/deleted/typechanged submodules.</p>
 </dd>
-<dt class="hdlist1">--remote</dt>
+<dt class="hdlist1"><code>--remote</code></dt>
 <dd>
-<p>This option is only valid for the update command.  Instead of using
-the superproject&#8217;s recorded SHA-1 to update the submodule, use the
-status of the submodule&#8217;s remote-tracking branch.  The remote used
+<p>Instead of using the superproject&#8217;s recorded SHA-1 to update the
+submodule, use the status of the submodule&#8217;s remote-tracking branch.
+This option is only valid for the <code>update</code> command. The remote used
 is branch&#8217;s remote (<code>branch.</code><em>&lt;name&gt;</em><code>.remote</code>), defaulting to <code>origin</code>.
 The remote branch used defaults to the remote <code>HEAD</code>, but the branch
 name may be overridden by setting the <code>submodule.</code><em>&lt;name&gt;</em><code>.branch</code>
@@ -895,7 +931,7 @@ SHA-1.  If you don&#8217;t want to fetch, you should use <code>submodule</code> 
 </div>
 <div class="paragraph">
 <p>Use this option to integrate changes from the upstream subproject with
-your submodule&#8217;s current HEAD.  Alternatively, you can run <code>git</code> <code>pull</code>
+your submodule&#8217;s current <code>HEAD</code>.  Alternatively, you can run <code>git</code> <code>pull</code>
 from the submodule, which is equivalent except for the remote branch
 name: <code>update</code> <code>--remote</code> uses the default upstream repository and
 <code>submodule.</code><em>&lt;name&gt;</em><code>.branch</code>, while <code>git</code> <code>pull</code> uses the submodule&#8217;s
@@ -905,114 +941,132 @@ to distribute the default upstream branch with the superproject and
 the submodule itself.</p>
 </div>
 </dd>
-<dt class="hdlist1">-N</dt>
-<dt class="hdlist1">--no-fetch</dt>
+<dt class="hdlist1"><code>-N</code></dt>
+<dt class="hdlist1"><code>--no-fetch</code></dt>
 <dd>
-<p>This option is only valid for the update command.
-Don&#8217;t fetch new objects from the remote site.</p>
+<p>Don&#8217;t fetch new objects from the remote site.
+This option is only valid for the <code>update</code> command.</p>
 </dd>
-<dt class="hdlist1">--checkout</dt>
+<dt class="hdlist1"><code>--checkout</code></dt>
 <dd>
-<p>This option is only valid for the update command.
-Checkout the commit recorded in the superproject on a detached HEAD
-in the submodule. This is the default behavior, the main use of
-this option is to override <code>submodule.$name.update</code> when set to
+<p>Checkout the commit recorded in the superproject on a detached <code>HEAD</code>
+in the submodule. This option is only valid for the <code>update</code> command.
+This is the default behavior, the main use of
+this option is to override <code>submodule.</code><em>&lt;name&gt;</em><code>.update</code> when set to
 a value other than <code>checkout</code>.
-If the key <code>submodule.$name.update</code> is either not explicitly set or
+If the key <code>submodule.</code><em>&lt;name&gt;</em><code>.update</code> is either not explicitly set or
 set to <code>checkout</code>, this option is implicit.</p>
 </dd>
-<dt class="hdlist1">--merge</dt>
+<dt class="hdlist1"><code>--merge</code></dt>
 <dd>
-<p>This option is only valid for the update command.
-Merge the commit recorded in the superproject into the current branch
-of the submodule. If this option is given, the submodule&#8217;s HEAD will
+<p>Merge the commit recorded in the superproject into the current branch
+of the submodule. This option is only valid for the <code>update</code> command.
+If this option is given, the submodule&#8217;s <code>HEAD</code> will
 not be detached. If a merge failure prevents this process, you will
 have to resolve the resulting conflicts within the submodule with the
 usual conflict resolution tools.
-If the key <code>submodule.$name.update</code> is set to <code>merge</code>, this option is
+If the key <code>submodule.</code><em>&lt;name&gt;</em><code>.update</code> is set to <code>merge</code>, this option is
 implicit.</p>
 </dd>
-<dt class="hdlist1">--rebase</dt>
+<dt class="hdlist1"><code>--rebase</code></dt>
 <dd>
-<p>This option is only valid for the update command.
-Rebase the current branch onto the commit recorded in the
-superproject. If this option is given, the submodule&#8217;s HEAD will not
+<p>Rebase the current branch onto the commit recorded in the superproject.
+This option is only valid for the <code>update</code> command. The submodule&#8217;s <code>HEAD</code> will not
 be detached. If a merge failure prevents this process, you will have
 to resolve these failures with <a href="git-rebase.html">git-rebase(1)</a>.
-If the key <code>submodule.$name.update</code> is set to <code>rebase</code>, this option is
+If the key <code>submodule.</code><em>&lt;name&gt;</em><code>.update</code> is set to <code>rebase</code>, this option is
 implicit.</p>
 </dd>
-<dt class="hdlist1">--init</dt>
+<dt class="hdlist1"><code>--init</code></dt>
 <dd>
-<p>This option is only valid for the update command.
-Initialize all submodules for which "git submodule init" has not been
-called so far before updating.</p>
+<p>Initialize all submodules for which <code>git</code> <code>submodule</code> <code>init</code> has not been
+called so far before updating. 	This option is only valid for the <code>update</code>
+command.</p>
 </dd>
-<dt class="hdlist1">--name</dt>
+<dt class="hdlist1"><code>--name=</code><em>&lt;name&gt;</em></dt>
 <dd>
-<p>This option is only valid for the add command. It sets the submodule&#8217;s
-name to the given string instead of defaulting to its path. The name
-must be valid as a directory name and may not end with a <em>/</em>.</p>
+<p>Set the submodule&#8217;s name to the given string instead of defaulting to its path. <em>&lt;name&gt;</em>
+must be valid as a directory name and may not end with a <code>/</code>.</p>
 </dd>
-<dt class="hdlist1">--reference &lt;repository&gt;</dt>
+<dt class="hdlist1"><code>--reference=</code><em>&lt;repository&gt;</em></dt>
 <dd>
-<p>This option is only valid for add and update commands.  These
-commands sometimes need to clone a remote repository. In this case,
+<p>Pass the local <em>&lt;repository&gt;</em> as a reference when cloning the submodule.
+This option is only valid for <code>add</code> and <code>update</code> commands.
+These commands sometimes need to clone a remote repository. In this case,
 this option will be passed to the <a href="git-clone.html">git-clone(1)</a> command.</p>
-<div class="paragraph">
-<p><strong>NOTE</strong>: Do <strong>not</strong> use this option unless you have read the note
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Do <strong>not</strong> use this option unless you have read the note
 for <a href="git-clone.html">git-clone(1)</a>'s <code>--reference</code>, <code>--shared</code>, and <code>--dissociate</code>
-options carefully.</p>
+options carefully.
+</td>
+</tr>
+</table>
 </div>
 </dd>
-<dt class="hdlist1">--dissociate</dt>
+<dt class="hdlist1"><code>--dissociate</code></dt>
 <dd>
-<p>This option is only valid for add and update commands.  These
-commands sometimes need to clone a remote repository. In this case,
+<p>After using a reference repository to clone from, do not rely on it anymore.
+This option is only valid for <code>add</code> and <code>update</code> commands.
+These commands sometimes need to clone a remote repository. In this case,
 this option will be passed to the <a href="git-clone.html">git-clone(1)</a> command.</p>
-<div class="paragraph">
-<p><strong>NOTE</strong>: see the NOTE for the <code>--reference</code> option.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+See the NOTE above for the <code>--reference</code> option.
+</td>
+</tr>
+</table>
 </div>
 </dd>
-<dt class="hdlist1">--recursive</dt>
+<dt class="hdlist1"><code>--recursive</code></dt>
 <dd>
-<p>This option is only valid for foreach, update, status and sync commands.
-Traverse submodules recursively. The operation is performed not
+<p>Traverse submodules recursively. This option is only valid for <code>foreach</code>,
+<code>update</code>, <code>status</code> and <code>sync</code> commands. The operation is performed not
 only in the submodules of the current repo, but also
 in any nested submodules inside those submodules (and so on).</p>
 </dd>
-<dt class="hdlist1">--depth</dt>
+<dt class="hdlist1"><code>--depth=</code><em>&lt;depth&gt;</em></dt>
 <dd>
-<p>This option is valid for add and update commands. Create a <em>shallow</em>
-clone with a history truncated to the specified number of revisions.
-See <a href="git-clone.html">git-clone(1)</a></p>
+<p>Create a <em>shallow</em> clone with a history truncated to the <em>&lt;depth&gt;</em> revisions.
+This option is valid for <code>add</code> and <code>update</code> commands. See <a href="git-clone.html">git-clone(1)</a></p>
 </dd>
-<dt class="hdlist1">--recommend-shallow</dt>
-<dt class="hdlist1">--no-recommend-shallow</dt>
+<dt class="hdlist1"><code>--recommend-shallow</code></dt>
+<dt class="hdlist1"><code>--no-recommend-shallow</code></dt>
 <dd>
-<p>This option is only valid for the update command.
+<p>Recommend or not shallow cloning of submodules.
+This option is only valid for the <code>update</code> command.
 The initial clone of a submodule will use the recommended
 <code>submodule.</code><em>&lt;name&gt;</em><code>.shallow</code> as provided by the .<code>gitmodules</code> file
 by default. To ignore the suggestions use <code>--no-recommend-shallow</code>.</p>
 </dd>
-<dt class="hdlist1">-j &lt;n&gt;</dt>
-<dt class="hdlist1">--jobs &lt;n&gt;</dt>
+<dt class="hdlist1"><code>-j</code><em>&lt;n&gt;</em></dt>
+<dt class="hdlist1"><code>--jobs=</code><em>&lt;n&gt;</em></dt>
 <dd>
-<p>This option is only valid for the update command.
-Clone new submodules in parallel with as many jobs.
+<p>Clone new submodules in parallel with <em>&lt;n&gt;</em> jobs.
+This option is only valid for the <code>update</code> command.
 Defaults to the <code>submodule.fetchJobs</code> option.</p>
 </dd>
-<dt class="hdlist1">--single-branch</dt>
-<dt class="hdlist1">--no-single-branch</dt>
+<dt class="hdlist1"><code>--single-branch</code></dt>
+<dt class="hdlist1"><code>--no-single-branch</code></dt>
 <dd>
-<p>This option is only valid for the update command.
-Clone only one branch during update: HEAD or one specified by --branch.</p>
+<p>Clone only one branch during update: <code>HEAD</code> or one specified by <code>--branch</code>.
+This option is only valid for the <code>update</code> command.</p>
 </dd>
-<dt class="hdlist1">&lt;path&gt;&#8230;&#8203;</dt>
+<dt class="hdlist1"><em>&lt;path&gt;</em>...</dt>
 <dd>
 <p>Paths to submodule(s). When specified this will restrict the command
 to only operate on the submodules found at the specified paths.
-(This argument is required with add).</p>
+(This argument is required with <code>add</code>).</p>
 </dd>
 </dl>
 </div>
@@ -1023,9 +1077,9 @@ to only operate on the submodules found at the specified paths.
 <div class="sectionbody">
 <div class="paragraph">
 <p>When initializing submodules, a .<code>gitmodules</code> file in the top-level directory
-of the containing repository is used to find the url of each submodule.
+of the containing repository is used to find the URL of each submodule.
 This file should be formatted in the same way as <code>$GIT_DIR/config</code>. The key
-to each submodule url is "submodule.$name.url".  See <a href="gitmodules.html">gitmodules(5)</a>
+to each submodule URL is <code>submodule.</code><em>&lt;name&gt;</em><code>.url</code>.  See <a href="gitmodules.html">gitmodules(5)</a>
 for details.</p>
 </div>
 </div>
@@ -1049,7 +1103,7 @@ for details.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-25 14:46:08 -0700
+Last updated 2026-02-17 14:46:00 -0800
 </div>
 </div>
 </body>
