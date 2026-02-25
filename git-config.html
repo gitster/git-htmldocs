@@ -7869,6 +7869,46 @@ set to "None", this config variable has no effect. See
 </ol>
 </div>
 </dd>
+<dt class="hdlist1">promisor.storeFields</dt>
+<dd>
+<p>A comma or space separated list of additional remote related
+field names. If a client accepts an advertised remote, the
+client will store the values associated with these field names
+taken from the remote advertisement into its configuration,
+and then reload its remote configuration. Currently,
+"partialCloneFilter" and "token" are the only supported field
+names.</p>
+<div class="paragraph">
+<p>For example if a server advertises "partialCloneFilter=blob:limit=20k"
+for remote "foo", and that remote is accepted, then "blob:limit=20k"
+will be stored for the "remote.foo.partialCloneFilter" configuration
+variable.</p>
+</div>
+<div class="paragraph">
+<p>If the new field value from an advertised remote is the same as the
+existing field value for that remote on the client side, then no
+change is made to the client configuration though.</p>
+</div>
+<div class="paragraph">
+<p>When a new value is stored, a message is printed to standard error to
+let users know about this.</p>
+</div>
+<div class="paragraph">
+<p>Note that for security reasons, if the remote is not already
+configured on the client side, nothing will be stored for that
+remote. In any case, no new remote will be created and no URL will be
+stored.</p>
+</div>
+<div class="paragraph">
+<p>Before storing a partial clone filter, it&#8217;s parsed to check it&#8217;s
+valid. If it&#8217;s not, a warning is emitted and it&#8217;s not stored.</p>
+</div>
+<div class="paragraph">
+<p>Before storing a token, a check is performed to ensure it contains no
+control character. If the check fails, a warning is emitted and it&#8217;s
+not stored.</p>
+</div>
+</dd>
 <dt class="hdlist1">protocol.allow</dt>
 <dd>
 <p>If set, provide a user defined default policy for all protocols which

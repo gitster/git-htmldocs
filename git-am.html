@@ -752,7 +752,7 @@ as its log message.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_discussion">DISCUSSION</h2>
+<h2 id="discussion">DISCUSSION</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The commit author name is taken from the "From: " line of the
@@ -774,7 +774,8 @@ line is automatically stripped.</p>
 </div>
 <div class="paragraph">
 <p>The patch is expected to be inline, directly following the
-message.  Any line that is of the form:</p>
+message.
+Any line that is of the form:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -792,6 +793,10 @@ message.  Any line that is of the form:</p>
 <div class="paragraph">
 <p>is taken as the beginning of a patch, and the commit log message
 is terminated before the first occurrence of such a line.</p>
+</div>
+<div class="paragraph">
+<p>This means that the contents of the commit message can inadvertently
+interrupt the processing (see the <a href="#caveats">CAVEATS</a> section below).</p>
 </div>
 <div class="paragraph">
 <p>When initially invoking <code>git</code> <code>am</code>, you give it the names of the mailboxes
@@ -823,6 +828,44 @@ current branch.  This is useful if you have problems with multiple
 commits, like running <em>git am</em> on the wrong branch or an error in the
 commits that is more easily fixed by changing the mailbox (e.g.
 errors in the "From:" lines).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="caveats">CAVEATS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The output from <a href="git-format-patch.html">git-format-patch(1)</a> can lead to a different
+commit message when applied with <a href="git-am.html">git-am(1)</a>. The patch that is
+applied may also be different from the one that was generated, or patch
+application may fail outright.
+See the <a href="#discussion">DISCUSSION</a> section above for the syntactic rules.</p>
+</div>
+<div class="paragraph">
+<p>Note that this is especially problematic for unindented diffs that occur
+in the commit message; the diff in the commit message might get applied
+along with the patch section, or the patch application machinery might
+trip up because the patch target doesn&#8217;t apply. This could for example
+be caused by a diff in a Markdown code block.</p>
+</div>
+<div class="paragraph">
+<p>The solution for this is to indent the diff or other text that could
+cause problems.</p>
+</div>
+<div class="paragraph">
+<p>This loss of fidelity might be simple to notice if you are applying
+patches directly from a mailbox. However, changes originating from Git
+could be applied in bulk, in which case this would be much harder to
+notice. This could for example be a Linux distribution which uses patch
+files to apply changes on top of the commits from the upstream
+repositories. This goes to show that this behavior does not only impact
+email workflows.</p>
+</div>
+<div class="paragraph">
+<p>Given these limitations, one might be tempted to use a general-purpose
+utility like patch(1) instead. However, patch(1) will not only look for
+unindented diffs (like <a href="git-am.html">git-am(1)</a>) but will try to apply indented
+diffs as well.</p>
 </div>
 </div>
 </div>
@@ -887,7 +930,7 @@ See <a href="git-am.html">git-am(1)</a>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-12-06 19:37:45 -0800
+Last updated 2026-02-25 13:49:37 -0800
 </div>
 </div>
 </body>

@@ -681,11 +681,30 @@ working directory as needed.</p>
 <p>Use the partial clone feature and request that the server sends
 a subset of reachable objects according to a given object filter.
 When using <code>--filter</code>, the supplied <em>&lt;filter-spec&gt;</em> is used for
-the partial clone filter. For example, <code>--filter=blob:none</code> will
-filter out all blobs (file contents) until needed by Git. Also,
-<code>--filter=blob:limit=</code><em>&lt;size&gt;</em> will filter out all blobs of size
-at least <em>&lt;size&gt;</em>. For more details on filter specifications, see
-the <code>--filter</code> option in <a href="git-rev-list.html">git-rev-list(1)</a>.</p>
+the partial clone filter.</p>
+<div class="paragraph">
+<p>If <code>--filter=auto</code> is used the filter specification is determined
+automatically through the <em>promisor-remote</em> protocol (see
+<a href="gitprotocol-v2.html">gitprotocol-v2(5)</a>) by combining the filter specifications
+advertised by the server for the promisor remotes that the client
+accepts (see the <code>promisor.acceptFromServer</code> configuration option in
+<a href="git-config.html">git-config(1)</a>). This allows the server to suggest the optimal
+filter for the available promisor remotes.</p>
+</div>
+<div class="paragraph">
+<p>As with other filter specifications, the "auto" value is persisted in
+the configuration. This ensures that future fetches will continue to
+adapt to the server&#8217;s current recommendation.</p>
+</div>
+<div class="paragraph">
+<p>For details on all other available filter specifications, see the
+<code>--filter=</code><em>&lt;filter-spec&gt;</em> option in <a href="git-rev-list.html">git-rev-list(1)</a>.</p>
+</div>
+<div class="paragraph">
+<p>For example, <code>--filter=blob:none</code> will filter out all blobs (file
+contents) until needed by Git. Also, <code>--filter=blob:limit=</code><em>&lt;size&gt;</em> will
+filter out all blobs of size at least <em>&lt;size&gt;</em>.</p>
+</div>
 </dd>
 <dt class="hdlist1"><code>--also-filter-submodules</code></dt>
 <dd>
@@ -1182,7 +1201,7 @@ the filter to submodules.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-17 14:46:00 -0800
+Last updated 2026-02-25 13:49:37 -0800
 </div>
 </div>
 </body>
