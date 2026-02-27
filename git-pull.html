@@ -1040,6 +1040,9 @@ destination of an explicit refspec; see <code>--prune</code>).</p>
 <dd>
 <p>Parallelize all forms of fetching up to <em>&lt;n&gt;</em> jobs at a time.</p>
 <div class="paragraph">
+<p>A value of 0 will use some reasonable default.</p>
+</div>
+<div class="paragraph">
 <p>If the <code>--multiple</code> option was specified, the different remotes will be fetched
 in parallel. If multiple submodules are fetched, they will be fetched in
 parallel. To control them independently, use the config settings

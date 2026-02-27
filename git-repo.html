@@ -452,8 +452,9 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><code>git</code> <code>repo</code> <code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>) | <code>-z</code>] [<code>--all</code> | <em>&lt;key&gt;</em>&#8230;&#8203;]
-<code>git</code> <code>repo</code> <code>structure</code> [<code>--format=</code>(<code>table</code>|<code>keyvalue</code>|<code>nul</code>) | <code>-z</code>]</pre>
+<pre class="content"><code>git</code> <code>repo</code> <code>info</code> [<code>--format=</code>(<code>lines</code>|<code>nul</code>) | <code>-z</code>] [<code>--all</code> | <em>&lt;key&gt;</em>&#8230;&#8203;]
+<code>git</code> <code>repo</code> <code>info</code> <code>--keys</code> [<code>--format=</code>(<code>lines</code>|<code>nul</code>) | <code>-z</code>]
+<code>git</code> <code>repo</code> <code>structure</code> [<code>--format=</code>(<code>table</code>|<code>lines</code>|<code>nul</code>) | <code>-z</code>]</pre>
 </div>
 </div>
 </div>
@@ -473,7 +474,7 @@ pre>code {
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>) | <code>-z</code>] [<code>--all</code> | <em>&lt;key&gt;</em>...]</dt>
+<dt class="hdlist1"><code>info</code> [<code>--format=</code>(<code>lines</code>|<code>nul</code>) | <code>-z</code>] [<code>--all</code> | <em>&lt;key&gt;</em>...]</dt>
 <dd>
 <p>Retrieve metadata-related information about the current repository. Only
 the requested data will be returned based on their keys (see "INFO KEYS"
@@ -488,7 +489,7 @@ supported:</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>keyvalue</code></dt>
+<dt class="hdlist1"><code>lines</code></dt>
 <dd>
 <p>output key-value pairs one per line using the <code>=</code> character as
 the delimiter between the key and the value. Values containing "unusual"
@@ -497,10 +498,10 @@ characters are quoted as explained for the configuration variable
 </dd>
 <dt class="hdlist1"><code>nul</code></dt>
 <dd>
-<p>similar to <code>keyvalue</code>, but using a newline character as the delimiter
+<p>similar to <code>lines</code>, but using a newline character as the delimiter
 between the key and the value and using a NUL character after each value.
 This format is better suited for being parsed by another applications than
-<code>keyvalue</code>. Unlike in the <code>keyvalue</code> format, the values are never quoted.</p>
+<code>lines</code>. Unlike in the <code>lines</code> format, the values are never quoted.</p>
 <div class="paragraph">
 <p><code>-z</code> is an alias for <code>--format=nul</code>.</p>
 </div>
@@ -508,7 +509,24 @@ This format is better suited for being parsed by another applications than
 </dl>
 </div>
 </dd>
-<dt class="hdlist1"><code>structure</code> [<code>--format=</code>(<code>table</code>|<code>keyvalue</code>|<code>nul</code>) | <code>-z</code>]</dt>
+<dt class="hdlist1"><code>info</code> <code>--keys</code> [<code>--format=</code>(<code>lines</code>|<code>nul</code>) | <code>-z</code>]</dt>
+<dd>
+<p>List all the available keys, one per line. The output format can be chosen
+through the flag <code>--format</code>. The following formats are supported:</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>lines</code></dt>
+<dd>
+<p>Output the keys one per line. This is the default.</p>
+</dd>
+<dt class="hdlist1"><code>nul</code></dt>
+<dd>
+<p>Similar to <code>lines</code>, but using a <em>NUL</em> character after each value.</p>
+</dd>
+</dl>
+</div>
+</dd>
+<dt class="hdlist1"><code>structure</code> [<code>--format=</code>(<code>table</code>|<code>lines</code>|<code>nul</code>) | <code>-z</code>]</dt>
 <dd>
 <p>Retrieve statistics about the current repository structure. The
 following kinds of information are reported:</p>
@@ -537,7 +555,7 @@ supported:</p>
 change and is not intended for machine parsing. This is the default
 format.</p>
 </dd>
-<dt class="hdlist1"><code>keyvalue</code></dt>
+<dt class="hdlist1"><code>lines</code></dt>
 <dd>
 <p>Each line of output contains a key-value pair for a repository stat.
 The <em>=</em> character is used to delimit between the key and the value.
@@ -546,10 +564,10 @@ configuration variable <code>core.quotePath</code> (see <a href="git-config.html
 </dd>
 <dt class="hdlist1"><code>nul</code></dt>
 <dd>
-<p>Similar to <code>keyvalue</code>, but uses a NUL character to delimit between
+<p>Similar to <code>lines</code>, but uses a NUL character to delimit between
 key-value pairs instead of a newline. Also uses a newline character as
 the delimiter between the key and value instead of <em>=</em>. Unlike the
-<code>keyvalue</code> format, values containing "unusual" characters are never
+<code>lines</code> format, values containing "unusual" characters are never
 quoted.</p>
 <div class="paragraph">
 <p><code>-z</code> is an alias for <code>--format=nul</code>.</p>
@@ -653,7 +671,7 @@ using the <code>nul</code> format:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-12-29 21:32:09 -0800
+Last updated 2026-02-27 15:31:58 -0800
 </div>
 </div>
 </body>

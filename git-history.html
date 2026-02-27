@@ -452,7 +452,7 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><code>git</code> <code>history</code> <code>reword</code> <em>&lt;commit&gt;</em> [<code>--ref-action=</code>(<code>branches</code>|<code>head</code>|<code>print</code>)]</pre>
+<pre class="content"><code>git</code> <code>history</code> <code>reword</code> <em>&lt;commit&gt;</em> [<code>--dry-run</code>] [<code>--update-refs=</code>(<code>branches</code>|<code>head</code>)]</pre>
 </div>
 </div>
 </div>
@@ -536,14 +536,19 @@ editor with the current message of that commit.</p>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>--ref-action=</code>(<code>branches</code>|<code>head</code>|<code>print</code>)</dt>
+<dt class="hdlist1"><code>--dry-run</code></dt>
+<dd>
+<p>Do not update any references, but instead print any ref updates in a
+format that can be consumed by <a href="git-update-ref.html">git-update-ref(1)</a>. Necessary new
+objects will be written into the repository, so applying these printed
+ref updates is generally safe.</p>
+</dd>
+<dt class="hdlist1"><code>--update-refs=</code>(<code>branches</code>|<code>head</code>)</dt>
 <dd>
 <p>Control which references will be updated by the command, if any. With
 <code>branches</code>, all local branches that point to commits which are
 descendants of the original commit will be rewritten. With <code>head</code>, only
-the current <code>HEAD</code> reference will be rewritten. With <code>print</code>, all
-updates as they would be performed with <code>branches</code> are printed in a
-format that can be consumed by <a href="git-update-ref.html">git-update-ref(1)</a>.</p>
+the current <code>HEAD</code> reference will be rewritten. Defaults to <code>branches</code>.</p>
 </dd>
 </dl>
 </div>
@@ -560,7 +565,7 @@ format that can be consumed by <a href="git-update-ref.html">git-update-ref(1)</
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-09 21:22:43 -0800
+Last updated 2026-02-27 15:31:58 -0800
 </div>
 </div>
 </body>

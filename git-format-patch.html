@@ -1357,11 +1357,12 @@ far (from config or command line).</p>
 <dt class="hdlist1">--from</dt>
 <dt class="hdlist1">--from=&lt;ident&gt;</dt>
 <dd>
-<p>Use <code>ident</code> in the <code>From:</code> header of each commit email. If the
-author ident of the commit is not textually identical to the
-provided <code>ident</code>, place a <code>From:</code> header in the body of the
-message with the original author. If no <code>ident</code> is given, use
-the committer ident.</p>
+<p>Use <code>ident</code> in the <code>From:</code> header of each email. In case of a
+commit email, if the author ident of the commit is not textually
+identical to the provided <code>ident</code>, place a <code>From:</code> header in the
+body of the message with the original author. If no <code>ident</code> is
+given, or if the option is not passed at all, use the ident of
+the current committer.</p>
 <div class="paragraph">
 <p>Note that this option is only useful if you are actually sending the
 emails and want to identify yourself as the sender, but retain the
@@ -2097,7 +2098,7 @@ diffs as well.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-25 13:49:37 -0800
+Last updated 2026-02-27 15:31:58 -0800
 </div>
 </div>
 </body>

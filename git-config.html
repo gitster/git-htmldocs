@@ -1991,17 +1991,71 @@ branch instead.</p>
 </div>
 </dd>
 <dt class="hdlist1">alias.*</dt>
+<dt class="hdlist1">alias.*.command</dt>
 <dd>
-<p>Command aliases for the <a href="git.html">git(1)</a> command wrapper - e.g.
-after defining <code>alias.last</code> <code>=</code> <code>cat-file</code> <code>commit</code> <code>HEAD</code>, the invocation
-<code>git</code> <code>last</code> is equivalent to <code>git</code> <code>cat-file</code> <code>commit</code> <code>HEAD</code>. To avoid
+<p>Command aliases for the <a href="git.html">git(1)</a> command wrapper. Aliases
+can be defined using two syntaxes:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Without a subsection, e.g., [<code>alias</code>] <code>co</code> <code>=</code> <code>checkout</code>. The alias
+name ("co" in this example) is
+limited to ASCII alphanumeric characters and <code>-</code>,
+and is matched case-insensitively.</p>
+</li>
+<li>
+<p>With a subsection, e.g., [<code>alias</code> "co"] <code>command</code> <code>=</code> <code>checkout</code>. The
+alias name can contain any characters (except for newlines and NUL bytes),
+including UTF-8, and is matched case-sensitively as raw bytes.
+You define the action of the alias in the <code>command</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Without subsection (ASCII alphanumeric and dash only)
+[alias]
+    co = checkout
+    st = status
+
+# With subsection (allows any characters, including UTF-8)
+[alias "hämta"]
+    command = fetch
+[alias "rätta till"]
+    command = commit --amend</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a Git alias defined, e.g.,</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ git config --global alias.last "cat-file commit HEAD"
+# Which is equivalent to
+$ git config --global alias.last.command "cat-file commit HEAD"</pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><code>git</code> <code>last</code> is equivalent to <code>git</code> <code>cat-file</code> <code>commit</code> <code>HEAD</code>. To avoid
 confusion and troubles with script usage, aliases that
 hide existing Git commands are ignored except for deprecated
 commands.  Arguments are split by
 spaces, the usual shell quoting and escaping are supported.
 A quote pair or a backslash can be used to quote them.</p>
+</div>
 <div class="paragraph">
-<p>Note that the first word of an alias does not necessarily have to be a
+<p>+
+Note that the first word of an alias does not necessarily have to be a
 command. It can be a command-line option that will be passed into the
 invocation of <code>git</code>. In particular, this is useful when used with <code>-c</code>
 to pass in one-time configurations or <code>-p</code> to force pagination. For example,
@@ -2012,51 +2066,36 @@ helpful alias since <code>git</code> <code>ps</code> would paginate the output o
 where the original command does not.</p>
 </div>
 <div class="paragraph">
-<p>If the alias expansion is prefixed with an exclamation point,
+<p>+
+If the alias expansion is prefixed with an exclamation point,
 it will be treated as a shell command.  For example, defining
 <code>alias.new</code> <code>=</code> !gitk <code>--all</code> <code>--not</code> <code>ORIG_HEAD</code>, the invocation
 <code>git</code> <code>new</code> is equivalent to running the shell command
 <code>gitk</code> <code>--all</code> <code>--not</code> <code>ORIG_HEAD</code>.  Note:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Shell commands will be executed from the top-level directory of a
-repository, which may not necessarily be the current directory.</p>
-</li>
-<li>
-<p><code>GIT_PREFIX</code> is set as returned by running <code>git</code> <code>rev-parse</code> <code>--show-prefix</code>
-from the original current directory. See <a href="git-rev-parse.html">git-rev-parse(1)</a>.</p>
-</li>
-<li>
-<p>Shell command aliases always receive any extra arguments provided to
-the Git command-line as positional arguments.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Care should be taken if your shell alias is a "one-liner" script
-with multiple commands (e.g. in a pipeline), references multiple
-arguments, or is otherwise not able to handle positional arguments
-added at the end.  For example: <code>alias.cmd</code> <code>=</code> "!echo <code>$1</code> | <code>grep</code> <code>$2</code>"
-called as <code>git</code> <code>cmd</code> <code>1</code> <code>2</code> will be executed as <em>echo $1 | grep $2
-1 2</em>, which is not what you want.</p>
-</li>
-<li>
-<p>A convenient way to deal with this is to write your script
-operations in an inline function that is then called with any
-arguments from the command-line.  For example <code>alias.cmd</code> <code>=</code> "!c() {
-<code>echo</code> <code>$1</code> | <code>grep</code> <code>$2</code> ; }; <code>c</code>" will correctly execute the prior example.</p>
-</li>
-<li>
-<p>Setting <code>GIT_TRACE=1</code> can help you debug the command being run for
-your alias.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>+
+* Shell commands will be executed from the top-level directory of a
+  repository, which may not necessarily be the current directory.
+* <code>GIT_PREFIX</code> is set as returned by running <code>git</code> <code>rev-parse</code> <code>--show-prefix</code>
+  from the original current directory. See <a href="git-rev-parse.html">git-rev-parse(1)</a>.
+* Shell command aliases always receive any extra arguments provided to
+  the Git command-line as positional arguments.
+<strong> Care should be taken if your shell alias is a "one-liner" script
+   with multiple commands (e.g. in a pipeline), references multiple
+   arguments, or is otherwise not able to handle positional arguments
+   added at the end.  For example: <code>alias.cmd</code> <code>=</code> "!echo <code>$1</code> | <code>grep</code> <code>$2</code>"
+   called as <code>git</code> <code>cmd</code> <code>1</code> <code>2</code> will be executed as <em>echo $1 | grep $2
+   1 2</em>, which is not what you want.
+</strong> A convenient way to deal with this is to write your script
+   operations in an inline function that is then called with any
+   arguments from the command-line.  For example <code>alias.cmd</code> <code>=</code> "!c() {
+   <code>echo</code> <code>$1</code> | <code>grep</code> <code>$2</code> ; }; <code>c</code>" will correctly execute the prior example.
+** Setting <code>GIT_TRACE=1</code> can help you debug the command being run for
+   your alias.</p>
 </div>
-</li>
-</ul>
-</div>
-</dd>
+<div class="dlist">
+<dl>
 <dt class="hdlist1">am.keepcr</dt>
 <dd>
 <p>If true, git-am will call git-mailsplit for patches in mbox format
@@ -7672,12 +7711,13 @@ processes. See <a href="git-pack-objects.html">git-pack-objects(1)</a> for full 
 </dd>
 <dt class="hdlist1">pack.preferBitmapTips</dt>
 <dd>
-<p>When selecting which commits will receive bitmaps, prefer a
-commit at the tip of any reference that is a suffix of any value
-of this configuration over any other commits in the "selection
-window".</p>
+<p>Specifies a ref hierarchy (e.g., "refs/heads/"); can be
+given multiple times to specify more than one hierarchies.
+When selecting which commits will receive bitmaps, prefer a
+commit at the tip of a reference that is contained in any of
+the configured hierarchies.</p>
 <div class="paragraph">
-<p>Note that setting this configuration to <code>refs/foo</code> does not mean that
+<p>Note that setting this configuration to <code>refs/foo/</code> does not mean that
 the commits at the tips of <code>refs/foo/bar</code> and <code>refs/foo/baz</code> will
 necessarily be selected. This is because commits are selected for
 bitmaps from within a series of windows of variable length.</p>
