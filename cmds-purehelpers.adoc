@@ -41,7 +41,7 @@ linkgit:git-merge-one-file[1]::
 	The standard helper program to use with git-merge-index.
 
 linkgit:git-patch-id[1]::
-	Compute unique ID for a patch.
+	Compute unique IDs for patches.
 
 linkgit:git-sh-i18n[1]::
 	Git's i18n setup code for shell scripts.

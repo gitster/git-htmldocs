@@ -2098,20 +2098,27 @@ it will be treated as a shell command.  For example, defining
 <dl>
 <dt class="hdlist1">am.keepcr</dt>
 <dd>
-<p>If true, git-am will call git-mailsplit for patches in mbox format
-with parameter <code>--keep-cr</code>. In this case git-mailsplit will
+<p>If true, <a href="git-am.html">git-am(1)</a> will call <a href="git-mailsplit.html">git-mailsplit(1)</a>
+for patches in mbox format with parameter <code>--keep-cr</code>. In this
+case <a href="git-mailsplit.html">git-mailsplit(1)</a> will
 not remove <code>\r</code> from lines ending with <code>\r\n</code>. Can be overridden
-by giving <code>--no-keep-cr</code> from the command line.
-See <a href="git-am.html">git-am(1)</a>, <a href="git-mailsplit.html">git-mailsplit(1)</a>.</p>
+by giving <code>--no-keep-cr</code> from the command line.</p>
 </dd>
 <dt class="hdlist1">am.threeWay</dt>
 <dd>
-<p>By default, <code>git</code> <code>am</code> will fail if the patch does not apply cleanly. When
-set to true, this setting tells <code>git</code> <code>am</code> to fall back on 3-way merge if
-the patch records the identity of blobs it is supposed to apply to and
-we have those blobs available locally (equivalent to giving the <code>--3way</code>
-option from the command line). Defaults to <code>false</code>.
-See <a href="git-am.html">git-am(1)</a>.</p>
+<p>By default, <a href="git-am.html">git-am(1)</a> will fail if the patch does not
+apply cleanly. When set to true, this setting tells
+<a href="git-am.html">git-am(1)</a> to fall back on 3-way merge if the patch
+records the identity of blobs it is supposed to apply to and we
+have those blobs available locally (equivalent to giving the
+<code>--3way</code> option from the command line). Defaults to <code>false</code>.</p>
+</dd>
+<dt class="hdlist1">am.messageId</dt>
+<dd>
+<p>Add a <code>Message-ID</code> trailer based on the email header to the
+commit when using <a href="git-am.html">git-am(1)</a> (see
+<a href="git-interpret-trailers.html">git-interpret-trailers(1)</a>). See also the <code>--message-id</code>
+and <code>--no-message-id</code> options.</p>
 </dd>
 <dt class="hdlist1">apply.ignoreWhitespace</dt>
 <dd>

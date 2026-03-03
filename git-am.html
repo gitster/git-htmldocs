@@ -452,7 +452,7 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><em>git am</em> [--signoff] [--keep] [--[no-]keep-cr] [--[no-]utf8] [--no-verify]
+<pre class="content"><em>git am</em> [--signoff] [--keep] [--[no-]keep-cr] [--[no-]utf8] [--[no-]verify]
          [--[no-]3way] [--interactive] [--committer-date-is-author-date]
          [--ignore-date] [--ignore-space-change | --ignore-whitespace]
          [--whitespace=&lt;action&gt;] [-C&lt;n&gt;] [-p&lt;n&gt;] [--directory=&lt;dir&gt;]
@@ -491,23 +491,24 @@ If you supply directories, they will be treated as Maildirs.</p>
 <dt class="hdlist1">-s</dt>
 <dt class="hdlist1">--signoff</dt>
 <dd>
-<p>Add a <code>Signed-off-by</code> trailer to the commit message, using
-the committer identity of yourself.
-See the signoff option in <a href="git-commit.html">git-commit(1)</a> for more information.</p>
+<p>Add a <code>Signed-off-by</code> trailer to the commit message (see
+<a href="git-interpret-trailers.html">git-interpret-trailers(1)</a>), using the committer identity
+of yourself.  See the signoff option in <a href="git-commit.html">git-commit(1)</a>
+for more information.</p>
 </dd>
 <dt class="hdlist1">-k</dt>
 <dt class="hdlist1">--keep</dt>
 <dd>
-<p>Pass <code>-k</code> flag to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
+<p>Pass <code>-k</code> flag to <a href="git-mailinfo.html">git-mailinfo(1)</a>.</p>
 </dd>
 <dt class="hdlist1">--keep-non-patch</dt>
 <dd>
-<p>Pass <code>-b</code> flag to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
+<p>Pass <code>-b</code> flag to <a href="git-mailinfo.html">git-mailinfo(1)</a>.</p>
 </dd>
 <dt class="hdlist1">--keep-cr</dt>
 <dt class="hdlist1">--no-keep-cr</dt>
 <dd>
-<p>With <code>--keep-cr</code>, call <em>git mailsplit</em> (see <a href="git-mailsplit.html">git-mailsplit(1)</a>)
+<p>With <code>--keep-cr</code>, call <a href="git-mailsplit.html">git-mailsplit(1)</a>
 with the same option, to prevent it from stripping CR at the end of
 lines. <code>am.keepcr</code> configuration variable can be used to specify the
 default behaviour.  <code>--no-keep-cr</code> is useful to override <code>am.keepcr</code>.</p>
@@ -525,7 +526,7 @@ the <code>mailinfo.scissors</code> configuration variable.</p>
 </dd>
 <dt class="hdlist1">--quoted-cr=&lt;action&gt;</dt>
 <dd>
-<p>This flag will be passed down to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
+<p>This flag will be passed down to <a href="git-mailinfo.html">git-mailinfo(1)</a>.</p>
 </dd>
 <dt class="hdlist1">--empty=(drop|keep|stop)</dt>
 <dd>
@@ -556,10 +557,11 @@ session. This is the default behavior.</p>
 <dt class="hdlist1">-m</dt>
 <dt class="hdlist1">--message-id</dt>
 <dd>
-<p>Pass the <code>-m</code> flag to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>),
-so that the Message-ID header is added to the commit message.
-The <code>am.messageid</code> configuration variable can be used to specify
-the default behaviour.</p>
+<p>Pass the <code>-m</code> flag to <a href="git-mailinfo.html">git-mailinfo(1)</a>, so that the
+<code>Message-ID</code> header is added as a trailer (see
+<a href="git-interpret-trailers.html">git-interpret-trailers(1)</a>).  The <code>am.messageid</code>
+configuration variable can be used to specify the default
+behaviour.</p>
 </dd>
 <dt class="hdlist1">--no-message-id</dt>
 <dd>
@@ -574,7 +576,7 @@ the default behaviour.</p>
 <dt class="hdlist1">-u</dt>
 <dt class="hdlist1">--utf8</dt>
 <dd>
-<p>Pass <code>-u</code> flag to <em>git mailinfo</em> (see <a href="git-mailinfo.html">git-mailinfo(1)</a>).
+<p>Pass <code>-u</code> flag to <a href="git-mailinfo.html">git-mailinfo(1)</a>.
 The proposed commit log message taken from the e-mail
 is re-coded into UTF-8 encoding (configuration variable
 <code>i18n.commitEncoding</code> can be used to specify the project&#8217;s
@@ -586,8 +588,7 @@ default.   You can use <code>--no-utf8</code> to override this.</p>
 </dd>
 <dt class="hdlist1">--no-utf8</dt>
 <dd>
-<p>Pass <code>-n</code> flag to <em>git mailinfo</em> (see
-<a href="git-mailinfo.html">git-mailinfo(1)</a>).</p>
+<p>Pass <code>-n</code> flag to <a href="git-mailinfo.html">git-mailinfo(1)</a>.</p>
 </dd>
 <dt class="hdlist1">-3</dt>
 <dt class="hdlist1">--3way</dt>
@@ -621,9 +622,8 @@ separate <a href="git-add.html">git-add(1)</a>.</p>
 <dt class="hdlist1">--include=&lt;path&gt;</dt>
 <dt class="hdlist1">--reject</dt>
 <dd>
-<p>These flags are passed to the <em>git apply</em> (see <a href="git-apply.html">git-apply(1)</a>)
-program that applies
-the patch.</p>
+<p>These flags are passed to the <a href="git-apply.html">git-apply(1)</a> program that
+applies the patch.</p>
 <div class="paragraph">
 <p>Valid &lt;action&gt; for the <code>--whitespace</code> option are:
 <code>nowarn</code>, <code>warn</code>, <code>fix</code>, <code>error</code>, and <code>error-all</code>.</p>
@@ -642,12 +642,16 @@ stgit, stgit-series, and hg.</p>
 <dd>
 <p>Run interactively.</p>
 </dd>
+<dt class="hdlist1">--verify</dt>
 <dt class="hdlist1">-n</dt>
 <dt class="hdlist1">--no-verify</dt>
 <dd>
-<p>By default, the pre-applypatch and applypatch-msg hooks are run.
-When any of <code>--no-verify</code> or <code>-n</code> is given, these are bypassed.
-See also <a href="githooks.html">githooks(5)</a>.</p>
+<p>Run the <code>pre-applypatch</code> and <code>applypatch-msg</code> hooks. This is the
+default. Skip these hooks with <code>-n</code> or <code>--no-verify</code>. See also
+<a href="githooks.html">githooks(5)</a>.</p>
+<div class="paragraph">
+<p>Note that <code>post-applypatch</code> cannot be skipped.</p>
+</div>
 </dd>
 <dt class="hdlist1">--committer-date-is-author-date</dt>
 <dd>
@@ -714,7 +718,8 @@ file, and continue.</p>
 to the screen before exiting.  This overrides the
 standard message informing you to use <code>--continue</code>
 or <code>--skip</code> to handle the failure.  This is solely
-for internal use between <em>git rebase</em> and <em>git am</em>.</p>
+for internal use between <a href="git-rebase.html">git-rebase(1)</a> and
+<a href="git-am.html">git-am(1)</a>.</p>
 </dd>
 <dt class="hdlist1">--abort</dt>
 <dd>
@@ -736,7 +741,7 @@ failure again.</p>
 </dd>
 <dt class="hdlist1">--show-current-patch[=(diff|raw)]</dt>
 <dd>
-<p>Show the message at which <code>git</code> <code>am</code> has stopped due to
+<p>Show the message at which <a href="git-am.html">git-am(1)</a> has stopped due to
 conflicts.  If <code>raw</code> is specified, show the raw contents of
 the e-mail message; if <code>diff</code>, show the diff portion only.
 Defaults to <code>raw</code>.</p>
@@ -799,7 +804,7 @@ is terminated before the first occurrence of such a line.</p>
 interrupt the processing (see the <a href="#caveats">CAVEATS</a> section below).</p>
 </div>
 <div class="paragraph">
-<p>When initially invoking <code>git</code> <code>am</code>, you give it the names of the mailboxes
+<p>When initially invoking <a href="git-am.html">git-am(1)</a>, you give it the names of the mailboxes
 to process.  Upon seeing the first patch that does not apply, it
 aborts in the middle.  You can recover from this in one of two ways:</p>
 </div>
@@ -825,8 +830,8 @@ names.</p>
 <div class="paragraph">
 <p>Before any patches are applied, ORIG_HEAD is set to the tip of the
 current branch.  This is useful if you have problems with multiple
-commits, like running <em>git am</em> on the wrong branch or an error in the
-commits that is more easily fixed by changing the mailbox (e.g.
+commits, like running <a href="git-am.html">git-am(1)</a> on the wrong branch or an error
+in the commits that is more easily fixed by changing the mailbox (e.g.
 errors in the "From:" lines).</p>
 </div>
 </div>
@@ -877,6 +882,9 @@ diffs as well.</p>
 and <code>post-applypatch</code> hooks.  See <a href="githooks.html">githooks(5)</a> for more
 information.</p>
 </div>
+<div class="paragraph">
+<p>See the <code>--verify</code>/<code>-n</code>/<code>--no-verify</code> options.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -891,20 +899,27 @@ as what&#8217;s found there:</p>
 <dl>
 <dt class="hdlist1">am.keepcr</dt>
 <dd>
-<p>If true, git-am will call git-mailsplit for patches in mbox format
-with parameter <code>--keep-cr</code>. In this case git-mailsplit will
+<p>If true, <a href="git-am.html">git-am(1)</a> will call <a href="git-mailsplit.html">git-mailsplit(1)</a>
+for patches in mbox format with parameter <code>--keep-cr</code>. In this
+case <a href="git-mailsplit.html">git-mailsplit(1)</a> will
 not remove <code>\r</code> from lines ending with <code>\r\n</code>. Can be overridden
-by giving <code>--no-keep-cr</code> from the command line.
-See <a href="git-am.html">git-am(1)</a>, <a href="git-mailsplit.html">git-mailsplit(1)</a>.</p>
+by giving <code>--no-keep-cr</code> from the command line.</p>
 </dd>
 <dt class="hdlist1">am.threeWay</dt>
 <dd>
-<p>By default, <code>git</code> <code>am</code> will fail if the patch does not apply cleanly. When
-set to true, this setting tells <code>git</code> <code>am</code> to fall back on 3-way merge if
-the patch records the identity of blobs it is supposed to apply to and
-we have those blobs available locally (equivalent to giving the <code>--3way</code>
-option from the command line). Defaults to <code>false</code>.
-See <a href="git-am.html">git-am(1)</a>.</p>
+<p>By default, <a href="git-am.html">git-am(1)</a> will fail if the patch does not
+apply cleanly. When set to true, this setting tells
+<a href="git-am.html">git-am(1)</a> to fall back on 3-way merge if the patch
+records the identity of blobs it is supposed to apply to and we
+have those blobs available locally (equivalent to giving the
+<code>--3way</code> option from the command line). Defaults to <code>false</code>.</p>
+</dd>
+<dt class="hdlist1">am.messageId</dt>
+<dd>
+<p>Add a <code>Message-ID</code> trailer based on the email header to the
+commit when using <a href="git-am.html">git-am(1)</a> (see
+<a href="git-interpret-trailers.html">git-interpret-trailers(1)</a>). See also the <code>--message-id</code>
+and <code>--no-message-id</code> options.</p>
 </dd>
 </dl>
 </div>
@@ -930,7 +945,7 @@ See <a href="git-am.html">git-am(1)</a>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-25 13:49:37 -0800
+Last updated 2026-03-02 17:41:34 -0800
 </div>
 </div>
 </body>
