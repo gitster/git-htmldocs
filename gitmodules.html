@@ -534,8 +534,11 @@ a submodule as modified. The following values are supported:</p>
 <dt class="hdlist1">all</dt>
 <dd>
 <p>The submodule will never be considered modified (but will
-nonetheless show up in the output of status and commit when it has
-been staged).</p>
+   nonetheless show up in the output of status and commit when it has
+   been staged). Add (<code>new</code> <code>commits</code>) can be overruled using the
+   <code>git</code> <code>add</code> <code>--force</code> &lt;submodule.<code>path</code>&gt;.
+The setting affects <code>status</code>, <code>update-index</code>, <code>diff</code> and <code>log</code>(due
+to underlaying <code>diff</code>).</p>
 </dd>
 <dt class="hdlist1">dirty</dt>
 <dd>
@@ -635,7 +638,7 @@ submodules a URL is specified which can be used for cloning the submodules.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-20 18:10:42 -0700
+Last updated 2026-03-09 17:09:46 -0700
 </div>
 </div>
 </body>
