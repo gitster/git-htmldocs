@@ -452,7 +452,8 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content">$GIT_DIR/objects/[0-9a-f][0-9a-f]/*</pre>
+<pre class="content">$GIT_DIR/objects/[0-9a-f][0-9a-f]/*
+$GIT_DIR/objects/object-map/map-*.map</pre>
 </div>
 </div>
 </div>
@@ -506,6 +507,176 @@ data of <code>blob</code> <code>3\0abc</code>.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_loose_object_mapping">Loose object mapping</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When the <code>compatObjectFormat</code> option is used, Git needs to store a mapping
+between the repository&#8217;s main algorithm and the compatibility algorithm for
+loose objects as well as some auxiliary information.</p>
+</div>
+<div class="paragraph">
+<p>The mapping consists of a set of files under <code>$GIT_DIR/objects/object-map</code>
+ending in .<code>map</code>.  The portion of the filename before the extension is that of
+the main hash checksum (that is, the one specified in
+<code>extensions.objectformat</code>) in hex format.</p>
+</div>
+<div class="paragraph">
+<p><code>git</code> <code>gc</code> will repack existing entries into one file, removing any unnecessary
+objects, such as obsolete shallow entries or loose objects that have been
+packed.</p>
+</div>
+<div class="paragraph">
+<p>The file format is as follows.  All values are in network byte order and all
+4-byte and 8-byte values must be 4-byte aligned in the file, so the NUL padding
+may be required in some cases.  Git always uses the smallest number of NUL
+bytes (including zero) that is required for the padding in order to make
+writing files deterministic.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A header appears at the beginning and consists of the following:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>A 4-byte mapping signature: <code>LMAP</code></p>
+</li>
+<li>
+<p>4-byte version number: 1</p>
+</li>
+<li>
+<p>4-byte length of the header section (including reserved entries but
+excluding any NUL padding).</p>
+</li>
+<li>
+<p>4-byte number of objects declared in this map file.</p>
+</li>
+<li>
+<p>4-byte number of object formats declared in this map file.</p>
+</li>
+<li>
+<p>For each object format:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>4-byte format identifier (e.g., <code>sha1</code> for SHA-1)</p>
+</li>
+<li>
+<p>4-byte length in bytes of shortened object names (that is, prefixes of
+the full object names). This is the shortest possible length needed to
+make names in the shortened object name table unambiguous.</p>
+</li>
+<li>
+<p>8-byte integer, recording where tables relating to this format
+are stored in this index file, as an offset from the beginning.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>8-byte offset to the trailer from the beginning of this file.</p>
+</li>
+<li>
+<p>The remainder of the header section is reserved for future use.
+Readers must ignore unrecognized data here.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Zero or more NUL bytes.  These are used to improve the alignment of the
+4-byte quantities below.</p>
+</li>
+<li>
+<p>Tables for the first object format:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>A sorted table of shortened object names.  These are prefixes of the names
+of all objects in this file, packed together to reduce the cache footprint
+of the binary search for a specific object name.</p>
+</li>
+<li>
+<p>A sorted table of full object names.</p>
+</li>
+<li>
+<p>A table of 4-byte metadata values.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Zero or more NUL bytes.</p>
+</li>
+<li>
+<p>Tables for subsequent object formats:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>A sorted table of shortened object names.  These are prefixes of the names
+of all objects in this file, packed together without offset values to
+reduce the cache footprint of the binary search for a specific object name.</p>
+</li>
+<li>
+<p>A table of full object names in the order specified by the first object format.</p>
+</li>
+<li>
+<p>A table of 4-byte values mapping object name order to the order of the
+first object format. For an object in the table of sorted shortened object
+names, the value at the corresponding index in this table is the index in
+the previous table for that same object.</p>
+</li>
+<li>
+<p>Zero or more NUL bytes.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>The trailer consists of the following:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Hash checksum of all of the above using the main hash.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The lower six bits of each metadata table contain a type field indicating the
+reason that this object is stored:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">0</dt>
+<dd>
+<p>Reserved.</p>
+</dd>
+<dt class="hdlist1">1</dt>
+<dd>
+<p>This object is stored as a loose object in the repository.</p>
+</dd>
+<dt class="hdlist1">2</dt>
+<dd>
+<p>This object is a shallow entry.  The mapping refers to a shallow value
+returned by a remote server.</p>
+</dd>
+<dt class="hdlist1">3</dt>
+<dd>
+<p>This object is a submodule entry.  The mapping refers to the commit stored
+representing a submodule.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Other data may be stored in this field in the future.  Bits that are not used
+must be zero.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_git">GIT</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -516,7 +687,7 @@ data of <code>blob</code> <code>3\0abc</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-22 15:04:39 -0700
+Last updated 2026-03-12 12:43:12 -0700
 </div>
 </div>
 </body>

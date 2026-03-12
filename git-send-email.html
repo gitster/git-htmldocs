@@ -798,6 +798,27 @@ Defaults to the value of the <code>sendemail.smtpSSLCertPath</code> configuratio
 variable, if set, or the backing SSL library&#8217;s compiled-in default
 otherwise (which should be the best choice on most platforms).</p>
 </dd>
+<dt class="hdlist1">--smtp-ssl-client-cert &lt;path&gt;</dt>
+<dd>
+<p>Path to the client certificate file to present if requested by the
+server. This option is required when the server is set up to verify
+client certificates. If the corresponding private key is not included in
+the file, it must be supplied using the <code>sendemail.smtpSSLClientKey</code>
+configuration variable or the <code>--smtp-ssl-client-key</code> option. Defaults
+to the value of the <code>sendemail.smtpSSLClientCert</code> configuration
+variable, if set.</p>
+</dd>
+<dt class="hdlist1">--smtp-ssl-client-key &lt;path&gt;</dt>
+<dd>
+<p>Path to the client private key file that corresponds to the client
+certificate. To avoid misconfiguration, this option must be used in
+conjunction with the <code>sendemail.smtpSSLClientKey</code> configuration variable
+or the <code>--smtp-ssl-client-cert</code> option. If the client key is included in
+the client certificate, the choice of private key depends on the format
+of the certificate. Visit <a href="https://metacpan.org/pod/IO::Socket::SSL" class="bare">https://metacpan.org/pod/IO::Socket::SSL</a> for
+more details. Defaults to the value of the <code>sendemail.smtpSSLClientKey</code>
+configuration variable, if set.</p>
+</dd>
 <dt class="hdlist1">--smtp-user=&lt;user&gt;</dt>
 <dd>
 <p>Username for SMTP-AUTH. Default is the value of <code>sendemail.smtpUser</code>;
@@ -1173,6 +1194,24 @@ setting is not subject to the <code>identity</code> mechanism.</p>
 <dd>
 <p>Path to ca-certificates (either a directory or a single file).
 Set it to an empty string to disable certificate verification.</p>
+</dd>
+<dt class="hdlist1">sendemail.smtpSSLClientCert</dt>
+<dd>
+<p>Path to the client certificate file to present if requested by the
+server. This is required when the server is set up to verify client
+certificates. If the corresponding private key is not included in the
+file, it must be supplied using <code>sendemail.smtpSSLClientKey</code> or the
+<code>--smtp-ssl-client-key</code> option.</p>
+</dd>
+<dt class="hdlist1">sendemail.smtpSSLClientKey</dt>
+<dd>
+<p>Path to the client private key file that corresponds to the client
+certificate. To avoid misconfiguration, this configuration must be used
+in conjunction with <code>sendemail.smtpSSLClientKey</code> or the
+<code>--smtp-ssl-client-cert</code> option. If the client key is included in the
+client certificate, the choice of private key depends on the format of
+the certificate. Visit <a href="https://metacpan.org/pod/IO::Socket::SSL" class="bare">https://metacpan.org/pod/IO::Socket::SSL</a> for more
+details.</p>
 </dd>
 <dt class="hdlist1">sendemail.&lt;identity&gt;.*</dt>
 <dd>
@@ -1592,7 +1631,7 @@ diffs as well.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-25 13:49:37 -0800
+Last updated 2026-03-12 12:43:12 -0700
 </div>
 </div>
 </body>

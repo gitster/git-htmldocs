@@ -1838,6 +1838,15 @@ unset, Git will set a process environment variable equal to:
 <code>$HOMEDRIVE$HOMEPATH</code> if both <code>$HOMEDRIVE</code> and <code>$HOMEPATH</code> exist;
 otherwise <code>$USERPROFILE</code> if <code>$USERPROFILE</code> exists.</p>
 </dd>
+<dt class="hdlist1"><code>PATH</code></dt>
+<dd>
+<p>When a user runs <em>git &lt;command&gt;</em> that is not part of the core Git programs
+(installed in GIT_EXEC_PATH), <em>git-&lt;command&gt;</em> that is runnable by the user
+in a directory on <code>$PATH</code> is invoked. Argument passed after the command
+name are passed as-is to the program. To execute <code>git</code> <em>&lt;foo&gt;</em>, <code>git</code> finds
+command <em>&lt;foo&gt;</em> (either a core Git program found in <em>GIT_EXEC_PATH</em>, or a
+custom one in a directory on <em>PATH</em>), before trying <code>foo</code> as an alias.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -2718,7 +2727,7 @@ the Git Security mailing list &lt;<a href="mailto:git-security@googlegroups.com"
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-04 12:32:07 -0800
+Last updated 2026-03-12 12:43:12 -0700
 </div>
 </div>
 </body>
