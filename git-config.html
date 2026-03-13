@@ -9316,6 +9316,37 @@ The option --no-branch takes precedence over this variable.</p>
 <code>--no-ahead-behind</code> by default in <a href="git-status.html">git-status(1)</a> for
 non-porcelain status formats.  Defaults to true.</p>
 </dd>
+<dt class="hdlist1">status.compareBranches</dt>
+<dd>
+<p>A space-separated list of branch comparison specifiers to use in
+<a href="git-status.html">git-status(1)</a>. Currently, only <code>@</code>{upstream} and <code>@</code>{push}
+are supported. They are interpreted as <code>branch@</code>{upstream} and
+<code>branch@</code>{push} for the current branch.</p>
+<div class="paragraph">
+<p>If not set, the default behavior is equivalent to <code>@</code>{upstream}, which
+compares against the configured upstream tracking branch.</p>
+</div>
+<div class="paragraph">
+<p>The entries are shown in the order they appear in the configuration.
+Duplicate entries that resolve to the same ref are suppressed after
+their first occurrence, so <code>@</code>{push} <code>@</code>{upstream} <code>@</code>{push} shows at
+most two comparisons.  When <code>@</code>{upstream} and <code>@</code>{push} resolve to
+the same remote-tracking branch, only one comparison is shown.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[status]
+        compareBranches = @{upstream} @{push}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would show comparisons against both the configured upstream and push
+tracking branches for the current branch.</p>
+</div>
+</dd>
 <dt class="hdlist1">status.displayCommentPrefix</dt>
 <dd>
 <p>If set to true, <a href="git-status.html">git-status(1)</a> will insert a comment
