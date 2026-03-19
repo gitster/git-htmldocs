@@ -1129,6 +1129,15 @@ picked, edited or reworded will have the trailer added.</p>
 <p>See also INCOMPATIBLE OPTIONS below.</p>
 </div>
 </dd>
+<dt class="hdlist1">--trailer=&lt;trailer&gt;</dt>
+<dd>
+<p>Append the given trailer to every rebased commit message, processed
+via <a href="git-interpret-trailers.html">git-interpret-trailers(1)</a>. This option implies
+<code>--force-rebase</code>.</p>
+<div class="paragraph">
+<p>See also INCOMPATIBLE OPTIONS below.</p>
+</div>
+</dd>
 <dt class="hdlist1">-i</dt>
 <dt class="hdlist1">--interactive</dt>
 <dd>
@@ -1358,6 +1367,9 @@ can be used to override and disable this setting.</p>
 </li>
 <li>
 <p>--root when used without --onto</p>
+</li>
+<li>
+<p>--trailer</p>
 </li>
 </ul>
 </div>
@@ -2480,7 +2492,7 @@ When not configured, the default commit message editor is used instead.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-12-28 03:32:00 -0800
+Last updated 2026-03-19 13:38:09 -0700
 </div>
 </div>
 </body>
