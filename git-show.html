@@ -1513,8 +1513,10 @@ when either rename or copy detection have been requested).</p>
 <dt class="hdlist1"><code>-U</code><em>&lt;n&gt;</em></dt>
 <dt class="hdlist1"><code>--unified=</code><em>&lt;n&gt;</em></dt>
 <dd>
-<p>Generate diffs with <em>&lt;n&gt;</em> lines of context instead of
-the usual three.
+<p>Generate diffs with <em>&lt;n&gt;</em> lines of context. The number of context
+lines defaults to <code>diff.context</code> or 3 if the configuration variable
+is unset. (<code>-U</code> without <em>&lt;n&gt;</em> is silently accepted as a synonym for
+<code>-p</code> due to a historical accident).
 Implies <code>--patch</code>.</p>
 </dd>
 <dt class="hdlist1"><code>--output=</code><em>&lt;file&gt;</em></dt>

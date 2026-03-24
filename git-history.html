@@ -452,7 +452,8 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><code>git</code> <code>history</code> <code>reword</code> <em>&lt;commit&gt;</em> [<code>--dry-run</code>] [<code>--update-refs=</code>(<code>branches</code>|<code>head</code>)]</pre>
+<pre class="content"><code>git</code> <code>history</code> <code>reword</code> <em>&lt;commit&gt;</em> [<code>--dry-run</code>] [<code>--update-refs=</code>(<code>branches</code>|<code>head</code>)]
+<code>git</code> <code>history</code> <code>split</code> <em>&lt;commit&gt;</em> [<code>--dry-run</code>] [<code>--update-refs=</code>(<code>branches</code>|<code>head</code>)] [<code>--</code>] [<em>&lt;pathspec&gt;</em>&#8230;&#8203;]</pre>
 </div>
 </div>
 </div>
@@ -527,6 +528,30 @@ first-class conflicts.</p>
 details of this commit remain unchanged. This command will spawn an
 editor with the current message of that commit.</p>
 </dd>
+<dt class="hdlist1"><code>split</code> <em>&lt;commit&gt;</em> [<code>--</code>] [<em>&lt;pathspec&gt;</em>...]</dt>
+<dd>
+<p>Interactively split up &lt;commit&gt; into two commits by choosing
+hunks introduced by it that will be moved into the new split-out
+commit. These hunks will then be written into a new commit that
+becomes the parent of the previous commit. The original commit
+stays intact, except that its parent will be the newly split-out
+commit.</p>
+<div class="paragraph">
+<p>The commit messages of the split-up commits will be asked for by launching
+the configured editor. Authorship of the commit will be the same as for the
+original commit.</p>
+</div>
+<div class="paragraph">
+<p>If passed, <em>&lt;pathspec&gt;</em> can be used to limit which changes shall be split out
+of the original commit. Files not matching any of the pathspecs will remain
+part of the original commit. For more details, see the <em>pathspec</em> entry in
+<a href="gitglossary.html">gitglossary(7)</a>.</p>
+</div>
+<div class="paragraph">
+<p>It is invalid to select either all or no hunks, as that would lead to
+one of the commits becoming empty.</p>
+</div>
+</dd>
 </dl>
 </div>
 </div>
@@ -555,6 +580,50 @@ the current <code>HEAD</code> reference will be rewritten. Defaults to <code>bra
 </div>
 </div>
 <div class="sect1">
+<h2 id="_examples">EXAMPLES</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_split_a_commit">Split a commit</h3>
+<div class="listingblock">
+<div class="content">
+<pre>$ git log --stat --oneline
+3f81232 (HEAD -&gt; main) original
+ bar | 1 +
+ foo | 1 +
+ 2 files changed, 2 insertions(+)
+
+$ git history split HEAD
+diff --git a/bar b/bar
+new file mode 100644
+index 0000000..5716ca5
+--- /dev/null
++++ b/bar
+@@ -0,0 +1 @@
++bar
+(1/1) Stage addition [y,n,q,a,d,p,?]? y
+
+diff --git a/foo b/foo
+new file mode 100644
+index 0000000..257cc56
+--- /dev/null
++++ b/foo
+@@ -0,0 +1 @@
++foo
+(1/1) Stage addition [y,n,q,a,d,p,?]? n
+
+$ git log --stat --oneline
+7cebe64 (HEAD -&gt; main) original
+ foo | 1 +
+ 1 file changed, 1 insertion(+)
+d1582f3 split-out commit
+ bar | 1 +
+ 1 file changed, 1 insertion(+)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_git">GIT</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -565,7 +634,7 @@ the current <code>HEAD</code> reference will be rewritten. Defaults to <code>bra
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-27 15:31:58 -0800
+Last updated 2026-03-24 15:38:38 -0700
 </div>
 </div>
 </body>

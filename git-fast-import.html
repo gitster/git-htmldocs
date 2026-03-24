@@ -558,6 +558,12 @@ commit.</p>
 will strip them and display a warning. The validation is performed
 in the same way as <a href="git-verify-commit.html">git-verify-commit(1)</a> does it.</p>
 </li>
+<li>
+<p><code>sign-if-invalid</code>[<code>=</code><em>&lt;keyid&gt;</em>], similar to <code>strip-if-invalid</code>, verifies
+commit signatures and replaces invalid signatures with newly created ones.
+Valid signatures are left unchanged. If <em>&lt;keyid&gt;</em> is provided, that key is
+used for signing; otherwise the configured default signing key is used.</p>
+</li>
 </ul>
 </div>
 </dd>
@@ -2645,7 +2651,7 @@ not set, the value of <code>transfer.unpackLimit</code> is used instead.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-12-06 19:37:45 -0800
+Last updated 2026-03-24 15:38:38 -0700
 </div>
 </div>
 </body>
