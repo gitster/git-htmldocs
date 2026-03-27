@@ -1032,9 +1032,9 @@ for the user.</p>
 <h3 id="_reference_transaction">reference-transaction</h3>
 <div class="paragraph">
 <p>This hook is invoked by any Git command that performs reference
-updates. It executes whenever a reference transaction is prepared,
-committed or aborted and may thus get called multiple times. The hook
-also supports symbolic reference updates.</p>
+updates. It executes whenever a reference transaction is preparing,
+prepared, committed or aborted and may thus get called multiple times.
+The hook also supports symbolic reference updates.</p>
 </div>
 <div class="paragraph">
 <p>The hook takes exactly one argument, which is the current state the
@@ -1042,6 +1042,10 @@ given reference transaction is in:</p>
 </div>
 <div class="ulist">
 <ul>
+<li>
+<p>"preparing": All reference updates have been queued to the
+transaction but references are not yet locked on disk.</p>
+</li>
 <li>
 <p>"prepared": All reference updates have been queued to the
 transaction and references were locked on disk.</p>
@@ -1072,7 +1076,9 @@ ref and <em>&lt;ref-name&gt;</em> is the full name of the ref. When force updati
 the reference regardless of its current value or when the reference is
 to be created anew, <em>&lt;old-value&gt;</em> is the all-zeroes object name. To
 distinguish these cases, you can inspect the current value of
-<em>&lt;ref-name&gt;</em> via <code>git</code> <code>rev-parse</code>.</p>
+<em>&lt;ref-name&gt;</em> via <code>git</code> <code>rev-parse</code>. During the "preparing" state, symbolic
+references are not resolved: <em>&lt;ref-name&gt;</em> will reflect the symbolic reference
+itself rather than the object it points to.</p>
 </div>
 <div class="paragraph">
 <p>For symbolic reference updates the &lt;old_value&gt; and <em>&lt;new-value&gt;</em>
@@ -1081,9 +1087,9 @@ denoted with a <em>ref:</em> prefix, like <code>ref:</code><em>&lt;ref-target&gt
 </div>
 <div class="paragraph">
 <p>The exit status of the hook is ignored for any state except for the
-"prepared" state. In the "prepared" state, a non-zero exit status will
-cause the transaction to be aborted. The hook will not be called with
-"aborted" state in that case.</p>
+"preparing" and "prepared" states. In these states, a non-zero exit
+status will cause the transaction to be aborted. The hook will not be
+called with "aborted" state in that case.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1396,7 +1402,7 @@ running passing "1", "1" should not be possible.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-12-17 00:39:34 -0800
+Last updated 2026-03-27 14:24:52 -0700
 </div>
 </div>
 </body>

@@ -736,7 +736,7 @@ canonical form.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><em>bool</em>: canonicalize values <code>true</code>, <code>yes</code>,<code>on</code>, and positive
+<p><em>bool</em>: canonicalize values <code>true</code>, <code>yes</code>, <code>on</code>, and positive
 numbers as "true", and values <code>false</code>, <code>no</code>, <code>off</code> and <code>0</code> as
 "false".</p>
 </li>
@@ -9711,11 +9711,11 @@ write additional traces if doing so would exceed this many files. Instead,
 write a sentinel file that will block further tracing to this
 directory. Defaults to 0, which disables this check.</p>
 </dd>
-<dt class="hdlist1">trailer.separators</dt>
+<dt class="hdlist1"><code>trailer.separators</code></dt>
 <dd>
 <p>This option tells which characters are recognized as trailer
-separators. By default only <em>:</em> is recognized as a trailer
-separator, except that <em>=</em> is always accepted on the command
+separators. By default only <code>:</code> is recognized as a trailer
+separator, except that <code>=</code> is always accepted on the command
 line for compatibility with other git commands.</p>
 <div class="paragraph">
 <p>The first character given by this option will be the default character
@@ -9723,15 +9723,15 @@ used when another separator is not specified in the config for this
 trailer.</p>
 </div>
 <div class="paragraph">
-<p>For example, if the value for this option is "%=$", then only lines
-using the format <em>&lt;key&gt;&lt;sep&gt;&lt;value&gt;</em> with &lt;sep&gt; containing <em>%</em>, <em>=</em>
-or <em>$</em> and then spaces will be considered trailers. And <em>%</em> will be
+<p>For example, if the value for this option is <code>%=$</code>, then only lines
+using the format <em>&lt;key&gt;&lt;sep&gt;&lt;value&gt;</em> with <em>&lt;sep&gt;</em> containing <code>%</code>, <code>=</code>
+or <code>$</code> and then spaces will be considered trailers. And <code>%</code> will be
 the default separator used, so by default trailers will appear like:
-<em>&lt;key&gt;% &lt;value&gt;</em> (one percent sign and one space will appear between
+<em>&lt;key&gt;</em><code>%</code> <em>&lt;value&gt;</em> (one percent sign and one space will appear between
 the key and the value).</p>
 </div>
 </dd>
-<dt class="hdlist1">trailer.where</dt>
+<dt class="hdlist1"><code>trailer.where</code></dt>
 <dd>
 <p>This option tells where a new trailer will be added.</p>
 <div class="paragraph">
@@ -9747,51 +9747,51 @@ instead of the end, of the existing trailers.</p>
 </div>
 <div class="paragraph">
 <p>If it is <code>after</code>, then each new trailer will appear just after the
-last trailer with the same &lt;key&gt;.</p>
+last trailer with the same <em>&lt;key&gt;</em>.</p>
 </div>
 <div class="paragraph">
 <p>If it is <code>before</code>, then each new trailer will appear just before the
-first trailer with the same &lt;key&gt;.</p>
+first trailer with the same <em>&lt;key&gt;</em>.</p>
 </div>
 </dd>
-<dt class="hdlist1">trailer.ifexists</dt>
+<dt class="hdlist1"><code>trailer.ifexists</code></dt>
 <dd>
 <p>This option makes it possible to choose what action will be
 performed when there is already at least one trailer with the
-same &lt;key&gt; in the input.</p>
+same <em>&lt;key&gt;</em> in the input.</p>
 <div class="paragraph">
 <p>The valid values for this option are: <code>addIfDifferentNeighbor</code> (this
 is the default), <code>addIfDifferent</code>, <code>add</code>, <code>replace</code> or <code>doNothing</code>.</p>
 </div>
 <div class="paragraph">
 <p>With <code>addIfDifferentNeighbor</code>, a new trailer will be added only if no
-trailer with the same (&lt;key&gt;, &lt;value&gt;) pair is above or below the line
+trailer with the same (<em>&lt;key&gt;</em>, <em>&lt;value&gt;</em>) pair is above or below the line
 where the new trailer will be added.</p>
 </div>
 <div class="paragraph">
 <p>With <code>addIfDifferent</code>, a new trailer will be added only if no trailer
-with the same (&lt;key&gt;, &lt;value&gt;) pair is already in the input.</p>
+with the same (<em>&lt;key&gt;</em>, <em>&lt;value&gt;</em>) pair is already in the input.</p>
 </div>
 <div class="paragraph">
 <p>With <code>add</code>, a new trailer will be added, even if some trailers with
-the same (&lt;key&gt;, &lt;value&gt;) pair are already in the input.</p>
+the same (<em>&lt;key&gt;</em>, <em>&lt;value&gt;</em>) pair are already in the input.</p>
 </div>
 <div class="paragraph">
-<p>With <code>replace</code>, an existing trailer with the same &lt;key&gt; will be
+<p>With <code>replace</code>, an existing trailer with the same <em>&lt;key&gt;</em> will be
 deleted and the new trailer will be added. The deleted trailer will be
-the closest one (with the same &lt;key&gt;) to the place where the new one
+the closest one (with the same <em>&lt;key&gt;</em>) to the place where the new one
 will be added.</p>
 </div>
 <div class="paragraph">
 <p>With <code>doNothing</code>, nothing will be done; that is no new trailer will be
-added if there is already one with the same &lt;key&gt; in the input.</p>
+added if there is already one with the same <em>&lt;key&gt;</em> in the input.</p>
 </div>
 </dd>
-<dt class="hdlist1">trailer.ifmissing</dt>
+<dt class="hdlist1"><code>trailer.ifmissing</code></dt>
 <dd>
 <p>This option makes it possible to choose what action will be
 performed when there is not yet any trailer with the same
-&lt;key&gt; in the input.</p>
+<em>&lt;key&gt;</em> in the input.</p>
 <div class="paragraph">
 <p>The valid values for this option are: <code>add</code> (this is the default) and
 <code>doNothing</code>.</p>
@@ -9803,17 +9803,17 @@ performed when there is not yet any trailer with the same
 <p>With <code>doNothing</code>, nothing will be done.</p>
 </div>
 </dd>
-<dt class="hdlist1">trailer.&lt;keyAlias&gt;.key</dt>
+<dt class="hdlist1"><code>trailer.</code><em>&lt;key-alias&gt;</em><code>.key</code></dt>
 <dd>
-<p>Defines a &lt;keyAlias&gt; for the &lt;key&gt;. The &lt;keyAlias&gt; must be a
-prefix (case does not matter) of the &lt;key&gt;. For example, in <code>git</code>
-<code>config</code> <code>trailer.ack.key</code> "Acked-by" the "Acked-by" is the &lt;key&gt; and
-the "ack" is the &lt;keyAlias&gt;. This configuration allows the shorter
+<p>Defines a <em>&lt;key-alias&gt;</em> for the <em>&lt;key&gt;</em>. The <em>&lt;key-alias&gt;</em> must be a
+prefix (case does not matter) of the <em>&lt;key&gt;</em>. For example, in <code>git</code>
+<code>config</code> <code>trailer.ack.key</code> "Acked-by" the <code>Acked-by</code> is the <em>&lt;key&gt;</em> and
+the <code>ack</code> is the <em>&lt;key-alias&gt;</em>. This configuration allows the shorter
 <code>--trailer</code> "ack:<code>...</code>" invocation on the command line using the "ack"
-&lt;keyAlias&gt; instead of the longer <code>--trailer</code> "Acked-by:<code>...</code>".</p>
+<em>&lt;key-alias&gt;</em> instead of the longer <code>--trailer</code> "Acked-by:<code>...</code>".</p>
 <div class="paragraph">
-<p>At the end of the &lt;key&gt;, a separator can appear and then some
-space characters. By default the only valid separator is <em>:</em>,
+<p>At the end of the <em>&lt;key&gt;</em>, a separator can appear and then some
+space characters. By default the only valid separator is <code>:</code>,
 but this can be changed using the <code>trailer.separators</code> config
 variable.</p>
 </div>
@@ -9822,62 +9822,63 @@ variable.</p>
 separator when adding the trailer.</p>
 </div>
 </dd>
-<dt class="hdlist1">trailer.&lt;keyAlias&gt;.where</dt>
+<dt class="hdlist1"><code>trailer.</code><em>&lt;key-alias&gt;</em><code>.where</code></dt>
 <dd>
-<p>This option takes the same values as the <em>trailer.where</em>
+<p>This option takes the same values as the <code>trailer.where</code>
 configuration variable and it overrides what is specified by
-that option for trailers with the specified &lt;keyAlias&gt;.</p>
+that option for trailers with the specified <em>&lt;key-alias&gt;</em>.</p>
 </dd>
-<dt class="hdlist1">trailer.&lt;keyAlias&gt;.ifexists</dt>
+<dt class="hdlist1"><code>trailer.</code><em>&lt;key-alias&gt;</em><code>.ifexists</code></dt>
 <dd>
-<p>This option takes the same values as the <em>trailer.ifexists</em>
+<p>This option takes the same values as the <code>trailer.ifexists</code>
 configuration variable and it overrides what is specified by
-that option for trailers with the specified &lt;keyAlias&gt;.</p>
+that option for trailers with the specified <em>&lt;key-alias&gt;</em>.</p>
 </dd>
-<dt class="hdlist1">trailer.&lt;keyAlias&gt;.ifmissing</dt>
+<dt class="hdlist1"><code>trailer.</code><em>&lt;key-alias&gt;</em><code>.ifmissing</code></dt>
 <dd>
-<p>This option takes the same values as the <em>trailer.ifmissing</em>
+<p>This option takes the same values as the <code>trailer.ifmissing</code>
 configuration variable and it overrides what is specified by
-that option for trailers with the specified &lt;keyAlias&gt;.</p>
+that option for trailers with the specified <em>&lt;key-alias&gt;</em>.</p>
 </dd>
-<dt class="hdlist1">trailer.&lt;keyAlias&gt;.command</dt>
+<dt class="hdlist1"><code>trailer.</code><em>&lt;key-alias&gt;</em><code>.command</code></dt>
 <dd>
-<p>Deprecated in favor of <em>trailer.&lt;keyAlias&gt;.cmd</em>.
-This option behaves in the same way as <em>trailer.&lt;keyAlias&gt;.cmd</em>, except
+<p>Deprecated in favor of <code>trailer.</code><em>&lt;key-alias&gt;</em><code>.cmd</code>.
+This option behaves in the same way as <code>trailer.</code><em>&lt;key-alias&gt;</em><code>.cmd</code>, except
 that it doesn&#8217;t pass anything as argument to the specified command.
-Instead the first occurrence of substring $ARG is replaced by the
-&lt;value&gt; that would be passed as argument.</p>
+Instead the first occurrence of substring <code>$ARG</code> is replaced by the
+<em>&lt;value&gt;</em> that would be passed as argument.</p>
 <div class="paragraph">
-<p>Note that $ARG in the user&#8217;s command is
-only replaced once and that the original way of replacing $ARG is not safe.</p>
+<p>Note that <code>$ARG</code> in the user&#8217;s command is
+only replaced once and that the original way of replacing <code>$ARG</code> is not safe.</p>
 </div>
 <div class="paragraph">
-<p>When both <em>trailer.&lt;keyAlias&gt;.cmd</em> and <em>trailer.&lt;keyAlias&gt;.command</em> are given
-for the same &lt;keyAlias&gt;, <em>trailer.&lt;keyAlias&gt;.cmd</em> is used and
-<em>trailer.&lt;keyAlias&gt;.command</em> is ignored.</p>
+<p>When both <code>trailer.</code><em>&lt;key-alias&gt;</em><code>.cmd</code> and <code>trailer.</code><em>&lt;key-alias&gt;</em><code>.command</code> are given
+for the same <em>&lt;key-alias&gt;</em>, <code>trailer.</code><em>&lt;key-alias&gt;</em><code>.cmd</code> is used and
+<code>trailer.</code><em>&lt;key-alias&gt;</em><code>.command</code> is ignored.</p>
 </div>
 </dd>
-<dt class="hdlist1">trailer.&lt;keyAlias&gt;.cmd</dt>
+<dt class="hdlist1"><code>trailer.</code><em>&lt;key-alias&gt;</em><code>.cmd</code></dt>
 <dd>
 <p>This option can be used to specify a shell command that will be called
-once to automatically add a trailer with the specified &lt;keyAlias&gt;, and then
-called each time a <em>--trailer &lt;keyAlias&gt;=&lt;value&gt;</em> argument is specified to
-modify the &lt;value&gt; of the trailer that this option would produce.</p>
+once to automatically add a trailer with the specified <em>&lt;key-alias&gt;</em>, and then
+called each time a <code>--trailer</code> <em>&lt;key-alias&gt;</em><code>=</code><em>&lt;value&gt;</em> argument is specified to
+modify the <em>&lt;value&gt;</em> of the trailer that this option would produce.</p>
 <div class="paragraph">
 <p>When the specified command is first called to add a trailer
-with the specified &lt;keyAlias&gt;, the behavior is as if a special
-<em>--trailer &lt;keyAlias&gt;=&lt;value&gt;</em> argument was added at the beginning
-of the "git interpret-trailers" command, where &lt;value&gt;
-is taken to be the standard output of the command with any
-leading and trailing whitespace trimmed off.</p>
+with the specified <em>&lt;key-alias&gt;</em>, the behavior is as if a special
+<code>--trailer</code> <em>&lt;key-alias&gt;</em><code>=</code><em>&lt;value&gt;</em> argument was added at the beginning
+of <a href="git-interpret-trailers.html">git-interpret-trailers(1)</a>, where <em>&lt;value&gt;</em> is taken to be the
+standard output of the command with any leading and trailing whitespace
+trimmed off.</p>
 </div>
 <div class="paragraph">
-<p>If some <em>--trailer &lt;keyAlias&gt;=&lt;value&gt;</em> arguments are also passed
+<p>If some <code>--trailer</code> <em>&lt;key-alias&gt;</em><code>=</code><em>&lt;value&gt;</em> arguments are also passed
 on the command line, the command is called again once for each
-of these arguments with the same &lt;keyAlias&gt;. And the &lt;value&gt; part
+of these arguments with the same <em>&lt;key-alias&gt;</em>. And the <em>&lt;value&gt;</em> part
 of these arguments, if any, will be passed to the command as its
-first argument. This way the command can produce a &lt;value&gt; computed
-from the &lt;value&gt; passed in the <em>--trailer &lt;keyAlias&gt;=&lt;value&gt;</em> argument.</p>
+first argument. This way the command can produce a <em>&lt;value&gt;</em> computed
+from the <em>&lt;value&gt;</em> passed in the <code>--trailer</code> <em>&lt;key-alias&gt;</em><code>=</code><em>&lt;value&gt;</em>
+argument.</p>
 </div>
 </dd>
 <dt class="hdlist1">transfer.credentialsInUrl</dt>
@@ -10347,7 +10348,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-04 12:32:07 -0800
+Last updated 2026-03-27 14:24:52 -0700
 </div>
 </div>
 </body>
