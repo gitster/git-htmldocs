@@ -5179,6 +5179,12 @@ format-patch is invoked, but in addition can be set to "auto", to
 generate a cover-letter only when there&#8217;s more than one patch.
 Default is false.</p>
 </dd>
+<dt class="hdlist1">format.commitListFormat</dt>
+<dd>
+<p>When the <code>--cover-letter-format</code> option is not given, <code>format-patch</code>
+uses the value of this variable to decide how to format the entry of
+each commit. Defaults to <code>shortlog</code>.</p>
+</dd>
 <dt class="hdlist1">format.outputDirectory</dt>
 <dd>
 <p>Set a custom directory to store the resulting files instead of the

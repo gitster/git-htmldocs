@@ -452,7 +452,7 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content">(EXPERIMENTAL!) <em>git replay</em> ([--contained] --onto &lt;newbase&gt; | --advance &lt;branch&gt;) [--ref-action[=&lt;mode&gt;]] &lt;revision-range&gt;</pre>
+<pre class="content">(EXPERIMENTAL!) <em>git replay</em> ([--contained] --onto &lt;newbase&gt; | --advance &lt;branch&gt; | --revert &lt;branch&gt;) [--ref-action[=&lt;mode&gt;]] &lt;revision-range&gt;</pre>
 </div>
 </div>
 </div>
@@ -497,6 +497,29 @@ point at the tip of the resulting history. This is different from <code>--onto</
 which uses the target only as a starting point without updating it.</p>
 </div>
 </dd>
+<dt class="hdlist1">--revert &lt;branch&gt;</dt>
+<dd>
+<p>Starting point at which to create the reverted commits; must be a
+branch name.</p>
+<div class="paragraph">
+<p>When <code>--revert</code> is specified, the commits in the revision range are reverted
+(their changes are undone) and the reverted commits are created on top of
+&lt;branch&gt;. The &lt;branch&gt; is then updated to point at the new commits. This is
+the same as running <code>git</code> <code>revert</code> <em>&lt;revision-range&gt;</em> but does not update the
+working tree.</p>
+</div>
+<div class="paragraph">
+<p>The commit messages follow <code>git</code> <code>revert</code> conventions: they are prefixed with
+"Revert" and include "This reverts commit &lt;hash&gt;." When reverting a commit
+whose message starts with "Revert", the new message uses "Reapply" instead.
+Unlike cherry-pick which preserves the original author, revert commits use
+the current user as the author, matching the behavior of <code>git</code> <code>revert</code>.</p>
+</div>
+<div class="paragraph">
+<p>This option is mutually exclusive with <code>--onto</code> and <code>--advance</code>. It is also
+incompatible with <code>--contained</code> (which is a modifier for <code>--onto</code> only).</p>
+</div>
+</dd>
 <dt class="hdlist1">--contained</dt>
 <dd>
 <p>Update all branches that point at commits in
@@ -528,10 +551,11 @@ traditional behavior where output can be piped to <code>git</code> <code>update-
 <dt class="hdlist1">&lt;revision-range&gt;</dt>
 <dd>
 <p>Range of commits to replay; see "Specifying Ranges" in
-<a href="git-rev-parse.html">git-rev-parse(1)</a>. In <code>--advance</code> <em>&lt;branch&gt;</em> mode, the
-range should have a single tip, so that it&#8217;s clear to which tip the
-advanced &lt;branch&gt; should point. Any commits in the range whose
-changes are already present in the branch the commits are being
+<a href="git-rev-parse.html">git-rev-parse(1)</a>. In <code>--advance</code> <em>&lt;branch&gt;</em> or
+<code>--revert</code> <em>&lt;branch&gt;</em> mode, the range should have a single tip,
+so that it&#8217;s clear to which tip the advanced or reverted
+&lt;branch&gt; should point. Any commits in the range whose changes
+are already present in the branch the commits are being
 replayed onto will be dropped.</p>
 </dd>
 </dl>
@@ -1579,9 +1603,10 @@ update refs/heads/branch3 ${NEW_branch3_HASH} ${OLD_branch3_HASH}</pre>
 </div>
 <div class="paragraph">
 <p>where the number of refs updated depends on the arguments passed and
-the shape of the history being replayed.  When using <code>--advance</code>, the
-number of refs updated is always one, but for <code>--onto</code>, it can be one
-or more (rebasing multiple branches simultaneously is supported).</p>
+the shape of the history being replayed.  When using <code>--advance</code> or
+<code>--revert</code>, the number of refs updated is always one, but for <code>--onto</code>,
+it can be one or more (rebasing multiple branches simultaneously is
+supported).</p>
 </div>
 <div class="paragraph">
 <p>There is no stderr output on conflicts; see the <a href="#exit-status">EXIT
@@ -1666,6 +1691,34 @@ all commits they have since <code>base</code>, playing them on top of
 <code>origin/main</code>. These three branches may have commits on top of <code>base</code>
 that they have in common, but that does not need to be the case.</p>
 </div>
+<div class="paragraph">
+<p>To revert commits on a branch:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ git replay --revert main topic~2..topic</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This reverts the last two commits from <code>topic</code>, creating revert commits on
+top of <code>main</code>, and updates <code>main</code> to point at the result. This is useful when
+commits from <code>topic</code> were previously merged or cherry-picked into <code>main</code> and
+need to be undone.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+For reverting an entire merge request as a single commit (rather than
+commit-by-commit), consider using <code>git</code> <code>merge-tree</code> <code>--merge-base</code> <code>$TIP</code> <code>HEAD</code> <code>$BASE</code>
+which can avoid unnecessary merge conflicts.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1679,7 +1732,7 @@ that they have in common, but that does not need to be the case.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-09 21:22:43 -0800
+Last updated 2026-04-03 14:49:43 -0700
 </div>
 </div>
 </body>

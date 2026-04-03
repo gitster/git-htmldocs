@@ -452,8 +452,8 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><em>git hook</em> run [--ignore-missing] [--to-stdin=&lt;path&gt;] &lt;hook-name&gt; [-- &lt;hook-args&gt;]
-<em>git hook</em> list [-z] &lt;hook-name&gt;</pre>
+<pre class="content"><em>git hook</em> run [--allow-unknown-hook-name] [--ignore-missing] [--to-stdin=&lt;path&gt;] &lt;hook-name&gt; [-- &lt;hook-args&gt;]
+<em>git hook</em> list [--allow-unknown-hook-name] [-z] [--show-scope] &lt;hook-name&gt;</pre>
 </div>
 </div>
 </div>
@@ -502,7 +502,7 @@ message (during the <code>commit-msg</code> hook event).</p>
 </div>
 <div class="paragraph">
 <p>Commands are run in the order Git encounters their associated
-<code>hook.</code><em>&lt;name&gt;</em><code>.event</code> configs during the configuration parse (see
+<code>hook.</code><em>&lt;friendly-name&gt;</em><code>.event</code> configs during the configuration parse (see
 <a href="git-config.html">git-config(1)</a>). Although multiple <code>hook.linter.event</code> configs can be
 added, only one <code>hook.linter.command</code> event is valid - Git uses "last-one-wins"
 to determine which command to run.</p>
@@ -545,11 +545,11 @@ would evaluate the output of each when deciding whether to proceed with the
 commit.</p>
 </div>
 <div class="paragraph">
-<p>For a full list of hook events which you can set your <code>hook.</code><em>&lt;name&gt;</em><code>.event</code> to,
+<p>For a full list of hook events which you can set your <code>hook.</code><em>&lt;friendly-name&gt;</em><code>.event</code> to,
 and how hooks are invoked during those events, see <a href="githooks.html">githooks(5)</a>.</p>
 </div>
 <div class="paragraph">
-<p>Git will ignore any <code>hook.</code><em>&lt;name&gt;</em><code>.event</code> that specifies an event it doesn&#8217;t
+<p>Git will ignore any <code>hook.</code><em>&lt;friendly-name&gt;</em><code>.event</code> that specifies an event it doesn&#8217;t
 recognize. This is intended so that tools which wrap Git can use the hook
 infrastructure to run their own hooks; see "WRAPPERS" for more guidance.</p>
 </div>
@@ -592,7 +592,7 @@ mandatory <code>--</code> (or <code>--end-of-options</code>, see <a href="gitcli
 <a href="githooks.html">githooks(5)</a> for arguments hooks might expect (if any).</p>
 </div>
 </dd>
-<dt class="hdlist1">list [-z]</dt>
+<dt class="hdlist1">list [-z] [--show-scope]</dt>
 <dd>
 <p>Print a list of hooks which will be run on <em>&lt;hook-name&gt;</em> event. If no
 hooks are configured for that event, print a warning and return 1.
@@ -607,6 +607,14 @@ Use <code>-z</code> to terminate output lines with NUL instead of newlines.</p>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
+<dt class="hdlist1">--allow-unknown-hook-name</dt>
+<dd>
+<p>By default <code>git</code> <code>hook</code> <code>run</code> and <code>git</code> <code>hook</code> <code>list</code> will bail out when
+<em>&lt;hook-name&gt;</em> is not a hook event known to Git (see <a href="githooks.html">githooks(5)</a>
+for the list of known hooks). This is meant to help catch typos
+such as <code>prereceive</code> when <code>pre-receive</code> was intended. Pass this
+flag to allow unknown hook names.</p>
+</dd>
 <dt class="hdlist1">--to-stdin</dt>
 <dd>
 <p>For "run"; specify a file which will be streamed into the
@@ -622,6 +630,13 @@ or may not be present.</p>
 <dt class="hdlist1">-z</dt>
 <dd>
 <p>Terminate "list" output lines with NUL instead of newlines.</p>
+</dd>
+<dt class="hdlist1">--show-scope</dt>
+<dd>
+<p>For "list"; prefix each configured hook&#8217;s friendly name with a
+tab-separated config scope (e.g. <code>local</code>, <code>global</code>, <code>system</code>),
+mirroring the output style of <code>git</code> <code>config</code> <code>--show-scope</code>. Traditional
+hooks from the hookdir are unaffected.</p>
 </dd>
 </dl>
 </div>
@@ -653,7 +668,7 @@ running:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>git hook run mywrapper-start-tests \
+<pre>git hook run --allow-unknown-hook-name mywrapper-start-tests \
   # providing something to stdin
   --stdin some-tempfile-123 \
   # execute hooks in serial
@@ -678,29 +693,29 @@ unintended and unsupported ways.</p>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1">hook.&lt;name&gt;.command</dt>
+<dt class="hdlist1">hook.&lt;friendly-name&gt;.command</dt>
 <dd>
-<p>The command to execute for <code>hook.</code><em>&lt;name&gt;</em>. <em>&lt;name&gt;</em> is a unique
-"friendly" name that identifies this hook. (The hook events that
-trigger the command are configured with <code>hook.</code><em>&lt;name&gt;</em><code>.event</code>.) The
-value can be an executable path or a shell oneliner. If more than
-one value is specified for the same <em>&lt;name&gt;</em>, only the last value
-parsed is used. See <a href="git-hook.html">git-hook(1)</a>.</p>
+<p>The command to execute for <code>hook.</code><em>&lt;friendly-name&gt;</em>. <em>&lt;friendly-name&gt;</em>
+is a unique name that identifies this hook. The hook events that
+trigger the command are configured with <code>hook.</code><em>&lt;friendly-name&gt;</em><code>.event</code>.
+The value can be an executable path or a shell oneliner. If more than
+one value is specified for the same <em>&lt;friendly-name&gt;</em>, only the last
+value parsed is used. See <a href="git-hook.html">git-hook(1)</a>.</p>
 </dd>
-<dt class="hdlist1">hook.&lt;name&gt;.event</dt>
+<dt class="hdlist1">hook.&lt;friendly-name&gt;.event</dt>
 <dd>
-<p>The hook events that trigger <code>hook.</code><em>&lt;name&gt;</em>. The value is the name
-of a hook event, like "pre-commit" or "update". (See
+<p>The hook events that trigger <code>hook.</code><em>&lt;friendly-name&gt;</em>. The value is the
+name of a hook event, like "pre-commit" or "update". (See
 <a href="githooks.html">githooks(5)</a> for a complete list of hook events.) On the
-specified event, the associated <code>hook.</code><em>&lt;name&gt;</em><code>.command</code> is executed.
-This is a multi-valued key. To run <code>hook.</code><em>&lt;name&gt;</em> on multiple
+specified event, the associated <code>hook.</code><em>&lt;friendly-name&gt;</em><code>.command</code> is executed.
+This is a multi-valued key. To run <code>hook.</code><em>&lt;friendly-name&gt;</em> on multiple
 events, specify the key more than once. An empty value resets
 the list of events, clearing any previously defined events for
-<code>hook.</code><em>&lt;name&gt;</em>. See <a href="git-hook.html">git-hook(1)</a>.</p>
+<code>hook.</code><em>&lt;friendly-name&gt;</em>. See <a href="git-hook.html">git-hook(1)</a>.</p>
 </dd>
-<dt class="hdlist1">hook.&lt;name&gt;.enabled</dt>
+<dt class="hdlist1">hook.&lt;friendly-name&gt;.enabled</dt>
 <dd>
-<p>Whether the hook <code>hook.</code><em>&lt;name&gt;</em> is enabled. Defaults to <code>true</code>.
+<p>Whether the hook <code>hook.</code><em>&lt;friendly-name&gt;</em> is enabled. Defaults to <code>true</code>.
 Set to <code>false</code> to disable the hook without removing its
 configuration. This is particularly useful when a hook is defined
 in a system or global config file and needs to be disabled for a
@@ -729,7 +744,7 @@ specific repository. See <a href="git-hook.html">git-hook(1)</a>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-10 16:05:28 -0700
+Last updated 2026-04-03 14:49:43 -0700
 </div>
 </div>
 </body>

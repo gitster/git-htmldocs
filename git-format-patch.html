@@ -467,6 +467,7 @@ pre>code {
                    [(--reroll-count|-v) &lt;n&gt;]
                    [--to=&lt;email&gt;] [--cc=&lt;email&gt;]
                    [--[no-]cover-letter] [--quiet]
+                   [--commit-list-format=&lt;format-spec&gt;]
                    [--[no-]encode-email-headers]
                    [--no-notes | --notes[=&lt;ref&gt;]]
                    [--interdiff=&lt;previous&gt;]
@@ -1399,9 +1400,22 @@ line.</p>
 <dt class="hdlist1">--cover-letter</dt>
 <dt class="hdlist1">--no-cover-letter</dt>
 <dd>
-<p>In addition to the patches, generate a cover letter file
-containing the branch description, shortlog and the overall diffstat.  You can
-fill in a description in the file before sending it out.</p>
+<p>In addition to the patches, generate a cover letter file containing the
+branch description, commit list and the overall diffstat.  You can fill
+in a description in the file before sending it out.</p>
+</dd>
+<dt class="hdlist1">--commit-list-format=&lt;format-spec&gt;</dt>
+<dd>
+<p>Specify the format in which to generate the commit list of the patch
+series. The accepted values for format-spec are <code>shortlog</code>, <code>modern</code> or
+a format-string prefixed with <code>log:</code>. E.g. <code>log:</code> <code>%s</code> (<code>%an</code>).
+<code>modern</code> is the same as <code>log:%w</code>(<code>72</code>)[<code>%</code>(<code>count</code>)<code>/%</code>(<code>total</code>)] <code>%s</code>.
+The <code>log:</code> prefix can be omitted if the format-string has a <code>%</code> in it
+(expecting that it is part of <code>%</code><em>&lt;placeholder&gt;</em>).
+Defaults to the <code>format.commitListFormat</code> configuration variable, if
+set, or <code>shortlog</code>.
+This option given from the command-line implies the use of
+<code>--cover-letter</code> unless <code>--no-cover-letter</code> is given.</p>
 </dd>
 <dt class="hdlist1">--encode-email-headers</dt>
 <dt class="hdlist1">--no-encode-email-headers</dt>
@@ -1560,6 +1574,7 @@ with configuration variables.</p>
         signOff = true
         outputDirectory = &lt;directory&gt;
         coverLetter = auto
+        commitListFormat = shortlog
         coverFromDescription = auto</pre>
 </div>
 </div>
@@ -2100,7 +2115,7 @@ diffs as well.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-02-27 15:31:58 -0800
+Last updated 2026-04-03 14:49:43 -0700
 </div>
 </div>
 </body>
