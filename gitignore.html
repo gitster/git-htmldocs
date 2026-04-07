@@ -573,6 +573,12 @@ particular .<code>gitignore</code> file itself. Otherwise the pattern may also
 match at any level below the .<code>gitignore</code> level.</p>
 </li>
 <li>
+<p>Patterns read from exclude sources that are outside the working tree,
+such as $GIT_DIR/info/exclude and core.excludesFile, are treated as if
+they are specified at the root of the working tree, i.e. a leading "/"
+in such patterns anchors the match at the root of the repository.</p>
+</li>
+<li>
 <p>If there is a separator at the end of the pattern then the pattern
 will only match directories, otherwise the pattern can match both
 files and directories.</p>
@@ -775,7 +781,7 @@ everything within <code>foo/bar</code>):</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-11-04 11:37:22 -0800
+Last updated 2026-04-06 17:41:07 -0700
 </div>
 </div>
 </body>

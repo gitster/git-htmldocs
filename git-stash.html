@@ -458,10 +458,10 @@ pre>code {
 <code>git</code> <code>stash</code> <code>pop</code> [<code>--index</code>] [<code>-q</code> | <code>--quiet</code>] [<em>&lt;stash&gt;</em>]
 <code>git</code> <code>stash</code> <code>apply</code> [<code>--index</code>] [<code>-q</code> | <code>--quiet</code>] [<em>&lt;stash&gt;</em>]
 <code>git</code> <code>stash</code> <code>branch</code> <em>&lt;branchname&gt;</em> [<em>&lt;stash&gt;</em>]
-<code>git</code> <code>stash</code> [<code>push</code> [<code>-p</code> | <code>--patch</code>] [<code>-S</code> | <code>--staged</code>] [<code>-k</code> | <code>--</code>[<code>no-</code>]<code>keep-index</code>] [<code>-q</code> | <code>--quiet</code>]
+<code>git</code> <code>stash</code> [<code>push</code>] [<code>-p</code> | <code>--patch</code>] [<code>-S</code> | <code>--staged</code>] [<code>-k</code> | <code>--</code>[<code>no-</code>]<code>keep-index</code>] [<code>-q</code> | <code>--quiet</code>]
 	     [<code>-u</code> | <code>--include-untracked</code>] [<code>-a</code> | <code>--all</code>] [(<code>-m</code> | <code>--message</code>) <em>&lt;message&gt;</em>]
 	     [<code>--pathspec-from-file=</code><em>&lt;file&gt;</em> [<code>--pathspec-file-nul</code>]]
-	     [<code>--</code>] [<em>&lt;pathspec&gt;</em>&#8230;&#8203;]]
+	     [<code>--</code>] [<em>&lt;pathspec&gt;</em>&#8230;&#8203;]
 <code>git</code> <code>stash</code> <code>save</code> [<code>-p</code> | <code>--patch</code>] [<code>-S</code> | <code>--staged</code>] [<code>-k</code> | <code>--</code>[<code>no-</code>]<code>keep-index</code>] [<code>-q</code> | <code>--quiet</code>]
            [<code>-u</code> | <code>--include-untracked</code>] [<code>-a</code> | <code>--all</code>] [<em>&lt;message&gt;</em>]
 <code>git</code> <code>stash</code> <code>clear</code>
@@ -513,10 +513,8 @@ The <em>&lt;message&gt;</em> part is optional and gives
 the description along with the stashed state.</p>
 <div class="paragraph">
 <p>For quickly making a snapshot, you can omit "push".  In this mode,
-non-option arguments are not allowed to prevent a misspelled
-subcommand from making an unwanted stash entry.  The two exceptions to this
-are <code>stash</code> <code>-p</code> which acts as alias for <code>stash</code> <code>push</code> <code>-p</code> and pathspec elements,
-which are allowed after a double hyphen <code>--</code> for disambiguation.</p>
+pathspec elements are only allowed after a double hyphen <code>--</code>
+to prevent a misspelled subcommand from making an unwanted stash entry.</p>
 </div>
 </dd>
 <dt class="hdlist1"><code>save</code> [<code>-p</code> | <code>--patch</code>] [<code>-S</code> | <code>--staged</code>] [<code>-k</code> | <code>--</code>[<code>no-</code>]<code>keep-index</code>] [<code>-u</code> | <code>--include-untracked</code>] [<code>-a</code> | <code>--all</code>] [<code>-q</code> | <code>--quiet</code>] [<em>&lt;message&gt;</em>]</dt>
@@ -1009,7 +1007,7 @@ option will show a diffstat of the stash entry.  Defaults to true.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-14 14:37:27 -0700
+Last updated 2026-04-06 17:41:07 -0700
 </div>
 </div>
 </body>

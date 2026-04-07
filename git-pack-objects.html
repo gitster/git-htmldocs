@@ -555,13 +555,34 @@ arguments. The resulting pack contains all objects listed in the
 included packs (those not beginning with <code>^</code>), excluding any
 objects listed in the excluded packs (beginning with <code>^</code>).</p>
 <div class="paragraph">
-<p>When <code>mode</code> is "follow", objects from packs not listed on stdin receive
-special treatment. Objects within unlisted packs will be included if
-those objects are (1) reachable from the included packs, and (2) not
-found in any excluded packs. This mode is useful, for example, to
-resurrect once-unreachable objects found in cruft packs to generate
-packs which are closed under reachability up to the boundary set by the
-excluded packs.</p>
+<p>When <code>mode</code> is "follow" packs may additionally be prefixed with !,
+indicating that they are excluded but not necessarily closed under
+reachability.  In addition to objects in included packs, the resulting
+pack may include additional objects based on the following:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>If any packs are marked with !, then objects reachable from such
+packs or included ones via objects outside of excluded-closed packs
+will be included. In this case, all <code>^</code> packs are treated as closed
+under reachability.</p>
+</li>
+<li>
+<p>Otherwise (if there are no ! packs), objects within unlisted packs
+will be included if those objects are (1) reachable from the
+included packs, and (2) not found in any excluded packs.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This mode is useful, for example, to resurrect once-unreachable
+objects found in cruft packs to generate packs which are closed under
+reachability up to the boundary set by the excluded packs.</p>
 </div>
 <div class="paragraph">
 <p>Incompatible with <code>--revs</code>, or options that imply <code>--revs</code> (such as
@@ -1050,7 +1071,7 @@ attribute <code>delta</code> set to false.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-25 14:46:08 -0700
+Last updated 2026-04-06 17:41:07 -0700
 </div>
 </div>
 </body>
