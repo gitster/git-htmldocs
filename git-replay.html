@@ -452,7 +452,8 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content">(EXPERIMENTAL!) <em>git replay</em> ([--contained] --onto &lt;newbase&gt; | --advance &lt;branch&gt; | --revert &lt;branch&gt;) [--ref-action[=&lt;mode&gt;]] &lt;revision-range&gt;</pre>
+<pre class="content">(EXPERIMENTAL!) <em>git replay</em> ([--contained] --onto=&lt;newbase&gt; | --advance=&lt;branch&gt; | --revert=&lt;branch&gt;)
+                             [--ref=&lt;ref&gt;] [--ref-action=&lt;mode&gt;] &lt;revision-range&gt;</pre>
 </div>
 </div>
 </div>
@@ -477,7 +478,7 @@ instead get update commands that can be piped to <code>git</code> <code>update-r
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1">--onto &lt;newbase&gt;</dt>
+<dt class="hdlist1">--onto=&lt;newbase&gt;</dt>
 <dd>
 <p>Starting point at which to create the new commits.  May be any
 valid commit, and not just an existing branch name.</p>
@@ -487,7 +488,7 @@ updated to point at the new commits, similar to the way <code>git</code> <code>r
 updates multiple branches in the affected range.</p>
 </div>
 </dd>
-<dt class="hdlist1">--advance &lt;branch&gt;</dt>
+<dt class="hdlist1">--advance=&lt;branch&gt;</dt>
 <dd>
 <p>Starting point at which to create the new commits; must be a
 branch name.</p>
@@ -497,7 +498,7 @@ point at the tip of the resulting history. This is different from <code>--onto</
 which uses the target only as a starting point without updating it.</p>
 </div>
 </dd>
-<dt class="hdlist1">--revert &lt;branch&gt;</dt>
+<dt class="hdlist1">--revert=&lt;branch&gt;</dt>
 <dd>
 <p>Starting point at which to create the reverted commits; must be a
 branch name.</p>
@@ -525,6 +526,17 @@ incompatible with <code>--contained</code> (which is a modifier for <code>--onto
 <p>Update all branches that point at commits in
 &lt;revision-range&gt;. Requires <code>--onto</code>.</p>
 </dd>
+<dt class="hdlist1">--ref=&lt;ref&gt;</dt>
+<dd>
+<p>Override which reference is updated with the result of the replay.
+The ref must be fully qualified.
+When used with <code>--onto</code>, the <em>&lt;revision-range&gt;</em> should have a
+single tip and only the specified reference is updated instead of
+inferring refs from the revision range.
+When used with <code>--advance</code> or <code>--revert</code>, the specified reference is
+updated instead of the branch given to those options.
+This option is incompatible with <code>--contained</code>.</p>
+</dd>
 <dt class="hdlist1">--ref-action[=&lt;mode&gt;]</dt>
 <dd>
 <p>Control how references are updated. The mode can be:</p>
@@ -551,8 +563,8 @@ traditional behavior where output can be piped to <code>git</code> <code>update-
 <dt class="hdlist1">&lt;revision-range&gt;</dt>
 <dd>
 <p>Range of commits to replay; see "Specifying Ranges" in
-<a href="git-rev-parse.html">git-rev-parse(1)</a>. In <code>--advance</code> <em>&lt;branch&gt;</em> or
-<code>--revert</code> <em>&lt;branch&gt;</em> mode, the range should have a single tip,
+<a href="git-rev-parse.html">git-rev-parse(1)</a>. In <code>--advance=</code><em>&lt;branch&gt;</em> or
+<code>--revert=</code><em>&lt;branch&gt;</em> mode, the range should have a single tip,
 so that it&#8217;s clear to which tip the advanced or reverted
 &lt;branch&gt; should point. Any commits in the range whose changes
 are already present in the branch the commits are being
@@ -1633,7 +1645,7 @@ is something other than 0 or 1.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ git replay --onto target origin/main..mybranch</pre>
+<pre>$ git replay --onto=target origin/main..mybranch</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1644,7 +1656,7 @@ is something other than 0 or 1.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ git replay --ref-action=print --onto target origin/main..mybranch
+<pre>$ git replay --ref-action=print --onto=target origin/main..mybranch
 update refs/heads/mybranch ${NEW_mybranch_HASH} ${OLD_mybranch_HASH}</pre>
 </div>
 </div>
@@ -1653,7 +1665,7 @@ update refs/heads/mybranch ${NEW_mybranch_HASH} ${OLD_mybranch_HASH}</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ git replay --advance target origin/main..mybranch</pre>
+<pre>$ git replay --advance=target origin/main..mybranch</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1668,7 +1680,7 @@ you&#8217;d really like to rebase the whole set?</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ git replay --contained --onto origin/main origin/main..tipbranch</pre>
+<pre>$ git replay --contained --onto=origin/main origin/main..tipbranch</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1682,7 +1694,7 @@ do:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ git replay --onto origin/main ^base branch1 branch2 branch3</pre>
+<pre>$ git replay --onto=origin/main ^base branch1 branch2 branch3</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1696,7 +1708,7 @@ that they have in common, but that does not need to be the case.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ git replay --revert main topic~2..topic</pre>
+<pre>$ git replay --revert=main topic~2..topic</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1719,6 +1731,19 @@ which can avoid unnecessary merge conflicts.
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>To replay onto a specific commit while updating a different reference:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ git replay --onto=112233 --ref=refs/heads/mybranch aabbcc..ddeeff</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This replays the range <code>aabbcc</code><code>..</code><code>ddeeff</code> onto commit <code>112233</code> and updates
+<code>refs/heads/mybranch</code> to point at the result. This can be useful when you want
+to use bare commit IDs instead of branch names.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1732,7 +1757,7 @@ which can avoid unnecessary merge conflicts.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-04-03 14:49:43 -0700
+Last updated 2026-04-08 15:24:44 -0700
 </div>
 </div>
 </body>
