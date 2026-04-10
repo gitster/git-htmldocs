@@ -510,6 +510,12 @@ format is <code>tar</code>.</p>
 <p>Prepend &lt;prefix&gt;/ to paths in the archive.  Can be repeated; its
 rightmost value is used for all tracked files.  See below which
 value gets used by <code>--add-file</code>.</p>
+<div class="paragraph">
+<p>The &lt;prefix&gt; is used as given and is not normalized. It may
+include leading slashes or parent directory components (e.g.,
+<code>..</code><code>/</code>). Some archive consumers may treat such paths as
+potentially unsafe and adjust or warn during extraction.</p>
+</div>
 </dd>
 <dt class="hdlist1">-o &lt;file&gt;</dt>
 <dt class="hdlist1">--output=&lt;file&gt;</dt>
@@ -764,7 +770,7 @@ output file like <code>-o</code> <code>foo.tar.xz</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-20 18:10:42 -0700
+Last updated 2026-04-10 10:32:43 -0700
 </div>
 </div>
 </body>
