@@ -975,11 +975,11 @@ matches "<code>a/b</code>", "<code>a/x/b</code>", "<code>a/x/y/b</code>" and so 
 </li>
 <li>
 <p>Other consecutive asterisks are considered invalid.</p>
-<div class="paragraph">
-<p>Glob magic is incompatible with literal magic.</p>
-</div>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Glob magic is incompatible with literal magic.</p>
 </div>
 </dd>
 <dt class="hdlist1">attr</dt>
@@ -1008,12 +1008,12 @@ set to the string <code>VALUE</code>.</p>
 <li>
 <p>"!ATTR" requires that the attribute <code>ATTR</code> be
 unspecified.</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p>Note that when matching against a tree object, attributes are still
 obtained from working tree, not from the given tree object.</p>
-</div>
-</li>
-</ul>
 </div>
 </dd>
 <dt class="hdlist1">exclude</dt>
@@ -1145,6 +1145,8 @@ Refs are stored in the <a href="#def_repository">repository</a>.</p>
 Ref names must either start with <code>refs/</code> or be located in the root of
 the hierarchy. For the latter, their name must follow these rules:</p>
 </div>
+<div class="openblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
@@ -1152,12 +1154,20 @@ the hierarchy. For the latter, their name must follow these rules:</p>
 </li>
 <li>
 <p>The name ends with "<code>_HEAD</code>" or is equal to "<code>HEAD</code>".</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>There are some irregular refs in the root of the hierarchy that do not
 match these rules. The following list is exhaustive and shall not be
 extended in the future:</p>
 </div>
-</li>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
 <li>
 <p><code>AUTO_MERGE</code></p>
 </li>
@@ -1172,13 +1182,15 @@ extended in the future:</p>
 </li>
 <li>
 <p><code>MERGE_AUTOSTASH</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>Different subhierarchies are used for different purposes. For example,
 the <code>refs/heads/</code> hierarchy is used to represent local branches whereas
 the <code>refs/tags/</code> hierarchy is used to represent local tags..</p>
-</div>
-</li>
-</ul>
 </div>
 </dd>
 <dt class="hdlist1"><a id="def_reflog"></a>reflog</dt>
