@@ -7794,7 +7794,7 @@ processes. See <a href="git-pack-objects.html">git-pack-objects(1)</a> for full 
 <dt class="hdlist1">pack.preferBitmapTips</dt>
 <dd>
 <p>Specifies a ref hierarchy (e.g., "refs/heads/"); can be
-given multiple times to specify more than one hierarchies.
+given multiple times to specify more than one hierarchy.
 When selecting which commits will receive bitmaps, prefer a
 commit at the tip of a reference that is contained in any of
 the configured hierarchies.</p>
@@ -9027,7 +9027,7 @@ file, it must be supplied using <code>sendemail.smtpSSLClientKey</code> or the
 <dd>
 <p>Path to the client private key file that corresponds to the client
 certificate. To avoid misconfiguration, this configuration must be used
-in conjunction with <code>sendemail.smtpSSLClientKey</code> or the
+in conjunction with <code>sendemail.smtpSSLClientCert</code> or the
 <code>--smtp-ssl-client-cert</code> option. If the client key is included in the
 client certificate, the choice of private key depends on the format of
 the certificate. Visit <a href="https://metacpan.org/pod/IO::Socket::SSL" class="bare">https://metacpan.org/pod/IO::Socket::SSL</a> for more
@@ -9508,7 +9508,7 @@ When set to "dirty" will ignore all changes to the submodule&#8217;s work tree a
 takes only differences between the HEAD of the submodule and the commit
 recorded in the superproject into account. "untracked" will additionally
 let submodules with modified tracked files in their work tree show up.
-When set to "none"(default) It also show submodules as changed if they have
+When set to "none" (default) it also shows submodules as changed if they have
 untracked files in their work tree.
 This setting overrides any setting made in .gitmodules for this submodule,
 both settings can be overridden on the command line by using the
