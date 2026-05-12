@@ -9189,6 +9189,49 @@ When not configured, the default commit message editor is used instead.</p>
 <p>The default set of branches for <a href="git-show-branch.html">git-show-branch(1)</a>.
 See <a href="git-show-branch.html">git-show-branch(1)</a>.</p>
 </dd>
+<dt class="hdlist1">sideband.allowControlCharacters</dt>
+<dd>
+<p>By default, control characters that are delivered via the sideband
+are masked, except ANSI color sequences. This prevents potentially
+unwanted ANSI escape sequences from being sent to the terminal. Use
+this config setting to override this behavior (the value can be
+a comma-separated list of the following keywords):</p>
+<div class="openblock">
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>color</code></dt>
+<dd>
+<p>	Allow ANSI color sequences, line feeds and horizontal tabs,
+	but mask all other control characters. This is the default.
+<code>cursor:</code>:
+	Allow control sequences that move the cursor. This is
+	disabled by default.</p>
+</dd>
+<dt class="hdlist1"><code>erase</code></dt>
+<dd>
+<p>Allow control sequences that erase charactrs. This is
+disabled by default.</p>
+</dd>
+<dt class="hdlist1"><code>false</code></dt>
+<dd>
+<p>Mask all control characters other than line feeds and
+horizontal tabs.</p>
+</dd>
+<dt class="hdlist1"><code>true</code></dt>
+<dd>
+<p>Allow all control characters to be sent to the terminal.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">sideband.&lt;url&gt;.*</dt>
+<dd>
+<p>Apply the <code>sideband.*</code> option selectively to specific URLs. The
+same URL matching logic applies as for <code>http.</code><em>&lt;url&gt;</em><code>.*</code> settings.</p>
+</dd>
 <dt class="hdlist1">sparse.expectFilesOutsideOfPatterns</dt>
 <dd>
 <p>Typically with sparse checkouts, files not matching any
