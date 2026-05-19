@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="generator" content="Asciidoctor 2.0.26"/>
-<title>git-restore(1)</title>
+<title>git-format-rev(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"/>
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -441,10 +441,10 @@ pre>code {
 </head>
 <body class="manpage">
 <div id="header">
-<h1>git-restore(1) Manual Page</h1>
+<h1>git-format-rev(1) Manual Page</h1>
 <h2 id="_name">NAME</h2>
 <div class="sectionbody">
-<p>git-restore - Restore working tree files</p>
+<p>git-format-rev - EXPERIMENTAL: Pretty format revisions on demand</p>
 </div>
 </div>
 <div id="content">
@@ -452,9 +452,7 @@ pre>code {
 <h2 id="_synopsis">SYNOPSIS</h2>
 <div class="sectionbody">
 <div class="verseblock">
-<pre class="content"><code>git</code> <code>restore</code> [<em>&lt;options&gt;</em>] [<code>--source=</code><em>&lt;tree&gt;</em>] [<code>--staged</code>] [<code>--worktree</code>] [<code>--</code>] <em>&lt;pathspec&gt;</em>&#8230;&#8203;
-<code>git</code> <code>restore</code> [<em>&lt;options&gt;</em>] [<code>--source=</code><em>&lt;tree&gt;</em>] [<code>--staged</code>] [<code>--worktree</code>] <code>--pathspec-from-file=</code><em>&lt;file&gt;</em> [<code>--pathspec-file-nul</code>]
-<code>git</code> <code>restore</code> (<code>-p</code>|<code>--patch</code>) [<em>&lt;options&gt;</em>] [<code>--source=</code><em>&lt;tree&gt;</em>] [<code>--staged</code>] [<code>--worktree</code>] [<code>--</code>] [<em>&lt;pathspec&gt;</em>&#8230;&#8203;]</pre>
+<pre class="content">(<code>EXPERIMENTAL</code>!) <code>git</code> <code>format-rev</code> <code>--stdin-mode=</code><em>&lt;mode&gt;</em> <code>--format=</code><em>&lt;pretty&gt;</em> [<code>--</code>[<code>no-</code>]<code>notes=</code><em>&lt;ref&gt;</em>] [<code>-z</code>] [<code>--</code>[<code>no-</code>]<code>null-output</code>] [<code>--</code>[<code>no-</code>]<code>null-input</code>]</pre>
 </div>
 </div>
 </div>
@@ -462,22 +460,10 @@ pre>code {
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Restore specified paths in the working tree with some contents from a
-restore source. If a path is tracked but does not exist in the restore
-source, it will be removed to match the source.</p>
+<p>Pretty format revisions from standard input.</p>
 </div>
 <div class="paragraph">
-<p>The command can also be used to restore the content in the index with
-<code>--staged</code>, or restore both the working tree and the index with
-<code>--staged</code> <code>--worktree</code>.</p>
-</div>
-<div class="paragraph">
-<p>By default, if <code>--staged</code> is given, the contents are restored from <code>HEAD</code>,
-otherwise from the index. Use <code>--source</code> to restore from a different commit.</p>
-</div>
-<div class="paragraph">
-<p>See "Reset, restore and revert" in <a href="git.html">git(1)</a> for the differences
-between the three commands.</p>
+<p>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</p>
 </div>
 </div>
 </div>
@@ -486,154 +472,81 @@ between the three commands.</p>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>-s</code> <em>&lt;tree&gt;</em></dt>
-<dt class="hdlist1"><code>--source=</code><em>&lt;tree&gt;</em></dt>
+<dt class="hdlist1"><code>--stdin-mode=</code><em>&lt;mode&gt;</em></dt>
 <dd>
-<p>Restore the working tree files with the content from the given
-tree. It is common to specify the source tree by naming a
-commit, branch or tag associated with it.</p>
+<p>How to interpret standard input data:</p>
+<div class="openblock">
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>revs</code></dt>
+<dd>
+<p>Each line or record (see the <a href="#io">INPUT AND OUTPUT FORMATS</a>
+section) is interpreted as a commit. Any kind of revision
+expression can be used (see <a href="gitrevisions.html">gitrevisions(7)</a>). Annotated
+tags are peeled (see <a href="gitglossary.html">gitglossary(7)</a>).</p>
 <div class="paragraph">
-<p>If not specified, the contents are restored from <code>HEAD</code> if <code>--staged</code> is
-given, otherwise from the index.</p>
-</div>
-<div class="paragraph">
-<p>As a special case, you may use "<em>&lt;rev-A&gt;</em><code>...</code><em>&lt;rev-B&gt;</em>" as a shortcut for the
-merge base of <em>&lt;rev-A&gt;</em> and <em>&lt;rev-B&gt;</em> if there is exactly one merge base. You can
-leave out at most one of <em>&lt;rev-A&gt;</em> and <em>&lt;rev-B&gt;</em>, in which case it defaults to <code>HEAD</code>.</p>
-</div>
-</dd>
-<dt class="hdlist1"><code>-p</code></dt>
-<dt class="hdlist1"><code>--patch</code></dt>
-<dd>
-<p>Interactively select hunks in the difference between the
-restore source and the restore location. See the "Interactive
-Mode" section of <a href="git-add.html">git-add(1)</a> to learn how to operate
-the <code>--patch</code> mode.</p>
-</dd>
-<dt class="hdlist1"><code>-U</code><em>&lt;n&gt;</em></dt>
-<dt class="hdlist1"><code>--unified=</code><em>&lt;n&gt;</em></dt>
-<dd>
-<p>Generate diffs with <em>&lt;n&gt;</em> lines of context. The number of context
-lines defaults to <code>diff.context</code> or 3 if the configuration variable
-is unset. (<code>-U</code> without <em>&lt;n&gt;</em> is silently accepted as a synonym for
-<code>-p</code> due to a historical accident).</p>
-</dd>
-<dt class="hdlist1"><code>--inter-hunk-context=</code><em>&lt;n&gt;</em></dt>
-<dd>
-<p>Show the context between diff hunks, up to the specified <em>&lt;number&gt;</em>
-of lines, thereby fusing hunks that are close to each other.
-Defaults to <code>diff.interHunkContext</code> or 0 if the config option
-is unset.</p>
-</dd>
-<dt class="hdlist1"><code>-W</code></dt>
-<dt class="hdlist1"><code>--worktree</code></dt>
-<dt class="hdlist1"><code>-S</code></dt>
-<dt class="hdlist1"><code>--staged</code></dt>
-<dd>
-<p>Specify the restore location. If neither option is specified,
-by default the working tree is restored. Specifying <code>--staged</code>
-will only restore the index. Specifying both restores both.</p>
-</dd>
-<dt class="hdlist1"><code>-q</code></dt>
-<dt class="hdlist1"><code>--quiet</code></dt>
-<dd>
-<p>Quiet, suppress feedback messages. Implies <code>--no-progress</code>.</p>
-</dd>
-<dt class="hdlist1"><code>--progress</code></dt>
-<dt class="hdlist1"><code>--no-progress</code></dt>
-<dd>
-<p>Progress status is reported on the standard error stream
-by default when it is attached to a terminal, unless <code>--quiet</code>
-is specified. This flag enables progress reporting even if not
-attached to a terminal, regardless of <code>--quiet</code>.</p>
-</dd>
-<dt class="hdlist1"><code>--ours</code></dt>
-<dt class="hdlist1"><code>--theirs</code></dt>
-<dd>
-<p>When restoring files in the working tree from the index, use
-stage #2 (<code>ours</code>) or #3 (<code>theirs</code>) for unmerged paths.
-This option cannot be used when checking out paths from a
-tree-ish (i.e. with the <code>--source</code> option).</p>
-<div class="paragraph">
-<p>Note that during <code>git</code> <code>rebase</code> and <code>git</code> <code>pull</code> <code>--rebase</code>, <code>ours</code> and
-<code>theirs</code> may appear swapped. See the explanation of the same options
-in <a href="git-checkout.html">git-checkout(1)</a> for details.</p>
+<p>The argument <code>rev</code> is also accepted.</p>
 </div>
 </dd>
-<dt class="hdlist1"><code>-m</code></dt>
-<dt class="hdlist1"><code>--merge</code></dt>
+<dt class="hdlist1"><code>text</code></dt>
 <dd>
-<p>When restoring files on the working tree from the index,
-recreate the conflicted merge in the unmerged paths.
-This option cannot be used when checking out paths from a
-tree-ish (i.e. with the <code>--source</code> option).</p>
-</dd>
-<dt class="hdlist1"><code>--conflict=</code><em>&lt;style&gt;</em></dt>
-<dd>
-<p>The same as <code>--merge</code> option above, but changes the way the
-conflicting hunks are presented, overriding the
-<code>merge.conflictStyle</code> configuration variable.  Possible values
-are <code>merge</code> (default), <code>diff3</code>, and <code>zdiff3</code>.</p>
-</dd>
-<dt class="hdlist1"><code>--ignore-unmerged</code></dt>
-<dd>
-<p>When restoring files on the working tree from the index, do
-not abort the operation if there are unmerged entries and
-neither <code>--ours</code>, <code>--theirs</code>, <code>--merge</code> or <code>--conflict</code> is
-specified. Unmerged paths on the working tree are left alone.</p>
-</dd>
-<dt class="hdlist1"><code>--ignore-skip-worktree-bits</code></dt>
-<dd>
-<p>In sparse checkout mode, the default is to only update entries
-matched by <em>&lt;pathspec&gt;</em> and sparse patterns in
-<code>$GIT_DIR/info/sparse-checkout</code>. This option ignores the sparse
-patterns and unconditionally restores any files in
-<em>&lt;pathspec&gt;</em>.</p>
-</dd>
-<dt class="hdlist1"><code>--recurse-submodules</code></dt>
-<dt class="hdlist1"><code>--no-recurse-submodules</code></dt>
-<dd>
-<p>If <em>&lt;pathspec&gt;</em> names an active submodule and the restore location
-includes the working tree, the submodule will only be updated if
-this option is given, in which case its working tree will be
-restored to the commit recorded in the superproject, and any local
-modifications overwritten. If nothing (or
-<code>--no-recurse-submodules</code>) is used, submodules working trees will
-not be updated. Just like <a href="git-checkout.html">git-checkout(1)</a>, this will detach
-<code>HEAD</code> of the submodule.</p>
-</dd>
-<dt class="hdlist1"><code>--overlay</code></dt>
-<dt class="hdlist1"><code>--no-overlay</code></dt>
-<dd>
-<p>In overlay mode, never remove files when restoring. In no-overlay mode,
-remove tracked files that do not appear in the <em>&lt;tree&gt;</em> of
-<code>--source=</code><em>&lt;tree&gt;</em>, to make them match <em>&lt;tree&gt;</em> exactly. The default
-is no-overlay mode.</p>
-</dd>
-<dt class="hdlist1"><code>--pathspec-from-file=</code><em>&lt;file&gt;</em></dt>
-<dd>
-<p>Pathspec is passed in <em>&lt;file&gt;</em> instead of commandline args. If
-<em>&lt;file&gt;</em> is exactly <code>-</code> then standard input is used. Pathspec
-elements are separated by <em>LF</em> or <em>CR</em>/<em>LF</em>. Pathspec elements can be
-quoted as explained for the configuration variable <code>core.quotePath</code>
-(see <a href="git-config.html">git-config(1)</a>). See also <code>--pathspec-file-nul</code> and
-global <code>--literal-pathspecs</code>.</p>
-</dd>
-<dt class="hdlist1"><code>--pathspec-file-nul</code></dt>
-<dd>
-<p>Only meaningful with <code>--pathspec-from-file</code>. Pathspec elements are
-separated with <em>NUL</em> character and all other characters are taken
-literally (including newlines and quotes).</p>
-</dd>
-<dt class="hdlist1"><code>--</code></dt>
-<dd>
-<p>Do not interpret any more arguments as options.</p>
-</dd>
-<dt class="hdlist1"><em>&lt;pathspec&gt;</em>...</dt>
-<dd>
-<p>Limits the paths affected by the operation.</p>
+<p>Formats all commit object names found in freeform text. These
+must the full object names, i.e. abbreviated hexidecimal object
+names will not be interpreted.</p>
 <div class="paragraph">
-<p>For more details, see the <em>pathspec</em> entry in <a href="gitglossary.html">gitglossary(7)</a>.</p>
+<p>Anything that is parsed as an object name but that is not found to be a
+commit object name is left alone (echoed).</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><code>--format=</code><em>&lt;pretty&gt;</em></dt>
+<dd>
+<p>Pretty format string.</p>
+</dd>
+<dt class="hdlist1"><code>--notes=</code><em>&lt;ref&gt;</em></dt>
+<dt class="hdlist1"><code>--no-notes</code></dt>
+<dd>
+<p>Custom notes ref. Notes are displayed when using the <code>%N</code>
+atom. See <a href="git-notes.html">git-notes(1)</a>.</p>
+</dd>
+<dt class="hdlist1"><code>-z</code></dt>
+<dt class="hdlist1"><code>--null</code></dt>
+<dd>
+<p>Use <em>NUL</em> character to terminate both input and output instead
+of newline. This option cannot be negated.</p>
+<div class="paragraph">
+<p>This is useful if both the input and output could contain newlines or if
+the input to this command also uses <em>NUL</em> character termination; see the
+<a href="#io">INPUT AND OUTPUT FORMATS</a> section below.</p>
+</div>
+<div class="paragraph">
+<p>The mode <code>--stdin-mode=text</code> can have use for this option when it needs
+to process input like for example <code>git</code> <code>last-modified</code> <code>-z</code>; see the
+<a href="#examples">EXAMPLES</a> section below.</p>
+</div>
+</dd>
+<dt class="hdlist1"><code>--null-output</code></dt>
+<dt class="hdlist1"><code>--no-null-output</code></dt>
+<dd>
+<p>Use <em>NUL</em> character to terminate output instead of newline. The
+default is <code>--no-null-output</code>.</p>
+<div class="paragraph">
+<p>This is useful if the output could contain newlines, for example if the
+<code>%n</code> (newline) atom is used.</p>
+</div>
+</dd>
+<dt class="hdlist1"><code>--null-input</code></dt>
+<dt class="hdlist1"><code>--no-null-input</code></dt>
+<dd>
+<p>Use <em>NUL</em> character to terminate input instead of newline. The
+default is <code>--no-null-input</code>.</p>
+<div class="paragraph">
+<p>This is useful if the input revision expressions could contain newlines.</p>
 </div>
 </dd>
 </dl>
@@ -641,88 +554,172 @@ literally (including newlines and quotes).</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_examples">EXAMPLES</h2>
+<h2 id="io">INPUT AND OUTPUT FORMAT</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The following sequence switches to the <code>master</code> branch, reverts the
-<code>Makefile</code> to two revisions back, deletes <code>hello.c</code> by mistake, and gets
-it back from the index.</p>
+<p>The command uses newlines for both input and output termination by
+default. See the <code>-z</code>, <code>--null-output</code>, and <code>--null-input</code> options for
+using <em>NUL</em> character as the terminator.</p>
+</div>
+<div class="paragraph">
+<p>The mode <code>--stdin-mode=revs</code> outputs one formatted commit followed by
+the terminator. This could either be called a <em>line</em> or a <em>record</em> in
+case "line" is too suggestive of newline termination.</p>
+</div>
+<div class="paragraph">
+<p>Note that this means that the terminator character (newline or <em>NUL</em>)
+acts as a <em>terminator</em>, not a <em>separator</em>. In other words, the final
+line or record is also terminated by the terminator character.</p>
+</div>
+<div class="paragraph">
+<p>The mode <code>--stdin-mode=text</code> replaces each object name with the
+formatted commit, i.e. the format <code>%s</code> would transform some commit
+object name to <em>&lt;subject&gt;</em> without any termination. Like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ git switch master
-$ git restore --source master~2 Makefile  <b class="conum">(1)</b>
-$ rm -f hello.c
-$ git restore hello.c                     <b class="conum">(2)</b></pre>
+<pre>Did we not fix this in "&lt;subject&gt;"?</pre>
 </div>
 </div>
-<div class="colist arabic">
-<ol>
+<div class="paragraph">
+<p>It is safe to interactively read and write from this command since each
+record is immediately flushed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="examples">EXAMPLES</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The command <a href="git-last-modified.html">git-last-modified(1)</a> shows the commit that each file
+was last modified in.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ git last-modified -- README.md Makefile
+7798034171030be0909c56377a4e0e10e6d2df93        Makefile
+c50fbb2dd225e7e82abba4380423ae105089f4d7        README.md</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can pipe the result to this command in order to replace the object
+name with the commit author.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ git last-modified -- README.md Makefile |
+    git format-rev --stdin-mode=text --format=%an
+Junio C Hamano  Makefile
+Todd Zullinger  README.md</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Another example is <em>formatting commits in commit messages</em>. Given this commit message:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Fix off-by-one error
+
+Fix off-by-one error introduced in
+e83c5163316f89bfbde7d9ab23ca2e25604af290.
+
+We thought we fixed this in 5569bf9bbedd63a00780fc5c110e0cfab3aa97b9 but
+that only covered 1/3 of the faulty cases.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can format the commits and use par(1) to reflow the text, say in a
+<code>commit-msg</code> hook:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ git config set hook.reference-commits.event commit-msg
+$ git config set hook.reference-commits.command reference-commits
+$ cat $(which reference-commits)
+#/bin/sh
+
+msg="$1"
+rewritten=$(mktemp)
+git format-rev --stdin-mode=text --format=reference &lt;"$msg" |
+    par &gt;"$rewritten"
+mv "$rewritten" "$msg"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Which will produce something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Fix off-by-one error
+
+Fix off-by-one error introduced in e83c5163316 (Implement better memory
+allocator, 2005-04-07).
+
+We thought we fixed this in 5569bf9bbed (Fix memory allocator,
+2005-06-22) but that only covered 1/3 of the faulty cases.</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_discussion">DISCUSSION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This command lets you format any number of revisions in any order
+through one command invocation. Consider the
+<a href="git-last-modified.html">git-last-modified(1)</a> case from the <a href="#examples">EXAMPLES</a> section
+above:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>take a file out of another commit</p>
+<p>There might be hundreds of files</p>
 </li>
 <li>
-<p>restore <code>hello.c</code> from the index</p>
+<p>Commits can be repeated, i.e. two or more files were last modified in
+the same commit</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>If you want to restore <em>all</em> C source files to match the version in
-the index, you can say</p>
+<p>Two widely-used commands which pretty formats commits are
+<a href="git-log.html">git-log(1)</a> and <a href="git-show.html">git-show(1)</a>. It turns out that they are
+not a good fit for the above use case.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>$ git restore '*.c'</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note the quotes around <code>*.c</code>.  The file <code>hello.c</code> will also be
-restored, even though it is no longer in the working tree, because the
-file globbing is used to match entries in the index (not in the
-working tree by the shell).</p>
-</div>
-<div class="paragraph">
-<p>To restore all files in the current directory</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ git restore .</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>or to restore all working tree files with <em>top</em> pathspec magic (see
-<a href="gitglossary.html">gitglossary(7)</a>)</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ git restore :/</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To restore a file in the index to match the version in <code>HEAD</code> (this is
-the same as using <a href="git-reset.html">git-reset(1)</a>)</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ git restore --staged hello.c</pre>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The output of <a href="git-last-modified.html">git-last-modified(1)</a> would have to be processed
+in stages since you need to transform the first column separately and
+then link the author to the filename. But this is surmountable.</p>
+</li>
+<li>
+<p>You can feed each commit to <code>git</code> <code>show</code> or <code>git</code> <code>log</code> <code>--no-walk</code> <code>-1</code>. But
+that means that you need to create a process for each line.</p>
+</li>
+<li>
+<p>Let’s say that you want to use one process, not one per line. So you
+want to feed all the commits to the command. Now you face the problem
+that you have to feed all the commits to the commands before you get
+any output (this is also the case for the <code>--stdin</code> modes). In other
+words, you cannot loop through each line, get the author for the
+commit, and output the author and the filename. You need to feed all
+the commits, get back all the output, and match the output with the
+filename.</p>
+</li>
+<li>
+<p>But the next problem is that commands will deduplicate the input and
+only output one commit one single time only. Thus you cannot make the
+output order match the input order, since a commit could have been
+repeated in the original input.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>or you can restore both the index and the working tree (this is the same
-as using <a href="git-checkout.html">git-checkout(1)</a>)</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ git restore --source=HEAD --staged --worktree hello.c</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>or the short form which is more practical but less readable:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ git restore -s@ -SW hello.c</pre>
-</div>
+<p>In short, it is straightforward to use these two commands if you use one
+process per line. It is much more work if you just want to use one
+process, but still doable. In contrast, this problem is solved with just
+another shell pipeline with this command.</p>
 </div>
 </div>
 </div>
@@ -730,8 +727,8 @@ as using <a href="git-checkout.html">git-checkout(1)</a>)</p>
 <h2 id="_see_also">SEE ALSO</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="git-checkout.html">git-checkout(1)</a>,
-<a href="git-reset.html">git-reset(1)</a></p>
+<p><a href="git-name-rev.html">git-name-rev(1)</a>,
+<a href="git-log.html">git-log(1)</a>.</p>
 </div>
 </div>
 </div>

@@ -6078,7 +6078,29 @@ verify the proxy with when using an HTTPS proxy. Can be overridden by the
 <p>Attempt authentication without seeking a username or password.  This
 can be used to attempt GSS-Negotiate authentication without specifying
 a username in the URL, as libcurl normally requires a username for
-authentication.</p>
+authentication. Possible values are:</p>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><code>auto</code> (default) - Send empty credentials only if the server&#8217;s 401 response
+advertises an authentication mechanism that requires them (such as
+GSS-Negotiate); otherwise fall back to prompting via the credential helper.</p>
+</li>
+<li>
+<p><code>true</code> - Always send empty credentials on the very first request, before
+receiving any 401 response from the server.</p>
+</li>
+<li>
+<p><code>false</code> - Never send empty credentials. Mechanisms that require
+empty credentials or an explicit username, such as GSS-Negotiate, will not
+work.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </dd>
 <dt class="hdlist1">http.proactiveAuth</dt>
 <dd>

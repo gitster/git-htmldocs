@@ -21,6 +21,10 @@ UI, Workflows & Features
    branch, but it gave only one chance to resolve conflicts.  The command
    was taught to create a stash to save the local changes.
 
+ * A new builtin "git format-rev" is introduced for pretty formatting
+   one revision expression per line or commit object names found in
+   running text.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -30,6 +34,8 @@ Performance, Internal Implementation, Development Support etc.
 
  * Rust support is enabled by default (but still allows opting out) in
    some future version of Git.
+
+ * Preparation of the xdiff/ codebase to work with Rust.
 
 
 Fixes since v2.54
@@ -76,6 +82,30 @@ Fixes since v2.54
    disabling C11 language features, causing build failures..
    (merge 0a6d29090c ps/clang-w-glibc-2.43-and-_Generic later to maint).
 
+ * The 'http.emptyAuth=auto' configuration now correctly attempts
+   Negotiate authentication before falling back to manual credentials.
+   This allows seamless Kerberos ticket-based authentication without
+   requiring users to explicitly set 'http.emptyAuth=true'.
+   (merge 4919938d28 mc/http-emptyauth-negotiate-fix later to maint).
+
+ * Ramifications of turning off commit-graph has been documented a bit
+   more clearly.
+   (merge 48c855bb8f kh/doc-commit-graph later to maint).
+
+ * "git rebase --update-refs", when used with an rebase.instructionFormat
+   with "%d" (describe) in it, tried to update local branch HEAD by
+   mistake, which has been corrected.
+   (merge 106b6885c7 ag/rebase-update-refs-limit-to-branches later to maint).
+
+ * Tweak the way how sideband messages from remote are printed while
+   we talk with a remote repository to avoid tickling terminal
+   emulator glitches.
+   (merge 31e8fcabd8 rs/sideband-clear-line-before-print later to maint).
+
+ * The configuration variable submodule.fetchJobs was not read correctly,
+   which has been corrected.
+   (merge aa45a5902f sj/submodule-update-clone-config-fix later to maint).
+
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).
    (merge b96490241e jc/doc-timestamps-in-stat later to maint).
@@ -83,3 +113,5 @@ Fixes since v2.54
    (merge ef85286e51 ss/t7004-unhide-git-failures later to maint).
    (merge 7584d10bc2 mf/format-patch-cover-letter-format-docfix later to maint).
    (merge 8547908eb3 pw/rename-to-get-current-worktree later to maint).
+   (merge 890229b3f3 sg/t6112-unwanted-tilde-expansion-fix later to maint).
+   (merge ab9753e7bc kh/doc-restore-double-underscores-fix later to maint).
