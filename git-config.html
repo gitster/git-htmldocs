@@ -8948,18 +8948,25 @@ supported values are:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>all</code>: Git works with all bare repositories. This is the default.</p>
+<p><code>all</code>: Git works with all bare repositories. This is the default in
+Git 2.x.</p>
 </li>
 <li>
 <p><code>explicit</code>: Git only works with bare repositories specified via
 the top-level <code>--git-dir</code> command-line option, or the <code>GIT_DIR</code>
-environment variable (see <a href="git.html">git(1)</a>).</p>
+environment variable (see <a href="git.html">git(1)</a>). This will be the default
+in Git 3.0.</p>
 <div class="paragraph">
 <p>If you do not use bare repositories in your workflow, then it may be
 beneficial to set <code>safe.bareRepository</code> to <code>explicit</code> in your global
 config. This will protect you from attacks that involve cloning a
 repository that contains a bare repository and running a Git command
 within that directory.</p>
+</div>
+<div class="paragraph">
+<p>If you use bare repositories regularly and want to preserve the current
+behavior after upgrading to Git 3.0, set <code>safe.bareRepository</code> to <code>all</code>
+in your global or system config.</p>
 </div>
 <div class="paragraph">
 <p>This config setting is only respected in protected configuration (see

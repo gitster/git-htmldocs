@@ -25,6 +25,8 @@ UI, Workflows & Features
    one revision expression per line or commit object names found in
    running text.
 
+ * "git history" learned "fixup" command.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -36,6 +38,8 @@ Performance, Internal Implementation, Development Support etc.
    some future version of Git.
 
  * Preparation of the xdiff/ codebase to work with Rust.
+
+ * Use a larger buffer size in the code paths to ingest pack stream.
 
 
 Fixes since v2.54
@@ -105,6 +109,32 @@ Fixes since v2.54
  * The configuration variable submodule.fetchJobs was not read correctly,
    which has been corrected.
    (merge aa45a5902f sj/submodule-update-clone-config-fix later to maint).
+
+ * Update code paths that assumed "unsigned long" was long enough for
+   "size_t".
+   (merge 7a094d68a2 js/objects-larger-than-4gb-on-windows later to maint).
+
+ * Stop using unmaintained custom allocator in Windows build which was
+   the last user of the code.
+   (merge 0b72550110 js/mingw-no-nedmalloc later to maint).
+
+ * The computation to shorten the filenames shown in diffstat measured
+   width of individual UTF-8 characters to add up, but forgot to take
+   into account error cases (e.g., an invalid UTF-8 sequence, or a
+   control character).
+   (merge 09d86a3b98 en/diffstat-utf8-truncation-fix later to maint).
+
+ * Some tests assume that bare repository accesses are by default
+   allowed; rewrite some of them to avoid the assumption, rewrite
+   others to explicitly set safe.bareRepository to allow them.
+   (merge 985b38ca6c js/adjust-tests-to-explicitly-access-bare-repo later to maint).
+
+ * Signing commit with custom encoding was passing the data to be
+   signed at a wrong stage in the pipeline, which has been corrected.
+   (merge 7735d7eee3 bc/sign-commit-with-custom-encoding later to maint).
+
+ * Further update to the i18n alias support to avoid regressions.
+   (merge 21186cf9bb jh/alias-i18n-fixes later to maint).
 
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).
