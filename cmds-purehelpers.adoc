@@ -52,3 +52,6 @@ linkgit:git-sh-setup[1]::
 linkgit:git-stripspace[1]::
 	Remove unnecessary whitespace.
 
+linkgit:git-url-parse[1]::
+	Parse and extract git URL components.
+
