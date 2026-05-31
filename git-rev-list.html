@@ -2127,6 +2127,13 @@ do not belong to a linear branch. This option puts a barrier
 in between them in that case. If <em>&lt;barrier&gt;</em> is specified, it
 is the string that will be shown instead of the default one.</p>
 </dd>
+<dt class="hdlist1"><code>--graph-lane-limit=</code><em>&lt;n&gt;</em></dt>
+<dd>
+<p>When <code>--graph</code> is used, limit the number of graph lanes to be shown.
+Lanes over the limit are replaced with a truncation mark <em>~</em>.
+By default it is set to 0 (no limit), zero and negative values
+are ignored and treated as no limit.</p>
+</dd>
 <dt class="hdlist1"><code>--count</code></dt>
 <dd>
 <p>Print a number stating how many commits would have been
@@ -3026,7 +3033,7 @@ repository size (taking the size of <code>origin</code> as a baseline).</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-20 18:10:42 -0700
+Last updated 2025-06-21 10:10:42 +0900
 </div>
 </div>
 </body>

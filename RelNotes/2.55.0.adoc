@@ -39,6 +39,15 @@ UI, Workflows & Features
  * The command line parser for "git diff" learned a few options take
    only non-negative integers.
 
+ * The graph output from commands like "git log --graph" can now be
+   limited to a specified number of lanes, preventing overly wide output
+   in repositories with many branches.
+
+ * The fsmonitor daemon has been implemented for Linux.
+
+ * "git cat-file --batch" learns an in-line command "mailmap"
+   that lets the user toggle use of mailmap.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -97,6 +106,14 @@ Performance, Internal Implementation, Development Support etc.
 
  * Many uses of the_repository has been updated to use a more
    appropriate struct repository instance in setup.c codepath.
+
+ * Revision traversal optimization.
+
+ * Build update.
+
+ * The logic to lazy-load trees from the commit-graph has been made
+   more robust by falling back to reading the commit object when
+   the commit-graph is no longer available.
 
 
 Fixes since v2.54
@@ -206,6 +223,13 @@ Fixes since v2.54
    (i.e., "https://example.com" not "https://example.com/").
    (merge b92387cd55 jk/dumb-http-alternate-fix later to maint).
 
+ * "git bisect" now uses the selected terms (e.g., old/new) more
+   consistently in its output.
+   (merge cb55991825 jr/bisect-custom-terms-in-output later to maint).
+
+ * Update GitLab CI jobs that exercise macOS.
+   (merge 62319b49bb ps/gitlab-ci-macOS-improvements later to maint).
+
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).
    (merge b96490241e jc/doc-timestamps-in-stat later to maint).
@@ -224,3 +248,6 @@ Fixes since v2.54
    (merge 499f9048e0 ps/t3903-cover-stash-include-untracked later to maint).
    (merge b56ab270aa jk/sq-dequote-cleanup later to maint).
    (merge 29d9fdcf10 rs/use-builtin-add-overflow-explicitly-on-clang later to maint).
+   (merge d9982e8290 ed/check-connected-close-err-fd-2.53 later to maint).
+   (merge 1740cc35d0 ed/check-connected-close-err-fd later to maint).
+   (merge f4d7eb3d1c sp/doc-range-diff-takes-notes later to maint).
