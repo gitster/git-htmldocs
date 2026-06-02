@@ -48,6 +48,9 @@ UI, Workflows & Features
  * "git cat-file --batch" learns an in-line command "mailmap"
    that lets the user toggle use of mailmap.
 
+ * The "git pack-objects --path-walk" traversal has been integrated
+   with several object filters, including blobless and sparse filters.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -114,6 +117,10 @@ Performance, Internal Implementation, Development Support etc.
  * The logic to lazy-load trees from the commit-graph has been made
    more robust by falling back to reading the commit object when
    the commit-graph is no longer available.
+
+ * The "name" argument in git_connect() and related functions has been
+   converted to a "service" enum to improve type safety and clarify its
+   purpose.
 
 
 Fixes since v2.54
@@ -229,6 +236,10 @@ Fixes since v2.54
 
  * Update GitLab CI jobs that exercise macOS.
    (merge 62319b49bb ps/gitlab-ci-macOS-improvements later to maint).
+
+ * "Friday noon" asked in the morning on Sunday was parsed to be one
+   day before the specified time, which has been corrected.
+   (merge b809304101 ta/approxidate-noon-fix later to maint).
 
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).

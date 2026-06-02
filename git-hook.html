@@ -444,7 +444,7 @@ pre>code {
 <h1>git-hook(1) Manual Page</h1>
 <h2 id="_name">NAME</h2>
 <div class="sectionbody">
-<p>git-hook - Run git hooks</p>
+<p>git-hook - Run Git hooks</p>
 </div>
 </div>
 <div id="content">
@@ -462,8 +462,8 @@ pre>code {
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A command interface for running git hooks (see <a href="githooks.html">githooks(5)</a>),
-for use by other scripted git commands.</p>
+<p>A command interface for running Git hooks (see <a href="githooks.html">githooks(5)</a>),
+for use by other scripted Git commands.</p>
 </div>
 <div class="paragraph">
 <p>This command parses the default configuration files for sets of configs like
@@ -498,7 +498,7 @@ spell-checker for your commit messages, you would write a configuration like so:
 <div class="paragraph">
 <p>With this config, when you run <em>git commit</em>, first <code>~/bin/linter</code> <code>--cpp20</code> will
 have a chance to check your files to be committed (during the <code>pre-commit</code> hook
-event`), and then <code>~/bin/spellchecker</code> will have a chance to check your commit
+event), and then <code>~/bin/spellchecker</code> will have a chance to check your commit
 message (during the <code>commit-msg</code> hook event).</p>
 </div>
 <div class="paragraph">
@@ -655,7 +655,7 @@ are not individually marked as parallel.</p>
 </div>
 <div class="paragraph">
 <p>Some hooks always run sequentially regardless of this flag or the
-<code>hook.jobs</code> config, because git knows they cannot safely run in parallel:
+<code>hook.jobs</code> config, because Git knows they cannot safely run in parallel:
 <code>applypatch-msg</code>, <code>pre-commit</code>, <code>prepare-commit-msg</code>, <code>commit-msg</code>,
 <code>post-commit</code>, <code>post-checkout</code>, and <code>push-to-checkout</code>.</p>
 </div>
@@ -723,7 +723,7 @@ is a unique name that identifies this hook. The hook events that
 trigger the command are configured with <code>hook.</code><em>&lt;friendly-name&gt;</em><code>.event</code>.
 The value can be an executable path or a shell oneliner. If more than
 one value is specified for the same <em>&lt;friendly-name&gt;</em>, only the last
-value parsed is used. See <a href="git-hook.html">git-hook(1)</a>.</p>
+value parsed is used. </p>
 </dd>
 <dt class="hdlist1">hook.&lt;friendly-name&gt;.event</dt>
 <dd>
@@ -734,7 +734,7 @@ specified event, the associated <code>hook.</code><em>&lt;friendly-name&gt;</em>
 This is a multi-valued key. To run <code>hook.</code><em>&lt;friendly-name&gt;</em> on multiple
 events, specify the key more than once. An empty value resets
 the list of events, clearing any previously defined events for
-<code>hook.</code><em>&lt;friendly-name&gt;</em>. See <a href="git-hook.html">git-hook(1)</a>.</p>
+<code>hook.</code><em>&lt;friendly-name&gt;</em>. </p>
 <div class="paragraph">
 <p>The <em>&lt;friendly-name&gt;</em> must not be the same as a known hook event name
 (e.g. do not use <code>hook.pre-commit.event</code>). Using a known event name as
@@ -749,7 +749,7 @@ a warning is issued when <em>&lt;friendly-name&gt;</em> matches the event value.
 Set to <code>false</code> to disable the hook without removing its
 configuration. This is particularly useful when a hook is defined
 in a system or global config file and needs to be disabled for a
-specific repository. See <a href="git-hook.html">git-hook(1)</a>.</p>
+specific repository. </p>
 </dd>
 <dt class="hdlist1">hook.&lt;friendly-name&gt;.parallel</dt>
 <dd>
@@ -760,14 +760,14 @@ event. If any hook for an event does not have this set to <code>true</code>,
 all hooks for that event run sequentially regardless of <code>hook.jobs</code>.
 Only configured (named) hooks need to declare this. Traditional hooks
 found in the hooks directory do not need to, and run in parallel when
-the effective job count is greater than 1. See <a href="git-hook.html">git-hook(1)</a>.</p>
+the effective job count is greater than 1. </p>
 </dd>
 <dt class="hdlist1">hook.&lt;event&gt;.enabled</dt>
 <dd>
 <p>Switch to enable or disable all hooks for the <em>&lt;event&gt;</em> hook event.
 When set to <code>false</code>, no hooks fire for that event, regardless of any
 per-hook <code>hook.</code><em>&lt;friendly-name&gt;</em><code>.enabled</code> settings. Defaults to <code>true</code>.
-See <a href="git-hook.html">git-hook(1)</a>.</p>
+</p>
 <div class="paragraph">
 <p>Note on naming: <em>&lt;event&gt;</em> must be the event name (e.g. <code>pre-commit</code>),
 not a hook friendly-name. Since using a known event name as a
@@ -786,7 +786,7 @@ for this specific event. The same parallelism restrictions apply: this
 setting has no effect unless all configured hooks for the event have
 <code>hook.</code><em>&lt;friendly-name&gt;</em><code>.parallel</code> set to <code>true</code>. Set to <code>-1</code> to use the
 number of available CPU cores. Must be a positive integer or <code>-1</code>;
-zero is rejected with a warning. See <a href="git-hook.html">git-hook(1)</a>.</p>
+zero is rejected with a warning. </p>
 <div class="paragraph">
 <p>Note on naming: although this key resembles <code>hook.</code><em>&lt;friendly-name&gt;</em><code>.*</code>
 (a per-hook setting), <em>&lt;event&gt;</em> must be the event name, not a hook
@@ -861,7 +861,7 @@ into stderr to allow correct de-interleaving of parallel output.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-05-11 11:04:23 +0900
+Last updated 2026-06-02 18:54:36 +0900
 </div>
 </div>
 </body>

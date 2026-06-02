@@ -539,6 +539,11 @@ current commit).  For a complete list of ways to spell
 <p>You may also use commit-limiting options understood by
 <a href="git-rev-list.html">git-rev-list(1)</a> such as <code>--first-parent</code>, <code>--since</code>, or pathspecs.</p>
 </div>
+<div class="paragraph">
+<p>Most <code>--filter=</code><em>&lt;spec&gt;</em> options don&#8217;t work with the purpose of
+<code>git</code> <code>backfill</code>, but the <code>sparse:</code><em>&lt;oid&gt;</em> filter is integrated to provide a
+focused set of paths to download, distinct from the <code>--sparse</code> option.</p>
+</div>
 </dd>
 </dl>
 </div>
@@ -564,7 +569,7 @@ current commit).  For a complete list of ways to spell
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-05-18 10:05:00 +0900
+Last updated 2026-06-02 18:54:36 +0900
 </div>
 </div>
 </body>
