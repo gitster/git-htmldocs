@@ -2114,7 +2114,7 @@ your alias.</p>
 </ul>
 </div>
 </dd>
-<dt class="hdlist1">am.keepcr</dt>
+<dt class="hdlist1"><code>am.keepcr</code></dt>
 <dd>
 <p>If true, <a href="git-am.html">git-am(1)</a> will call <a href="git-mailsplit.html">git-mailsplit(1)</a>
 for patches in mbox format with parameter <code>--keep-cr</code>. In this
@@ -2122,7 +2122,7 @@ case <a href="git-mailsplit.html">git-mailsplit(1)</a> will
 not remove <code>\r</code> from lines ending with <code>\r\n</code>. Can be overridden
 by giving <code>--no-keep-cr</code> from the command line.</p>
 </dd>
-<dt class="hdlist1">am.threeWay</dt>
+<dt class="hdlist1"><code>am.threeWay</code></dt>
 <dd>
 <p>By default, <a href="git-am.html">git-am(1)</a> will fail if the patch does not
 apply cleanly. When set to true, this setting tells
@@ -2131,26 +2131,27 @@ records the identity of blobs it is supposed to apply to and we
 have those blobs available locally (equivalent to giving the
 <code>--3way</code> option from the command line). Defaults to <code>false</code>.</p>
 </dd>
-<dt class="hdlist1">am.messageId</dt>
+<dt class="hdlist1"><code>am.messageId</code></dt>
 <dd>
 <p>Add a <code>Message-ID</code> trailer based on the email header to the
 commit when using <a href="git-am.html">git-am(1)</a> (see
 <a href="git-interpret-trailers.html">git-interpret-trailers(1)</a>). See also the <code>--message-id</code>
 and <code>--no-message-id</code> options.</p>
 </dd>
-<dt class="hdlist1">apply.ignoreWhitespace</dt>
+<dt class="hdlist1"><code>apply.ignoreWhitespace</code></dt>
 <dd>
-<p>When set to <em>change</em>, tells <em>git apply</em> to ignore changes in
+<p>When set to <code>change</code>, tells <code>git</code> <code>apply</code> to ignore changes in
 whitespace, in the same way as the <code>--ignore-space-change</code>
 option.
-When set to one of: no, none, never, false, it tells <em>git apply</em> to
+When set to one of: <code>no</code>, <code>none</code>, <code>never</code>, <code>false</code>, it tells <code>git</code> <code>apply</code> to
 respect all whitespace differences.
 See <a href="git-apply.html">git-apply(1)</a>.</p>
 </dd>
-<dt class="hdlist1">apply.whitespace</dt>
+<dt class="hdlist1"><code>apply.whitespace</code></dt>
 <dd>
-<p>Tells <em>git apply</em> how to handle whitespace, in the same way
-as the <code>--whitespace</code> option. See <a href="git-apply.html">git-apply(1)</a>.</p>
+<p>Tells <code>git</code> <code>apply</code> how to handle whitespace, in the same way
+as the <code>--whitespace</code> option.
+See <a href="git-apply.html">git-apply(1)</a>.</p>
 </dd>
 <dt class="hdlist1">attr.tree</dt>
 <dd>
@@ -5775,41 +5776,41 @@ See ssh-keygen(1) for details.
 If a public key is found in this file then it will always be treated
 as having trust level "never" and signatures will show as invalid.</p>
 </dd>
-<dt class="hdlist1">grep.lineNumber</dt>
+<dt class="hdlist1"><code>grep.lineNumber</code></dt>
 <dd>
-<p>If set to true, enable <code>-n</code> option by default.</p>
+<p>If set to <code>true</code>, enable <code>-n</code> option by default.</p>
 </dd>
-<dt class="hdlist1">grep.column</dt>
+<dt class="hdlist1"><code>grep.column</code></dt>
 <dd>
-<p>If set to true, enable the <code>--column</code> option by default.</p>
+<p>If set to <code>true</code>, enable the <code>--column</code> option by default.</p>
 </dd>
-<dt class="hdlist1">grep.patternType</dt>
+<dt class="hdlist1"><code>grep.patternType</code></dt>
 <dd>
-<p>Set the default matching behavior. Using a value of <em>basic</em>, <em>extended</em>,
-<em>fixed</em>, or <em>perl</em> will enable the <code>--basic-regexp</code>, <code>--extended-regexp</code>,
+<p>Set the default matching behavior. Using a value of <code>basic</code>, <code>extended</code>,
+<code>fixed</code>, or <code>perl</code> will enable the <code>--basic-regexp</code>, <code>--extended-regexp</code>,
 <code>--fixed-strings</code>, or <code>--perl-regexp</code> option accordingly, while the
-value <em>default</em> will use the <code>grep.extendedRegexp</code> option to choose
-between <em>basic</em> and <em>extended</em>.</p>
+value <code>default</code> will use the <code>grep.extendedRegexp</code> option to choose
+between <code>basic</code> and <code>extended</code>.</p>
 </dd>
-<dt class="hdlist1">grep.extendedRegexp</dt>
+<dt class="hdlist1"><code>grep.extendedRegexp</code></dt>
 <dd>
-<p>If set to true, enable <code>--extended-regexp</code> option by default. This
+<p>If set to <code>true</code>, enable <code>--extended-regexp</code> option by default. This
 option is ignored when the <code>grep.patternType</code> option is set to a value
-other than <em>default</em>.</p>
+other than <code>default</code>.</p>
 </dd>
-<dt class="hdlist1">grep.threads</dt>
+<dt class="hdlist1"><code>grep.threads</code></dt>
 <dd>
 <p>Number of grep worker threads to use. If unset (or set to 0), Git will
 use as many threads as the number of logical cores available.</p>
 </dd>
-<dt class="hdlist1">grep.fullName</dt>
+<dt class="hdlist1"><code>grep.fullName</code></dt>
 <dd>
-<p>If set to true, enable <code>--full-name</code> option by default.</p>
+<p>If set to <code>true</code>, enable <code>--full-name</code> option by default.</p>
 </dd>
-<dt class="hdlist1">grep.fallbackToNoIndex</dt>
+<dt class="hdlist1"><code>grep.fallbackToNoIndex</code></dt>
 <dd>
-<p>If set to true, fall back to <code>git</code> <code>grep</code> <code>--no-index</code> if <code>git</code> <code>grep</code>
-is executed outside of a git repository.  Defaults to false.</p>
+<p>If set to <code>true</code>, fall back to <code>git</code> <code>grep</code> <code>--no-index</code> if <code>git</code> <code>grep</code>
+is executed outside of a git repository.  Defaults to <code>false</code>.</p>
 </dd>
 <dt class="hdlist1">gui.commitMsgWidth</dt>
 <dd>
@@ -6699,7 +6700,7 @@ porcelains). See e.g. <a href="git-mailinfo.html">git-mailinfo(1)</a>. Defaults 
 <p>Character encoding the commit messages are converted to when
 running <em>git log</em> and friends.</p>
 </dd>
-<dt class="hdlist1">imap.folder</dt>
+<dt class="hdlist1"><code>imap.folder</code></dt>
 <dd>
 <p>The folder to drop the mails into, which is typically the Drafts
 folder. For example: <code>INBOX.Drafts</code>, <code>INBOX/Drafts</code> or
@@ -6707,47 +6708,47 @@ folder. For example: <code>INBOX.Drafts</code>, <code>INBOX/Drafts</code> or
 the value of this configuration variable is used as the fallback
 default value when the <code>--folder</code> option is not given.</p>
 </dd>
-<dt class="hdlist1">imap.tunnel</dt>
+<dt class="hdlist1"><code>imap.tunnel</code></dt>
 <dd>
 <p>Command used to set up a tunnel to the IMAP server through which
 commands will be piped instead of using a direct network connection
-to the server. Required when imap.host is not set.</p>
+to the server. Required when <code>imap.host</code> is not set.</p>
 </dd>
-<dt class="hdlist1">imap.host</dt>
+<dt class="hdlist1"><code>imap.host</code></dt>
 <dd>
 <p>A URL identifying the server. Use an <code>imap://</code> prefix for non-secure
 connections and an <code>imaps://</code> prefix for secure connections.
-Ignored when imap.tunnel is set, but required otherwise.</p>
+Ignored when <code>imap.tunnel</code> is set, but required otherwise.</p>
 </dd>
-<dt class="hdlist1">imap.user</dt>
+<dt class="hdlist1"><code>imap.user</code></dt>
 <dd>
 <p>The username to use when logging in to the server.</p>
 </dd>
-<dt class="hdlist1">imap.pass</dt>
+<dt class="hdlist1"><code>imap.pass</code></dt>
 <dd>
 <p>The password to use when logging in to the server.</p>
 </dd>
-<dt class="hdlist1">imap.port</dt>
+<dt class="hdlist1"><code>imap.port</code></dt>
 <dd>
 <p>An integer port number to connect to on the server.
-Defaults to 143 for imap:// hosts and 993 for imaps:// hosts.
-Ignored when imap.tunnel is set.</p>
+Defaults to 143 for <code>imap://</code> hosts and 993 for <code>imaps://</code> hosts.
+Ignored when <code>imap.tunnel</code> is set.</p>
 </dd>
-<dt class="hdlist1">imap.sslverify</dt>
+<dt class="hdlist1"><code>imap.sslverify</code></dt>
 <dd>
 <p>A boolean to enable/disable verification of the server certificate
 used by the SSL/TLS connection. Default is <code>true</code>. Ignored when
-imap.tunnel is set.</p>
+<code>imap.tunnel</code> is set.</p>
 </dd>
-<dt class="hdlist1">imap.preformattedHTML</dt>
+<dt class="hdlist1"><code>imap.preformattedHTML</code></dt>
 <dd>
 <p>A boolean to enable/disable the use of html encoding when sending
-a patch.  An html encoded patch will be bracketed with &lt;pre&gt;
+a patch.  An html encoded patch will be bracketed with <em>&lt;pre&gt;</em>
 and have a content type of text/html.  Ironically, enabling this
 option causes Thunderbird to send the patch as a plain/text,
 format=fixed email.  Default is <code>false</code>.</p>
 </dd>
-<dt class="hdlist1">imap.authMethod</dt>
+<dt class="hdlist1"><code>imap.authMethod</code></dt>
 <dd>
 <p>Specify the authentication method for authenticating with the IMAP server.
 If Git was built with the NO_CURL option, or if your curl version is older

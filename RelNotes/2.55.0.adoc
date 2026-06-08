@@ -122,6 +122,19 @@ Performance, Internal Implementation, Development Support etc.
    converted to a "service" enum to improve type safety and clarify its
    purpose.
 
+ * 'git restore --staged' has been optimized to avoid unnecessarily expanding
+   the sparse index when operating on paths within the sparse checkout
+   definition, by handling sparse directory entries at the tree level.
+
+ * "git stash -p" has been optimized by reusing cached index
+   entries in its temporary index, avoiding unnecessary lstat()
+   calls on unchanged files.
+
+ * The check for non-stale commits in the priority queue used by
+   `paint_down_to_common` and `ahead_behind` has been optimized by
+   replacing an O(N) scan with an O(1) counter, yielding performance
+   improvements in repositories with wide histories.
+
 
 Fixes since v2.54
 -----------------
@@ -241,6 +254,16 @@ Fixes since v2.54
    day before the specified time, which has been corrected.
    (merge b809304101 ta/approxidate-noon-fix later to maint).
 
+ * The GIT_WORK_TREE variable prepared to invoke the push-to-checkout
+   hook was leaking into the environment even when there was no hook
+   used and broke the default push-to-deploy (i.e., let "git checkout"
+   update the working tree only when the working tree is clean).
+   (merge 44d04e4426 ar/receive-pack-worktree-env later to maint).
+
+ * A batch of documentation pages has been updated to use the modern
+   synopsis style.
+   (merge 2ef248ae45 ja/doc-synopsis-style-again later to maint).
+
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).
    (merge b96490241e jc/doc-timestamps-in-stat later to maint).
@@ -262,3 +285,4 @@ Fixes since v2.54
    (merge d9982e8290 ed/check-connected-close-err-fd-2.53 later to maint).
    (merge 1740cc35d0 ed/check-connected-close-err-fd later to maint).
    (merge f4d7eb3d1c sp/doc-range-diff-takes-notes later to maint).
+   (merge 83e7f3bd2b kh/free-commit-list later to maint).
