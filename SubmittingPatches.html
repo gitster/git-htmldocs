@@ -1538,6 +1538,21 @@ relevant for debugging.</p>
 <p>Then fix the problem and push your fix to your GitHub fork. This will
 trigger a new CI build to ensure all tests pass.</p>
 </div>
+<div class="paragraph">
+<p>Even if you do not use GitHub CI to test your changes, pay close
+attention to new failures on the branches when the maintainer pushes
+out after your topic gets merged to the <em>seen</em> branch to make sure
+that your topic is not breaking the CI, and retract your breaking
+topic quickly while you fix the breakage you caused.</p>
+</div>
+<div class="paragraph">
+<p>To see maintainer&#8217;s push, keep an eye on this page:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>`https://github.com/git/git/actions/workflows/main.yml?query=event%3Apush+actor%3Agitster`</pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1666,7 +1681,7 @@ this problem around.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-04-20 06:54:44 -0700
+Last updated 2026-06-09 14:43:38 -0700
 </div>
 </div>
 </body>

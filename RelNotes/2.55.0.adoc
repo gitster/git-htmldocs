@@ -51,6 +51,17 @@ UI, Workflows & Features
  * The "git pack-objects --path-walk" traversal has been integrated
    with several object filters, including blobless and sparse filters.
 
+ * "git push" learned to take a "remote group" name to push to, which
+   causes pushes to multiple places, just like "git fetch" would do.
+
+ * The 'git-jump' command (in contrib/) has been taught to automatically
+   pick a mode (merge, diff, or ws) when invoked without arguments.
+
+ * The documentation for `push.default = simple` has been clarified to
+   better explain its behavior, making it clear that it pushes the
+   current branch to a same-named branch on the remote, and detailing
+   the upstream requirements for centralized workflows.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -134,6 +145,20 @@ Performance, Internal Implementation, Development Support etc.
    `paint_down_to_common` and `ahead_behind` has been optimized by
    replacing an O(N) scan with an O(1) counter, yielding performance
    improvements in repositories with wide histories.
+
+ * Reachability bitmap generation has been significantly optimized. By
+   reordering tree traversal, caching object positions, and refining how
+   pseudo-merge bitmaps are constructed, the performance of "git repack
+   --write-midx-bitmaps" is improved, especially for large repositories
+   and when using pseudo-merges.
+
+ * Adding a decimal integer with strbuf_addf("%u") appears commonly;
+   they have been optimized by using a custom formatter.
+
+ * Formatting object name in full hexadecimal form has been optimized
+   by using a new strbuf_add_oid_hex() helper function.
+
+ * Encourage original authors to monitor the CI status.
 
 
 Fixes since v2.54
@@ -263,6 +288,11 @@ Fixes since v2.54
  * A batch of documentation pages has been updated to use the modern
    synopsis style.
    (merge 2ef248ae45 ja/doc-synopsis-style-again later to maint).
+
+ * The "promisor.quiet" configuration variable was not used from
+   relevant submodules when commands like "grep --recurse-submodules"
+   triggered a lazy fetch, which has been corrected.
+   (merge fa1468a1f7 th/promisor-quiet-per-repo later to maint).
 
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).

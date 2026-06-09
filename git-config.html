@@ -8384,9 +8384,10 @@ pushing to the same repository you would normally pull from
 <dd>
 <p>push the current branch with the same name on the remote.</p>
 <div class="paragraph">
-<p>If you are working on a centralized workflow (pushing to the same repository you
-pull from, which is typically <code>origin</code>), then you need to configure an upstream
-branch with the same name.</p>
+<p>This mode requires that the remote repository to be pushed to is
+known.  When pushing back to the same remote you pull from, the
+current branch must also have an upstream tracking branch with the
+same name.</p>
 </div>
 <div class="paragraph">
 <p>This mode is the default since Git 2.0, and is the safest option suited for
@@ -10664,7 +10665,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-28 06:24:52 +0900
+Last updated 2026-03-27 14:24:52 -0700
 </div>
 </div>
 </body>
