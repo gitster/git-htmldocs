@@ -62,6 +62,9 @@ UI, Workflows & Features
    current branch to a same-named branch on the remote, and detailing
    the upstream requirements for centralized workflows.
 
+ * The documentation for "--word-diff" has been extended with a bit of
+   implementation detail of where these different words come from.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -159,6 +162,14 @@ Performance, Internal Implementation, Development Support etc.
    by using a new strbuf_add_oid_hex() helper function.
 
  * Encourage original authors to monitor the CI status.
+
+ * The `git log -L` implementation has been refactored to use the
+   standard diff output pipeline, enabling pickaxe and diff-filter to
+   work as expected. Additionally, metadata-only diff formats like
+   --raw and --name-only are now supported with -L.
+
+ * The loose object source has been refactored into a proper `struct
+   odb_source`.
 
 
 Fixes since v2.54
@@ -293,6 +304,23 @@ Fixes since v2.54
    relevant submodules when commands like "grep --recurse-submodules"
    triggered a lazy fetch, which has been corrected.
    (merge fa1468a1f7 th/promisor-quiet-per-repo later to maint).
+
+ * Correct use of sockaddr API in "git daemon".
+   (merge 422a5bf575 st/daemon-sockaddr-fixes later to maint).
+
+ * A memory leak in `fetch_and_setup_pack_index()` when verification of
+   the downloaded pack index fails has been plugged. Also an obsolete
+   `unlink()` call on parse failure has been cleaned up.
+
+ * In t3070-wildmatch, "via ls-files" test variants with patterns
+   containing backslash escapes are now skipped on Windows, avoiding 36
+   test failures caused by pathspec separator conversion.
+   (merge 8c84e6802c kk/wildmatch-windows-ls-files-prereq later to maint).
+
+ * A linker warning on macOS when building with Xcode 16.3 or newer has
+   been avoided by passing -fno-common to the compiler when a
+   sufficiently new linker is detected.
+   (merge 5cd4d0d850 hn/macos-linker-warning later to maint).
 
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).

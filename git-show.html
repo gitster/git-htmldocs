@@ -1946,6 +1946,15 @@ tilde <code>~</code> on a line of its own.</p>
 <p>Note that despite the name of the first mode, color is used to
 highlight the changed parts in all modes if enabled.</p>
 </div>
+<div class="paragraph">
+<p>The <code>--word-diff</code> option operates by taking the same line-by-line
+diff that is produced without the option and computing
+word-by-word changes within each hunk.  This may produce a
+larger diff than a dedicated word-diff tool would.  If Git
+acquires a different implementation in the future, the output
+may change.  Note that this is similar to the <code>--diff-algorithm</code>
+option, which may also change the output.</p>
+</div>
 </dd>
 <dt class="hdlist1"><code>--word-diff-regex=</code><em>&lt;regex&gt;</em></dt>
 <dd>
