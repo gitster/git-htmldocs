@@ -65,6 +65,11 @@ UI, Workflows & Features
  * The documentation for "--word-diff" has been extended with a bit of
    implementation detail of where these different words come from.
 
+ * "git config foo.bar=baz" is not likely to be a request to read the
+   value of such a variable with '=' in its name; rather it is plausible
+   that the user meant "git config set foo.bar baz".  Give advice when
+   giving an error message.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -170,6 +175,18 @@ Performance, Internal Implementation, Development Support etc.
 
  * The loose object source has been refactored into a proper `struct
    odb_source`.
+
+ * Guidelines on how to write a cover letter for a multi-patch series
+   have been added to SubmittingPatches, which also got a new marker
+   to separate the section for typofixes.
+
+ * The setup logic to discover and configure repositories has been
+   refactored, and the initialization of the object database has been
+   centralized.
+
+ * Many core configuration variables have been migrated from global
+   variables into 'repo_config_values' to tie them to a specific
+   repository instance, avoiding cross-repository state leakage.
 
 
 Fixes since v2.54
@@ -322,6 +339,15 @@ Fixes since v2.54
    sufficiently new linker is detected.
    (merge 5cd4d0d850 hn/macos-linker-warning later to maint).
 
+ * Documentation and tests have been added to clarify that Git's internal
+   raw timestamp format requires a `@` prefix for values less than
+   100,000,000 to prevent ambiguity with other formats like YYYYMMDD.
+   (merge 4018dc29ee ls/doc-raw-timestamp-prefix later to maint).
+
+ * Wording used in "format-patch --subject-prefix" documentation
+   has been improved.
+   (merge 4a1eb9304a lo/doc-format-patch-subject-prefix later to maint).
+
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).
    (merge b96490241e jc/doc-timestamps-in-stat later to maint).
@@ -344,3 +370,5 @@ Fixes since v2.54
    (merge 1740cc35d0 ed/check-connected-close-err-fd later to maint).
    (merge f4d7eb3d1c sp/doc-range-diff-takes-notes later to maint).
    (merge 83e7f3bd2b kh/free-commit-list later to maint).
+   (merge d1b72b29e9 am/doc-tech-hash-typofix later to maint).
+   (merge 014c454799 ak/typofixes later to maint).
