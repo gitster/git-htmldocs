@@ -70,6 +70,9 @@ UI, Workflows & Features
    that the user meant "git config set foo.bar baz".  Give advice when
    giving an error message.
 
+ * "git rev-list" (and "git log" family of commands) learned a new "--max-count-oldest"
+   that picks oldest N commits in the range instead of the usual newest.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -187,6 +190,19 @@ Performance, Internal Implementation, Development Support etc.
  * Many core configuration variables have been migrated from global
    variables into 'repo_config_values' to tie them to a specific
    repository instance, avoiding cross-repository state leakage.
+
+ * Streaming revision walks have been optimized by using a priority queue
+   for date-sorting commits, speeding up walks repositories with many
+   merges.
+
+ * A recent regression in t7527 that broke TAP output has been fixed,
+   some other test noise that also broke TAP output has been silenced,
+   and 'prove' is now configured to fail on invalid TAP output to
+   prevent future regressions.
+
+ * A handful of inappropriate uses of the_repository have been
+   rewritten to use the right repository structure instance in the
+   unpack-trees.c codepath.
 
 
 Fixes since v2.54
@@ -347,6 +363,27 @@ Fixes since v2.54
  * Wording used in "format-patch --subject-prefix" documentation
    has been improved.
    (merge 4a1eb9304a lo/doc-format-patch-subject-prefix later to maint).
+
+ * Advanced emulation of kill() used on Windows in GfW has been
+   upstreamed to improve the symptoms like left-behind .lock files and
+   that fails to let the child clean-up itself when it gets killed.
+   (merge 363f1d8b3a js/win-kill-child-more-gently later to maint).
+
+ * The 'git describe --contains --all' command has been fixed to
+   properly honor the '--match' and '--exclude' options by passing
+   them down to 'git name-rev' with the appropriate reference
+   prefixes.
+   (merge 1891707d1b jk/describe-contains-all-match-fix later to maint).
+
+ * Various typos, grammatical errors, and duplicated words in both
+   documentation and code comments have been corrected.
+   (merge dc6068df67 wy/docs-typofixes later to maint).
+
+ * The subprocess handshake during startup has been made gentler by using
+   packet_read_line_gently() instead of packet_read_line() to prevent the
+   parent Git process from dying abruptly when a configured subprocess
+   (e.g., a clean/smudge filter) fails to start.
+   (merge 061a68e443 mm/subprocess-handshake-fix later to maint).
 
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).
