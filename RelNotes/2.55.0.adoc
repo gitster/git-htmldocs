@@ -204,6 +204,10 @@ Performance, Internal Implementation, Development Support etc.
    rewritten to use the right repository structure instance in the
    unpack-trees.c codepath.
 
+ * "git index-pack" has been optimized by retaining child bases in the
+   delta cache instead of immediately freeing them, letting the existing
+   cache limit policy decide eviction.
+
 
 Fixes since v2.54
 -----------------
@@ -409,3 +413,4 @@ Fixes since v2.54
    (merge 83e7f3bd2b kh/free-commit-list later to maint).
    (merge d1b72b29e9 am/doc-tech-hash-typofix later to maint).
    (merge 014c454799 ak/typofixes later to maint).
+   (merge 522ea8ef7d js/osxkeychain-build-wo-rust later to maint).
