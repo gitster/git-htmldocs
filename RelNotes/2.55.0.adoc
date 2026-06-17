@@ -73,6 +73,9 @@ UI, Workflows & Features
  * "git rev-list" (and "git log" family of commands) learned a new "--max-count-oldest"
    that picks oldest N commits in the range instead of the usual newest.
 
+ * Various AsciiDoc markup fixes in 'git config' documentation and
+   related files to ensure lists and formatting are rendered correctly.
+
 
 Performance, Internal Implementation, Development Support etc.
 --------------------------------------------------------------
@@ -207,6 +210,16 @@ Performance, Internal Implementation, Development Support etc.
  * "git index-pack" has been optimized by retaining child bases in the
    delta cache instead of immediately freeing them, letting the existing
    cache limit policy decide eviction.
+
+ * `git ls-files --modified` and `git ls-files --deleted` have been
+   optimized to filter with pathspec before calling lstat() when there is
+   only a single pathspec item, avoiding unnecessary filesystem access
+   for entries that will not be shown.
+
+ * The UNUSED macro in 'compat/posix.h' has been updated to use a
+   newly introduced GIT_CLANG_PREREQ macro for compiler version
+   checks, and the existing GIT_GNUC_PREREQ macro has been modernized
+   to use explicit major/minor comparisons rather than bit-shifting.
 
 
 Fixes since v2.54
@@ -389,6 +402,24 @@ Fixes since v2.54
    (e.g., a clean/smudge filter) fails to start.
    (merge 061a68e443 mm/subprocess-handshake-fix later to maint).
 
+ * The TSAN race in transfer_debug() within transport-helper.c has been
+   resolved by initializing the debug flag early in
+   bidirectional_transfer_loop() before spawning worker threads, allowing
+   the removal of a TSAN suppression.
+   (merge 85704eda18 ps/transport-helper-tsan-fix later to maint).
+
+ * 'git describe' has been taught to pass the 'refs/tags/' prefix down to
+   the ref iterator when '--all' is not requested, avoiding unnecessary
+   iteration over non-tag refs.
+   (merge 55088ac8a4 td/describe-tag-iteration later to maint).
+
+ * compute_reachable_generation_numbers() in commit-graph used a 32-bit
+   integer to accumulate parent generations, which is OK for generation
+   number v1 (topological levels), but with generation number v2
+   (adjusted committer timestamps), it truncated timestamps beyond
+   2106.  Fixed by widening the accumulator to timestamp_t.
+   (merge fbcc5408fc en/commit-graph-timestamp-fix later to maint).
+
  * Other code cleanup, docfix, build fix, etc.
    (merge 80f4b802e9 ja/doc-difftool-synopsis-style later to maint).
    (merge b96490241e jc/doc-timestamps-in-stat later to maint).
@@ -414,3 +445,4 @@ Fixes since v2.54
    (merge d1b72b29e9 am/doc-tech-hash-typofix later to maint).
    (merge 014c454799 ak/typofixes later to maint).
    (merge 522ea8ef7d js/osxkeychain-build-wo-rust later to maint).
+   (merge e8f12e0e95 jc/t1400-fifo-cleanup later to maint).

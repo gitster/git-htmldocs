@@ -609,10 +609,10 @@ values. This is the same as providing <em>--value=^$</em> in <code>set</code>.</
 <p>Append a comment at the end of new or modified lines.</p>
 <div class="paragraph">
 <p>If <em>&lt;message&gt;</em> begins with one or more whitespaces followed
-by "<mark>", it is used as-is.  If it begins with "</mark>", a space is
+by #, it is used as-is.  If it begins with #, a space is
 prepended before it is used.  Otherwise, a string " # " (a
 space followed by a hash followed by a space) is prepended
-to it.  And the resulting string is placed immediately after
+to it.  The resulting string is placed immediately after
 the value defined for the variable.  The <em>&lt;message&gt;</em> must
 not contain linefeed characters (no multi-line comments are
 permitted).</p>
@@ -733,6 +733,8 @@ canonical form.</p>
 <div class="paragraph">
 <p>Valid <em>&lt;type&gt;</em>'s include:</p>
 </div>
+<div class="openblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
@@ -764,13 +766,15 @@ to a timestamp. This specifier has no effect when setting the value.</p>
 escape sequence. When setting a value, a sanity-check is performed to ensure
 that the given value is canonicalize-able as an ANSI color, but it is written
 as-is.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>If the command is in <code>list</code> mode, then the <code>--type</code> <em>&lt;type&gt;</em> argument will apply
 to each listed config value. If the value does not successfully parse in that
 format, then it will be omitted from the list.</p>
-</div>
-</li>
-</ul>
 </div>
 </dd>
 <dt class="hdlist1">--bool</dt>
@@ -1602,6 +1606,8 @@ as to how to spell them.</p>
 <p>When a variable is said to take a boolean value, many
 synonyms are accepted for <em>true</em> and <em>false</em>; these are all
 case-insensitive.</p>
+<div class="openblock">
+<div class="content">
 <div class="dlist">
 <dl>
 <dt class="hdlist1">true</dt>
@@ -1614,13 +1620,15 @@ is taken as true.</p>
 <dd>
 <p>Boolean false literals are <code>no</code>, <code>off</code>, <code>false</code>,
 <code>0</code> and the empty string.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>When converting a value to its canonical form using the <code>--type=bool</code> type
 specifier, <em>git config</em> will ensure that the output is "true" or
 "false" (spelled in lowercase).</p>
-</div>
-</dd>
-</dl>
 </div>
 </dd>
 <dt class="hdlist1">integer</dt>
@@ -8098,6 +8106,8 @@ only supported field names.</p>
 advertised promisor remote (e.g., "foo"), three conditions must be met
 for the check of this specific field to pass:</p>
 </div>
+<div class="openblock">
+<div class="content">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -8110,6 +8120,11 @@ must be set.</p>
 <li>
 <p>The value of the locally configured <code>remote.foo.token</code> must exactly
 match the value advertised by the server for the "token" field.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>If any of these conditions is not met for any field name listed in
 <code>promisor.checkFields</code>, the advertised remote "foo" is rejected.</p>
@@ -8135,9 +8150,6 @@ variable. The fields are checked only if the
 <code>promisor.acceptFromServer</code> config variable is not set to "None". If
 set to "None", this config variable has no effect. See
 <a href="gitprotocol-v2.html">gitprotocol-v2(5)</a>.</p>
-</div>
-</li>
-</ol>
 </div>
 </dd>
 <dt class="hdlist1">promisor.storeFields</dt>
@@ -9155,6 +9167,8 @@ as if the <code>--reference</code> option is given.</p>
 <dd>
 <p>Specifies which bare repositories Git will work with. The currently
 supported values are:</p>
+<div class="openblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
@@ -9166,6 +9180,11 @@ Git 2.x.</p>
 the top-level <code>--git-dir</code> command-line option, or the <code>GIT_DIR</code>
 environment variable (see <a href="git.html">git(1)</a>). This will be the default
 in Git 3.0.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>If you do not use bare repositories in your workflow, then it may be
 beneficial to set <code>safe.bareRepository</code> to <code>explicit</code> in your global
@@ -9182,9 +9201,6 @@ in your global or system config.</p>
 <p>This config setting is only respected in protected configuration (see
 <a href="#SCOPES">SCOPES</a>). This prevents untrusted repositories from tampering with
 this value.</p>
-</div>
-</li>
-</ul>
 </div>
 </dd>
 <dt class="hdlist1">safe.directory</dt>
@@ -9441,11 +9457,13 @@ a comma-separated list of the following keywords):</p>
 <dl>
 <dt class="hdlist1"><code>color</code></dt>
 <dd>
-<p>	Allow ANSI color sequences, line feeds and horizontal tabs,
-	but mask all other control characters. This is the default.
-<code>cursor:</code>:
-	Allow control sequences that move the cursor. This is
-	disabled by default.</p>
+<p>Allow ANSI color sequences, line feeds and horizontal tabs,
+but mask all other control characters. This is the default.</p>
+</dd>
+<dt class="hdlist1"><code>cursor</code></dt>
+<dd>
+<p>Allow control sequences that move the cursor. This is
+disabled by default.</p>
 </dd>
 <dt class="hdlist1"><code>erase</code></dt>
 <dd>
@@ -10665,7 +10683,7 @@ looks like</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-03-27 14:24:52 -0700
+Last updated 2026-06-17 11:49:41 -0700
 </div>
 </div>
 </body>
