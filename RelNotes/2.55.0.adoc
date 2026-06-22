@@ -446,3 +446,4 @@ Fixes since v2.54
    (merge 014c454799 ak/typofixes later to maint).
    (merge 522ea8ef7d js/osxkeychain-build-wo-rust later to maint).
    (merge e8f12e0e95 jc/t1400-fifo-cleanup later to maint).
+   (merge 0bf506efd4 kw/gitattributes-typofix later to maint).
