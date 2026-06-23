@@ -221,6 +221,15 @@ Performance, Internal Implementation, Development Support etc.
    checks, and the existing GIT_GNUC_PREREQ macro has been modernized
    to use explicit major/minor comparisons rather than bit-shifting.
 
+ * Wean the Windows builds in GitLab CI procedure away from
+   (unfortunately unreliable) Chocolatey to install dependencies.
+   (merge 0e7b51fed2 ps/gitlab-ci-windows later to maint).
+
+ * Build-fix for 32-bit Windows.
+
+ * Xcode 15 and later has a linker set to complain when the same library
+   archive is listed twice on the command line.  Squelch the annoyance.
+
 
 Fixes since v2.54
 -----------------
