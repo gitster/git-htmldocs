@@ -1816,6 +1816,12 @@ to create a local branch after the fact.</p>
 <dd>
 <p>Shown when a fast-forward is not possible.</p>
 </dd>
+<dt class="hdlist1">fetchRemoteHEADWarn</dt>
+<dd>
+<p>Shown when <a href="git-fetch.html">git-fetch(1)</a> reveals that a remote <code>HEAD</code>
+differs from what is set locally and the user has opted into
+receiving a warning in this situation.</p>
+</dd>
 <dt class="hdlist1">fetchShowForcedUpdates</dt>
 <dd>
 <p>Shown when <a href="git-fetch.html">git-fetch(1)</a> takes a long time
@@ -5063,6 +5069,39 @@ bundle URI. If you modify the URI at <code>fetch.bundleURI</code>, then be sure 
 remove the value for the <code>fetch.bundleCreationToken</code> value before fetching.</p>
 </div>
 </dd>
+<dt class="hdlist1"><code>fetch.followRemoteHEAD</code></dt>
+<dd>
+<p>When fetching using a default refspec, this setting determines how to handle
+differences between a fetched remote&#8217;s <code>HEAD</code> and the local
+<code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code> symbolic-ref.  Its value is one of</p>
+<div class="openblock">
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>create</code></dt>
+<dd>
+<p>Create <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code> if a ref exists on the remote, but not locally.
+An existing symbolic-ref will not be touched.  This is the default value.</p>
+</dd>
+<dt class="hdlist1"><code>warn</code></dt>
+<dd>
+<p>Display a warning if the remote advertises a different <code>HEAD</code> than what is
+set locally.  Behaves like "create" if the local symbolic-ref doesn&#8217;t exist.</p>
+</dd>
+<dt class="hdlist1"><code>always</code></dt>
+<dd>
+<p>Silently update <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code> whenever the remote advertises a new
+value.</p>
+</dd>
+<dt class="hdlist1"><code>never</code></dt>
+<dd>
+<p>Never create or modify the <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code> symbolic-ref.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</dd>
 <dt class="hdlist1">filter.&lt;driver&gt;.clean</dt>
 <dd>
 <p>The command which is used to convert the content of a worktree
@@ -6975,8 +7014,7 @@ details. Defaults to <code>separate</code>.</p>
 <dd>
 <p>If <code>true</code>, <code>git</code> <code>log</code> will act as if the <code>--follow</code> option was used when
 a single &lt;path&gt; is given.  This has the same limitations as <code>--follow</code>,
-i.e. it cannot be used to follow multiple files and does not work well
-on non-linear history.</p>
+i.e. it cannot be used to follow multiple files.</p>
 </dd>
 <dt class="hdlist1"><code>log.graphColors</code></dt>
 <dd>
@@ -8074,24 +8112,166 @@ advertised regardless of this setting.</p>
 </dd>
 <dt class="hdlist1">promisor.acceptFromServer</dt>
 <dd>
-<p>If set to "all", a client will accept all the promisor remotes
-a server might advertise using the "promisor-remote"
-capability. If set to "knownName" the client will accept
-promisor remotes which are already configured on the client
-and have the same name as those advertised by the client. This
-is not very secure, but could be used in a corporate setup
-where servers and clients are trusted to not switch name and
-URLs. If set to "knownUrl", the client will accept promisor
-remotes which have both the same name and the same URL
-configured on the client as the name and URL advertised by the
-server. This is more secure than "all" or "knownName", so it
-should be used if possible instead of those options. Default
-is "none", which means no promisor remote advertised by a
-server will be accepted. By accepting a promisor remote, the
-client agrees that the server might omit objects that are
-lazily fetchable from this promisor remote from its responses
-to "fetch" and "clone" requests from the client. Name and URL
-comparisons are case sensitive. See <a href="gitprotocol-v2.html">gitprotocol-v2(5)</a>.</p>
+<p>Controls which promisor remotes advertised by a server (using the
+"promisor-remote" protocol capability) a client will accept. By
+accepting a promisor remote, the client agrees that the server
+might omit objects that are lazily fetchable from this promisor
+remote from its responses to "fetch" and "clone" requests.</p>
+<div class="paragraph">
+<p>Note that this option does not cause new remotes to be automatically
+created in the client&#8217;s configuration. It only allows remotes which
+are somehow already configured to be trusted for the current
+operation, or their fields to be updated (if <code>promisor.storeFields</code> is
+set and the remote already exists locally). To allow Git to
+automatically create and persist new remotes from server
+advertisements, use <code>promisor.acceptFromServerUrl</code>.</p>
+</div>
+<div class="paragraph">
+<p>The available options are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>none</code> (default): No promisor remote advertised by a server will be
+accepted.</p>
+</li>
+<li>
+<p><code>knownUrl</code>: The client will accept promisor remotes that are already
+configured on the client and have both the same name and the same URL
+as advertised by the server. This is more secure than <code>all</code> or
+<code>knownName</code>, and should be used if possible instead of those options.</p>
+</li>
+<li>
+<p><code>knownName</code>: The client will accept promisor remotes that are already
+configured on the client and have the same name as those advertised
+by the server. This is not very secure, but could be used in a corporate
+setup where servers and clients are trusted to not switch names and URLs.</p>
+</li>
+<li>
+<p><code>all</code>: The client will accept all the promisor remotes a server might
+advertise. This is the least secure option and should only be used in
+fully trusted environments.</p>
+<div class="paragraph">
+<p>Name and URL comparisons are case-sensitive. See <a href="gitprotocol-v2.html">gitprotocol-v2(5)</a>
+for protocol details.</p>
+</div>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">promisor.acceptFromServerUrl</dt>
+<dd>
+<p>A glob pattern to specify which server-advertised URLs a
+client is allowed to act on. When a URL matches, the client
+will accept the advertised remote as a promisor remote, may
+automatically create a new remote configuration for it and may
+automatically accept field updates (such as authentication
+tokens) from the server, even if <code>promisor.acceptFromServer</code>
+is set to <code>none</code> (the default).</p>
+<div class="paragraph">
+<p>This option can appear multiple times in config files. An advertised
+URL will be accepted if it matches <em>ANY</em> glob pattern specified by
+this option in <em>ANY</em> config file read by Git.</p>
+</div>
+<div class="paragraph">
+<p>When both <code>promisor.acceptFromServer</code> and <code>promisor.acceptFromServerUrl</code>
+are set, <code>promisor.acceptFromServerUrl</code> is consulted first and takes
+precedence: if a matching pattern leads to acceptance (either by
+auto-configuring an unknown remote or by accepting field updates for
+a known remote whose URL matches both the local configuration and the
+allowlist), the advertised remote is accepted regardless of the
+<code>promisor.acceptFromServer</code> setting. If no pattern in
+<code>promisor.acceptFromServerUrl</code> triggers acceptance, the decision is
+left to <code>promisor.acceptFromServer</code>.</p>
+</div>
+<div class="paragraph">
+<p>Note however that, even when an advertised URL matches a pattern in
+<code>promisor.acceptFromServerUrl</code>, an already-existing remote on the
+client whose name matches the advertised name but whose configured URL
+differs from the advertised one will <em>NOT</em> be accepted through
+<code>promisor.acceptFromServerUrl</code>. This prevents a server from silently
+re-pointing an existing client-side remote at a different URL. (Such a
+remote may still be accepted through <code>promisor.acceptFromServer=all</code>
+or <code>=knownName</code>, which have their own, looser semantics; see the
+documentation of that option.)</p>
+</div>
+<div class="paragraph">
+<p>Be <em>VERY</em> careful with these patterns: <code>*</code> matches any sequence of
+characters within the <em>host</em> and <em>path</em> parts of a URL (but cannot
+cross part boundaries). An overly broad pattern is a major security
+risk, as a matching URL allows a server to auto-configure new remotes
+and to update fields (such as authentication tokens) on known remotes
+without further confirmation. To minimize security risks, follow these
+guidelines:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start with a secure protocol scheme, like <code>https://</code> or <code>ssh://</code>.</p>
+</li>
+<li>
+<p>Only allow domain names or paths where you control and trust <em>ALL</em>
+the content. Be especially careful with shared hosting platforms
+like <code>github.com</code> or <code>gitlab.com</code>. A broad pattern like
+<code>https://gitlab.com/*</code> is dangerous because it trusts every
+repository on the entire platform. Always restrict such patterns to
+your specific organization or namespace (e.g.,
+<code>https://gitlab.com/your-org/*</code>).</p>
+</li>
+<li>
+<p>Never use globs at the end of domain names. For example,
+<code>https://cdn.your-org.com/*</code> might be safe, but
+<code>https://cdn.your-org.com*/*</code> is a major security risk because
+the latter matches <code>https://cdn.your-org.com.hacker.net/repo</code>.</p>
+</li>
+<li>
+<p>Be careful using globs at the beginning of domain names. While the
+code ensures a <code>*</code> in the host cannot cross into the path, a
+pattern like <code>https://*.example.com/*</code> will still match any
+subdomain. This is extremely dangerous on shared hosting platforms
+(e.g., <code>https://*.github.io/*</code> trusts every user&#8217;s site on the
+entire platform).</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Before matching, both the advertised URL and the pattern are
+normalized: the scheme and host are lowercased, percent-encoded
+characters are decoded where possible, and path segments like <code>..</code>
+are resolved. The port must also match exactly (e.g.,
+<code>https://example.com:8080/*</code> will not match a URL advertised on
+port 9999). The username and password components of the URL are
+ignored during matching. Note that embedding credentials in URLs is
+discouraged. Passing authentication tokens via the <code>token</code> field of
+the <code>promisor-remote</code> capability is strongly preferred.</p>
+</div>
+<div class="paragraph">
+<p>The glob pattern can optionally be prefixed with a remote name and an
+equals sign (e.g., <code>cdn=https://cdn.example.com/*</code>). If such a prefix
+is provided, accepted remotes will be saved under that name. If no
+such prefix is provided, a safe remote name will be automatically
+generated by sanitizing the URL and prefixing it with
+<code>promisor-auto-</code>.</p>
+</div>
+<div class="paragraph">
+<p>If a remote with the chosen name already exists but points to a
+different URL, Git will append a numeric suffix (e.g., <code>-1</code>, <code>-2</code>) to
+the name to prevent overwriting existing configurations. You should
+make sure that this doesn&#8217;t happen often though, as remotes will be
+rejected if the numeric suffix increases too much. In all cases, the
+original name advertised by the server is recorded in the
+<code>remote.</code><em>&lt;name&gt;</em><code>.advertisedAs</code> configuration variable for tracing and
+debugging purposes.</p>
+</div>
+<div class="paragraph">
+<p>For the security implications of accepting a promisor remote, see the
+documentation of <code>promisor.acceptFromServer</code>. For details on the
+protocol, see <a href="gitprotocol-v2.html">gitprotocol-v2(5)</a>.</p>
+</div>
 </dd>
 <dt class="hdlist1">promisor.checkFields</dt>
 <dd>
@@ -8966,6 +9146,16 @@ is activated in general via <code>remote.</code><em>&lt;name&gt;</em><code>.prun
 <p>When set to true, this remote will be used to fetch promisor
 objects.</p>
 </dd>
+<dt class="hdlist1">remote.&lt;name&gt;.advertisedAs</dt>
+<dd>
+<p>When a promisor remote is automatically configured using
+information advertised by a server through the
+<code>promisor-remote</code> protocol capability (see
+<code>promisor.acceptFromServerUrl</code>), the server&#8217;s originally
+advertised name is saved in this variable. This is for
+information, tracing and debugging purposes. Users should not
+typically modify or create such configuration entries.</p>
+</dd>
 <dt class="hdlist1">remote.&lt;name&gt;.partialclonefilter</dt>
 <dd>
 <p>The filter that will be applied when fetching from this	promisor remote.
@@ -9047,18 +9237,16 @@ the list from broader config scenarios.</p>
 </dd>
 <dt class="hdlist1">remote.&lt;name&gt;.followRemoteHEAD</dt>
 <dd>
-<p>How <a href="git-fetch.html">git-fetch(1)</a> should handle updates to <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code>
-when fetching using the configured refspecs of a remote.
-The default value is "create", which will create <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code>
-if it exists on the remote, but not locally; this will not touch an
-already existing local reference. Setting it to "warn" will print
-a message if the remote has a different value than the local one;
-in case there is no local reference, it behaves like "create".
-A variant on "warn" is "warn-if-not-$branch", which behaves like
-"warn", but if <code>HEAD</code> on the remote is <code>$branch</code> it will be silent.
-Setting it to "always" will silently update <code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code> to
-the value on the remote.  Finally, setting it to "never" will never
-change or create the local reference.</p>
+<p>When fetching this remote using its default refspec, this setting determines
+how to handle differences between the remote&#8217;s <code>HEAD</code> and the local
+<code>remotes/</code><em>&lt;name&gt;</em><code>/HEAD</code> symbolic-ref.  Overrides the value of
+<code>fetch.followRemoteHEAD</code>.  See <code>fetch.followRemoteHEAD</code> for a description of
+accepted values.</p>
+<div class="paragraph">
+<p>In addition to the values supported by <code>fetch.followRemoteHEAD</code>, this setting
+may also take on the value "warn-if-not-<code>$branch</code>", which behaves like "warn",
+but ignores the warning if the remote&#8217;s <code>HEAD</code> is <code>remotes/</code><em>&lt;name&gt;</em><code>/$branch</code>.</p>
+</div>
 </dd>
 <dt class="hdlist1">remotes.&lt;group&gt;</dt>
 <dd>
