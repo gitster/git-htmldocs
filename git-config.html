@@ -1455,6 +1455,59 @@ matches "foo" and everything inside, recursively.</p>
 <p>This is the same as <code>gitdir</code> except that matching is done
 case-insensitively (e.g. on case-insensitive file systems)</p>
 </dd>
+<dt class="hdlist1"><code>worktree</code></dt>
+<dd>
+<p>The data that follows the keyword <code>worktree</code> and a colon is used as a
+glob pattern. If the working directory of the current worktree matches
+the pattern, the include condition is met.</p>
+<div class="paragraph">
+<p>The worktree location is the path where files are checked out (as returned
+by <code>git</code> <code>rev-parse</code> <code>--show-toplevel</code>). This is different from <code>gitdir</code>, which
+matches the .<code>git</code> directory path. In a linked worktree, the worktree path
+is the directory where that worktree&#8217;s files are located, not the main
+repository&#8217;s .<code>git</code> directory.</p>
+</div>
+<div class="paragraph">
+<p>The pattern uses the same glob syntax as <code>gitdir</code> (including <code>~/</code>, .<code>/</code>,
+<code>**/</code>, and trailing-<code>/</code> prefix matching). This condition will never match
+in a bare repository (which has no worktree).</p>
+</div>
+<div class="paragraph">
+<p>Unlike <code>gitdir</code>, the <code>worktree</code> condition currently matches only the
+realpath-resolved worktree location. If the working tree was entered via a
+symbolic link, a pattern that uses the symbolic-link spelling may not match;
+use the real path instead.</p>
+</div>
+<div class="paragraph">
+<p>This is useful when you want to apply configuration based on where the
+working tree is located on the filesystem. For example, a contributor who
+works on the same project both personally and as an employee can use
+different <code>user.name</code> and <code>user.email</code> values depending on which directory
+the worktree is checked out under:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[includeIf "worktree:/home/user/work/"]
+    path = ~/.config/git/work.inc
+[includeIf "worktree:/home/user/personal/"]
+    path = ~/.config/git/personal.inc</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>While <code>extensions.worktreeConfig</code> (see <a href="git-worktree.html">git-worktree(1)</a>) also supports
+per-worktree configuration, it stores the config inside each repository&#8217;s
+.<code>git/config.worktree</code> file and requires running <code>git</code> <code>config</code> <code>--worktree</code>
+inside each worktree individually. In contrast, <code>includeIf</code> "worktree:<code>...</code>"
+can be set once in a global or system-level configuration file (e.g.
+<code>~/.config/git/config</code>) and applies to all repositories at once based on
+their worktree location.</p>
+</div>
+</dd>
+<dt class="hdlist1"><code>worktree/i</code></dt>
+<dd>
+<p>This is the same as <code>worktree</code> except that matching is done
+case-insensitively (e.g. on case-insensitive file systems)</p>
+</dd>
 <dt class="hdlist1"><code>onbranch</code></dt>
 <dd>
 <p>The data that follows the keyword <code>onbranch</code> and a colon is taken to be a
@@ -1570,6 +1623,14 @@ unlikely what you want.</p>
 ; include for all repositories inside $HOME/to/group
 [includeIf "gitdir:~/to/group/"]
         path = /path/to/foo.inc
+
+; include if the worktree is at /path/to/project-build
+[includeIf "worktree:/path/to/project-build"]
+        path = build-config.inc
+
+; include for all worktrees inside /path/to/group
+[includeIf "worktree:/path/to/group/"]
+        path = group-config.inc
 
 ; relative paths are always relative to the including
 ; file (if the condition is true); their location is not
